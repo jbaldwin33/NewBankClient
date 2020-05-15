@@ -1,4 +1,0 @@
-obj\Debug\netcoreapp3.1/SkillCRUD.cs \
-obj\Debug\netcoreapp3.1/SkillCRUDGrpc.cs: Protos/empty.proto\
- Protos/enums.proto\
- Protos/skillCRUD.proto
