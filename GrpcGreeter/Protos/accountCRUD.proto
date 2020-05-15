@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcGreeter.Protos";
+import "Protos/empty.proto";
+
+package protos.accountCRUD;
+
+service AccountCRUD {
+  rpc GetAccounts (empty.Empty) returns (Accounts);
+  rpc GetByID (AccountFilter) returns (Account);
+  rpc Insert (Account) returns (empty.Empty);
+  rpc Update (Account) returns (empty.Empty);
+  rpc Delete (AccountFilter) returns (empty.Empty);
+}
+
+message Account {
+  string id = 1;
+  double balance = 2;
+  AccountType accountType = 3;
+  string userId = 4;
+}
+
+message Accounts{
+  repeated Account items = 1;
+}
+
+message AccountFilter{
+  string id = 1;
+  double balance = 2;
+  AccountType accountType = 3;
+  string userId = 4;
+}
+
+enum AccountType{
+  CHECKING = 0;
+  SAVING = 1;
+}
