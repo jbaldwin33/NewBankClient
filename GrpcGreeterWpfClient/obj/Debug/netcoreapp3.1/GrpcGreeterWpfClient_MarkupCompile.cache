@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\USER\Visual Studio Projects\NewBankClient\GrpcGreeterWpfClient\App.xaml
-6221559310
+7-280034453
 
 22-489613079
 323985057092
-Controls\NavigationBar.xaml;Views\AccountView.xaml;Views\HomeView.xaml;Views\LoginView.xaml;Views\MainWindow.xaml;Views\SignUpView.xaml;
+Controls\ControlStyles.xaml;Controls\NavigationBar.xaml;Views\AccountView.xaml;Views\HomeView.xaml;Views\LoginView.xaml;Views\MainWindow.xaml;Views\SignUpView.xaml;
 
 False
 

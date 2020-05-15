@@ -38,3 +38,4 @@ C:\Users\USER\Visual Studio Projects\NewBankClient\GrpcGreeterWpfClient\obj\Debu
 C:\Users\USER\Visual Studio Projects\NewBankClient\GrpcGreeterWpfClient\obj\Debug\netcoreapp3.1\Views\LoginView.baml
 C:\Users\USER\Visual Studio Projects\NewBankClient\GrpcGreeterWpfClient\obj\Debug\netcoreapp3.1\Views\SignUpView.g.cs
 C:\Users\USER\Visual Studio Projects\NewBankClient\GrpcGreeterWpfClient\obj\Debug\netcoreapp3.1\Views\SignUpView.baml
+C:\Users\USER\Visual Studio Projects\NewBankClient\GrpcGreeterWpfClient\obj\Debug\netcoreapp3.1\Controls\ControlStyles.baml
