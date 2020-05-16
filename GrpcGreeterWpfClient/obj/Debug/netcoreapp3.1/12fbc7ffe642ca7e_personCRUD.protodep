@@ -1,5 +1,0 @@
-obj\Debug\netcoreapp3.1/PersonCRUD.cs \
-obj\Debug\netcoreapp3.1/PersonCRUDGrpc.cs: Protos/empty.proto\
- Protos/enums.proto\
- Protos/skillCRUD.proto\
- Protos/personCRUD.proto

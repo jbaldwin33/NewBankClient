@@ -1,3 +1,0 @@
-obj\Debug\netcoreapp3.1/AccountCRUD.cs \
-obj\Debug\netcoreapp3.1/AccountCRUDGrpc.cs: Protos/empty.proto\
- Protos/accountCRUD.proto
