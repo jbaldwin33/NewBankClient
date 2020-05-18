@@ -27,7 +27,7 @@ namespace GrpcGreeterWpfClient.Navigators
     ViewModelBase CurrentViewModel { get; set; }
     UserModel CurrentUser { get; set; }
     ICommand UpdateCurrentViewModelCommand { get; }
-    ICommand UpdateCurrentUserCommand { get; }
+    //ICommand UpdateCurrentUserCommand { get; }
   }
   public class Navigator : INavigator, INotifyPropertyChanged
   {
@@ -83,7 +83,7 @@ namespace GrpcGreeterWpfClient.Navigators
 
     public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this);
 
-    public ICommand UpdateCurrentUserCommand => new UpdateCurrentUserCommand(this);
+    //public ICommand UpdateCurrentUserCommand => new UpdateCurrentUserCommand(this);
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected void OnPropertyChanged(string propertyName)
@@ -111,30 +111,31 @@ namespace GrpcGreeterWpfClient.Navigators
         {
           ViewType.Home => new HomeViewModel(navigator.UserCRUDClient),
           ViewType.Account => new AccountViewModel(navigator.UserCRUDClient, navigator.CurrentUser),
-          ViewType.LogIn => new LoginViewModel(navigator, navigator.UserCRUDClient),
-          ViewType.SignUp => new SignUpViewModel(navigator.UserCRUDClient, navigator.AccountCRUDClient),
+          ViewType.LogIn => new LoginViewModel(navigator, navigator.UserCRUDClient, navigator.CurrentUser),
+          ViewType.SignUp => new SignUpViewModel(navigator.UserCRUDClient, navigator.AccountCRUDClient, navigator.CurrentUser),
           _ => throw new NotSupportedException(),
         };
       }
     }
   }
 
-  public class UpdateCurrentUserCommand : ICommand
-  {
-    public event EventHandler CanExecuteChanged;
-    private INavigator navigator;
+  //public class UpdateCurrentUserCommand : ICommand
+  //{
+  //  public event EventHandler CanExecuteChanged;
+  //  private INavigator navigator;
 
-    public UpdateCurrentUserCommand(INavigator navigator)
-    {
-      this.navigator = navigator;
-    }
+  //  public UpdateCurrentUserCommand(INavigator navigator)
+  //  {
+  //    this.navigator = navigator;
+  //  }
 
-    public bool CanExecute(object parameter) => true;
+  //  public bool CanExecute(object parameter) => true;
 
-    public void Execute(object parameter)
-    {
-      if (parameter is UserModel user)
-        navigator.CurrentUser = user;
-    }
-  }
+  //  public void Execute(object parameter)
+  //  {
+  //    navigator.CurrentUser = parameter is UserModel user
+  //      ? user
+  //      : null;
+  //  }
+  //}
 }

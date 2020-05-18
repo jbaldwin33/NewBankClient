@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="Protos\**" />
-    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="Protos\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="Protos\**" />
-    <None Remove="Services\**" />
     <Page Remove="Protos\**" />
-    <Page Remove="Services\**" />
   </ItemGroup>
   
   <ItemGroup>

@@ -19,67 +19,109 @@ namespace GrpcGreeterWpfClient.ViewModels
 {
   public class LoginViewModel : ViewModelBase
   {
-		private string username;
-		private string password;
+    private string username;
+    private string password;
     private UserCRUD.UserCRUDClient client;
-		private readonly INavigator navigator;
-		private RelayCommand loginCommand;
+    private readonly INavigator navigator;
+    private RelayCommand loginCommand;
+    private RelayCommand logoutCommand;
+    private UserModel currentUser;
+    private bool loggedIn;
 
-    public LoginViewModel(INavigator navigator, UserCRUD.UserCRUDClient client)
+
+    public LoginViewModel(INavigator navigator, UserCRUD.UserCRUDClient client, UserModel currentUser)
     {
       this.client = client;
-			this.navigator = navigator;
+      this.navigator = navigator;
+      CurrentUser = currentUser;
+      LoggedIn = false;
     }
 
     public string Username
-		{
-			get => username;
-			set => Set(ref username, value);
-		}
+    {
+      get => username;
+      set => Set(ref username, value);
+    }
 
-		public string Password
-		{
-			get => password;
-			set => Set(ref password, value);
-		}
+    public string Password
+    {
+      get => password;
+      set => Set(ref password, value);
+    }
+
+    public UserModel CurrentUser
+    {
+      get => currentUser;
+      set => Set(ref currentUser, value);
+    }
+
+    public bool LoggedIn
+    {
+      get => loggedIn;
+      set => Set(ref loggedIn, value);
+    }
 
 
+    public event EventHandler<LoginEventArgs> LoginEventHandler;
 
-		public RelayCommand LoginCommand => loginCommand ??= new RelayCommand(LoginCommandExecute);
+    public void OnLogin(UserModel user)
+    {
+      LoginEventHandler?.Invoke(this, new LoginEventArgs(user));
+    }
 
-		private void LoginCommandExecute()
-		{
-			using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-			var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
+    public RelayCommand LoginCommand => loginCommand ??= new RelayCommand(LoginCommandExecute);
+    public RelayCommand LogoutCommand => logoutCommand ??= new RelayCommand(LogoutCommandExecute);
 
-			var user = userCRUDClient.GetUsers(new Empty()).Items.FirstOrDefault(u => u.Username == username);
-			if (user == null)
-				MessageBox.Show("This username does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-			else
-			{
-				var hash = new SecurePassword(password, user.PasswordSalt).ComputeSaltedHash();
-				if (hash == user.PasswordHash)
-				{
-					var skillClient = new SkillCRUD.SkillCRUDClient(channel);
-					var skill = skillClient.GetByID(new SkillFilter { Id = user.SkillId });
-					navigator.UpdateCurrentUserCommand.Execute(
-						new UserModel(
-							user.Username, 
-							password, 
-							user.FirstName, 
-							user.LastName, 
-							user.Age, 
-							UserModel.ConvertToUserDbType(user.UserType), 
-							new SkillModel 
-							{ 
-								ID = Guid.Parse(user.SkillId), 
-								Name = skill.Name, 
-								SkillProficiency = SkillModel.ConvertFromProtoType(skill.Proficiency)
-							}));
+    private void LoginCommandExecute()
+    {
+      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+      var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
 
-					MessageBox.Show("Log in successful.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-				}
-			}
-		}
-	}
+      var user = userCRUDClient.GetUsers(new Empty()).Items.FirstOrDefault(u => u.Username == username);
+      if (user == null)
+        MessageBox.Show("This username does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+      else
+      {
+        var hash = new SecurePassword(password, user.PasswordSalt).ComputeSaltedHash();
+        if (hash == user.PasswordHash)
+        {
+          var skillClient = new SkillCRUD.SkillCRUDClient(channel);
+          var skill = skillClient.GetByID(new SkillFilter { Id = user.SkillId });
+          var newUser = new UserModel(
+            user.Username,
+            password,
+            user.FirstName,
+            user.LastName,
+            user.Age,
+            UserModel.ConvertToUserDbType(user.UserType),
+            new SkillModel
+            {
+              ID = Guid.Parse(user.SkillId),
+              Name = skill.Name,
+              SkillProficiency = SkillModel.ConvertFromProtoType(skill.Proficiency)
+            });
+          LoggedIn = true;
+          navigator.CurrentUser = newUser;
+
+          MessageBox.Show("Log in successful.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+      }
+    }
+
+    private void LogoutCommandExecute()
+    {
+      CurrentUser = null;
+      LoggedIn = false;
+      navigator.CurrentUser = null;
+    }
+  }
+
+  public class LoginEventArgs : EventArgs
+  {
+    public UserModel User { get; set; }
+    public LoginEventArgs(UserModel user)
+    {
+      User = user;
+    }
+  }
 }

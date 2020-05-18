@@ -30,8 +30,10 @@ namespace GrpcGreeterWpfClient.ViewModels
 		private Enums.Proficiency proficiency;
 		private bool proficiencyVisible;
 		private RelayCommand signUpCommand;
+		private UserModel currentUser;
+		private bool signUpDetailsVisible;
 
-		public SignUpViewModel(UserCRUD.UserCRUDClient userCRUDClient, AccountCRUD.AccountCRUDClient accountCRUDClient)
+		public SignUpViewModel(UserCRUD.UserCRUDClient userCRUDClient, AccountCRUD.AccountCRUDClient accountCRUDClient, UserModel currentUser)
 		{
 			//this.userCRUDClient = userCRUDClient;
 			//this.accountCRUDClient = accountCRUDClient;
@@ -96,6 +98,23 @@ namespace GrpcGreeterWpfClient.ViewModels
 			get => proficiency;
 			set => Set(ref proficiency, value);
 		}
+
+		public UserModel CurrentUser
+		{
+			get => currentUser;
+			set
+			{
+				SignUpDetailsVisible = value == null;
+				Set(ref currentUser, value);
+			}
+		}
+
+		public bool SignUpDetailsVisible
+		{
+			get => signUpDetailsVisible;
+			set => Set(ref signUpDetailsVisible, value);
+		}
+
 
 		public bool ProficiencyVisible
 		{

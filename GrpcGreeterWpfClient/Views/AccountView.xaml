@@ -6,20 +6,11 @@
         xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
         xmlns:converters="clr-namespace:GrpcGreeterWpfClient.Utilities"
         mc:Ignorable="d">
-  <UserControl.Resources>
-    <ResourceDictionary>
-      <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-      <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisConverter"/>
-    </ResourceDictionary>
-  </UserControl.Resources>
   <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="auto"/>
-    </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InverseBoolToVisConverter}}">
+    <StackPanel Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
       <TextBlock Text="Log in to see account details"/>
     </StackPanel>
-    <StackPanel Grid.Row="0" Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
+    <StackPanel Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="auto"/>

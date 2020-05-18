@@ -6,22 +6,32 @@
              xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+  <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text="Username:"/>
-      <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    <StackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
+      <Button Content="Log out" Command="{Binding LogoutCommand}"/>
     </StackPanel>
-    <StackPanel Grid.Row="1" Orientation="Horizontal">
-      <TextBlock Text="Password:"/>
-      <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="2" Orientation="Horizontal">
-      <Button Content="Log in" Command="{Binding LoginCommand}"/>
+    <StackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+          <TextBlock Text="Username:"/>
+          <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+          <TextBlock Text="Password:"/>
+          <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
+          <Button Content="Log in" Command="{Binding LoginCommand}"/>
+        </StackPanel>
+      </Grid>
     </StackPanel>
   </Grid>
 </UserControl>

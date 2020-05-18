@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GrpcGreeterWpfClient"
              xmlns:viewModels="clr-namespace:GrpcGreeterWpfClient.ViewModels"
-             xmlns:views="clr-namespace:GrpcGreeterWpfClient.Views">
+             xmlns:views="clr-namespace:GrpcGreeterWpfClient.Views"
+             xmlns:converters="clr-namespace:GrpcGreeterWpfClient.Utilities">
   <Application.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    <converters:InverseBooleanToVisibilityConverter x:Key="InvBoolToVisConverter"/>
+
     <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}">
       <Setter Property="Width" Value="100"/>
       <Setter Property="Height" Value="auto"/>
@@ -28,7 +32,12 @@
       <Setter Property="Margin" Value="5,0,5,0"/>
       <Setter Property="Padding" Value="5"/>
     </Style>
-    
+    <Style x:Key="{x:Type StackPanel}" TargetType="{x:Type StackPanel}">
+      <Setter Property="Orientation" Value="Horizontal"/>
+      <Setter Property="Height" Value="auto"/>
+      <Setter Property="Width" Value="auto"/>
+    </Style>
+
     <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
       <views:HomeView/>
     </DataTemplate>
