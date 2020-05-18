@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
@@ -16,7 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Protos\accountCRUD.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\personCRUD.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\userCRUD.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\skillCRUD.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\enums.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\empty.proto" GrpcServices="Client" />

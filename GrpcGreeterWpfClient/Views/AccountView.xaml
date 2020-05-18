@@ -4,8 +4,51 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
+        xmlns:converters="clr-namespace:GrpcGreeterWpfClient.Utilities"
         mc:Ignorable="d">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+      <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisConverter"/>
+    </ResourceDictionary>
+  </UserControl.Resources>
   <Grid>
-    <TextBlock Text="Account" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InverseBoolToVisConverter}}">
+      <TextBlock Text="Log in to see account details"/>
+    </StackPanel>
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+          <TextBlock Text="First name:"/>
+          <TextBlock Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+          <TextBlock Text="Last name:"/>
+          <TextBlock Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+          <TextBlock Text="Username:"/>
+          <TextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+          <TextBlock Text="Age:"/>
+          <TextBlock Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
+          <TextBlock Text="Skill:"/>
+          <TextBlock Text="{Binding UserSkill, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
   </Grid>
 </UserControl>

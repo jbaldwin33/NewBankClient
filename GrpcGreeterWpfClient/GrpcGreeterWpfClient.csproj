@@ -7,13 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\accountCRUD.proto" />
-    <None Remove="Protos\empty.proto" />
-    <None Remove="Protos\enums.proto" />
-    <None Remove="Protos\personCRUD.proto" />
-    <None Remove="Protos\skillCRUD.proto" />
+    <Compile Remove="Protos\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Protos\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Protos\**" />
+    <None Remove="Services\**" />
+    <Page Remove="Protos\**" />
+    <Page Remove="Services\**" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
@@ -25,17 +28,11 @@
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="Protos\accountCRUD.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\empty.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\enums.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\personCRUD.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\skillCRUD.proto" GrpcServices="Client" />
+    <Reference Include="GrpcGreeterClient">
+      <HintPath>..\GrpcGreeterClient\obj\Debug\netcoreapp3.1\GrpcGreeterClient.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

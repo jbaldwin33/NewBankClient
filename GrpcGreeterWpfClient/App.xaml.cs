@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using Grpc.Net.Client;
+using GrpcGreeter.Protos;
 using GrpcGreeterWpfClient.ViewModels;
 using GrpcGreeterWpfClient.Views;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,10 @@ namespace GrpcGreeterWpfClient
   {
     protected override void OnStartup(StartupEventArgs e)
     {
-      var window = new MainWindow { DataContext = new MainViewModel() };
+      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+      var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
+      var accountCRUDClient = new AccountCRUD.AccountCRUDClient(channel);
+      var window = new MainWindow { DataContext = new MainViewModel(userCRUDClient, accountCRUDClient) };
       window.Show();
       base.OnStartup(e);
     }

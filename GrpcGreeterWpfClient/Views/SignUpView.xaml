@@ -21,6 +21,7 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Orientation="Horizontal">
       <TextBlock Text="First name:"/>
@@ -44,11 +45,14 @@
     </StackPanel>
     <StackPanel Grid.Row="5" Orientation="Horizontal">
       <TextBlock Text="Skill:"/>
-      <TextBox Text="{Binding Skill, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <TextBox Text="{Binding UserSkill, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
-    <StackPanel Grid.Row="6" Orientation="Horizontal">
+    <StackPanel Grid.Row="6" Orientation="Horizontal" Visibility="{Binding ProficiencyVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
       <TextBlock Text="Skill proficiency:"/>
-      <ComboBox Visibility="{Binding ProficiencyVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}" ItemsSource="{Binding ProficiencyItems}" SelectedItem="{Binding Proficiency, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <ComboBox ItemsSource="{Binding ProficiencyItems}" SelectedItem="{Binding Proficiency, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="7" Orientation="Horizontal">
+      <Button Content="Sign up" Command="{Binding SignUpCommand}"/>
     </StackPanel>
   </Grid>
 </UserControl>

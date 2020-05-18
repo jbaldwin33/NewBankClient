@@ -24,7 +24,7 @@ namespace GrpcGreeterWpfClient.Models
     {
       Beginner,
       Adept,
-      Advanced,
+      Expert,
       Master
     }
 

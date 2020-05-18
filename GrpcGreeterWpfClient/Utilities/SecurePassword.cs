@@ -10,9 +10,9 @@ namespace GrpcGreeterWpfClient.Utilities
   public class SecurePassword
   {
     private readonly string _password;
-    private readonly int _salt;
+    private readonly string _salt;
 
-    public SecurePassword(string password, int salt)
+    public SecurePassword(string password, string salt)
     {
       _password = password;
       _salt = salt;
@@ -24,11 +24,7 @@ namespace GrpcGreeterWpfClient.Utilities
       byte[] secretBytes = encoder.GetBytes(_password);
 
       //create a new salt
-      byte[] saltBytes = new byte[4];
-      saltBytes[0] = (byte)(_salt >> 24);
-      saltBytes[1] = (byte)(_salt >> 16);
-      saltBytes[2] = (byte)(_salt >> 8);
-      saltBytes[3] = (byte)(_salt);
+      byte[] saltBytes = Convert.FromBase64String(_salt);
 
       byte[] toHash = new byte[secretBytes.Length + saltBytes.Length];
       Array.Copy(secretBytes, 0, toHash, 0, secretBytes.Length);
@@ -40,13 +36,13 @@ namespace GrpcGreeterWpfClient.Utilities
       return encoder.GetString(computedHash);
     }
 
-    public static int CreateSalt()
+    public static string CreateSalt()
     {
-      byte[] saltBytes = new byte[4];
+      byte[] saltBytes = new byte[16];
       RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
       rng.GetBytes(saltBytes);
 
-      return (((int)saltBytes[0]) << 24) + (((int)saltBytes[1]) << 16) + (((int)(saltBytes[2]) << 8) + ((int)saltBytes[3]));
+      return Convert.ToBase64String(saltBytes);
     }
   }
 }
