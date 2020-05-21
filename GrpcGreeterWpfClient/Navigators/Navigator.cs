@@ -1,7 +1,9 @@
-﻿using GalaSoft.MvvmLight;
+﻿using BankServer.Services;
+using GalaSoft.MvvmLight;
 using GrpcGreeter.Protos;
 using GrpcGreeterWpfClient.Models;
 using GrpcGreeterWpfClient.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,13 +27,17 @@ namespace GrpcGreeterWpfClient.Navigators
     UserCRUD.UserCRUDClient UserCRUDClient { get; }
     AccountCRUD.AccountCRUDClient AccountCRUDClient { get; }
     ViewModelBase CurrentViewModel { get; set; }
-    UserModel CurrentUser { get; set; }
+    SessionInstance SessionInstance { get; set; }
     ICommand UpdateCurrentViewModelCommand { get; }
     //ICommand UpdateCurrentUserCommand { get; }
   }
   public class Navigator : INavigator, INotifyPropertyChanged
   {
     private UserCRUD.UserCRUDClient userCRUDClient;
+    private AccountCRUD.AccountCRUDClient accountCRUDClient;
+    private ViewModelBase currentViewModel;
+    private SessionInstance sessionInstance;
+
     public UserCRUD.UserCRUDClient UserCRUDClient
     {
       get => userCRUDClient;
@@ -42,7 +48,6 @@ namespace GrpcGreeterWpfClient.Navigators
       }
     }
 
-    private AccountCRUD.AccountCRUDClient accountCRUDClient;
     public AccountCRUD.AccountCRUDClient AccountCRUDClient
     {
       get => accountCRUDClient;
@@ -53,7 +58,6 @@ namespace GrpcGreeterWpfClient.Navigators
       }
     }
 
-    private ViewModelBase currentViewModel;
     public ViewModelBase CurrentViewModel
     {
       get => currentViewModel;
@@ -64,21 +68,22 @@ namespace GrpcGreeterWpfClient.Navigators
       }
     }
 
-    private UserModel currentUser;
-    public UserModel CurrentUser
+    public SessionInstance SessionInstance
     {
-      get => currentUser;
+      get => sessionInstance;
       set
       {
-        currentUser = value;
-        OnPropertyChanged(nameof(currentUser));
+        sessionInstance = value;
+        OnPropertyChanged(nameof(sessionInstance));
       }
     }
 
-    public Navigator(UserCRUD.UserCRUDClient userCRUDClient, AccountCRUD.AccountCRUDClient accountCRUDClient)
+
+    public Navigator(UserCRUD.UserCRUDClient userCRUDClient, AccountCRUD.AccountCRUDClient accountCRUDClient, SessionInstance sessionInstance)
     {
       UserCRUDClient = userCRUDClient;
       AccountCRUDClient = accountCRUDClient;
+      SessionInstance = sessionInstance;
     }
 
     public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this);
@@ -91,10 +96,27 @@ namespace GrpcGreeterWpfClient.Navigators
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
   }
+
+  public class SessionInstance
+  {
+    public UserModel CurrentUser { get; set; }
+    public AccountModel CurrentAccount { get; set; }
+
+    public Guid SessionID { get; set; }
+
+    public SessionInstance(UserModel user, AccountModel account, Guid id)
+    {
+      CurrentUser = user;
+      CurrentAccount = account;
+      SessionID = id;
+    }
+  }
+
   public class UpdateCurrentViewModelCommand : ICommand
   {
     public event EventHandler CanExecuteChanged;
     private INavigator navigator;
+    private readonly SessionService sessionService = SessionService.Instance;
 
     public UpdateCurrentViewModelCommand(INavigator navigator)
     {
@@ -110,9 +132,9 @@ namespace GrpcGreeterWpfClient.Navigators
         navigator.CurrentViewModel = viewType switch
         {
           ViewType.Home => new HomeViewModel(navigator.UserCRUDClient),
-          ViewType.Account => new AccountViewModel(navigator.UserCRUDClient, navigator.CurrentUser),
-          ViewType.LogIn => new LoginViewModel(navigator, navigator.UserCRUDClient, navigator.CurrentUser),
-          ViewType.SignUp => new SignUpViewModel(navigator.UserCRUDClient, navigator.AccountCRUDClient, navigator.CurrentUser),
+          ViewType.Account => new AccountViewModel(navigator.UserCRUDClient, sessionService, navigator.SessionInstance),
+          ViewType.LogIn => new LoginViewModel(navigator, navigator.UserCRUDClient, sessionService, navigator.SessionInstance),
+          ViewType.SignUp => new SignUpViewModel(navigator.UserCRUDClient, navigator.AccountCRUDClient, sessionService, navigator.SessionInstance),
           _ => throw new NotSupportedException(),
         };
       }

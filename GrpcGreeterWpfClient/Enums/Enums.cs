@@ -20,14 +20,6 @@ namespace GrpcGreeterWpfClient.Models
       User
     }
 
-    public enum Proficiency
-    {
-      Beginner,
-      Adept,
-      Expert,
-      Master
-    }
-
     public enum CommandType
     {
       Add,

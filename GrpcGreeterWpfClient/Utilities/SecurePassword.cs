@@ -20,8 +20,7 @@ namespace GrpcGreeterWpfClient.Utilities
 
     public string ComputeSaltedHash()
     {
-      ASCIIEncoding encoder = new ASCIIEncoding();
-      byte[] secretBytes = encoder.GetBytes(_password);
+      byte[] secretBytes = Encoding.UTF8.GetBytes(_password);
 
       //create a new salt
       byte[] saltBytes = Convert.FromBase64String(_salt);
@@ -33,7 +32,7 @@ namespace GrpcGreeterWpfClient.Utilities
       SHA1 sha1 = SHA1.Create();
       byte[] computedHash = sha1.ComputeHash(toHash);
 
-      return encoder.GetString(computedHash);
+      return Convert.ToBase64String(computedHash);
     }
 
     public static string CreateSalt()

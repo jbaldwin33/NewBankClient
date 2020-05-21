@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using static GrpcGreeterWpfClient.Models.Enums;
 using GrpcGreeterWpfClient.Utilities;
 using GrpcGreeter.Protos;
+using Grpc.Net.Client;
 
 namespace GrpcGreeterWpfClient.Models
 {
@@ -22,10 +23,9 @@ namespace GrpcGreeterWpfClient.Models
     public string PasswordSalt { get; set; }
     public int Age { get; set; }
     public UserEnum UserType { get; set; }
-    public SkillModel Skill { get; set; }
 
     public UserModel() { }
-    public UserModel(string username, string password, string firstName, string lastName, int age, UserEnum userType, SkillModel skill)
+    public UserModel(string username, string password, string firstName, string lastName, int age, UserEnum userType)
     {
       Username = username;
       PasswordSalt = SecurePassword.CreateSalt();
@@ -34,7 +34,6 @@ namespace GrpcGreeterWpfClient.Models
       LastName = lastName;
       Age = age;
       UserType = userType;
-      Skill = skill;
       ID = Guid.NewGuid();
     }
 
@@ -55,6 +54,24 @@ namespace GrpcGreeterWpfClient.Models
         UserEnum.Administrator => UserProtoType.Admin,
         UserEnum.User => UserProtoType.User,
         _ => throw new NotSupportedException()
+      };
+    }
+
+    public static UserModel ConvertUser(User user)
+    {
+      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+      
+      return new UserModel
+      {
+        AccountID = Guid.Parse(user.AccountId),
+        Age = user.Age,
+        FirstName = user.FirstName,
+        ID = Guid.Parse(user.Id),
+        LastName = user.LastName,
+        PasswordHash = user.PasswordHash,
+        PasswordSalt = user.PasswordSalt,
+        Username = user.Username,
+        UserType = ConvertToUserDbType(user.UserType)
       };
     }
 

@@ -6,49 +6,56 @@
              xmlns:views="clr-namespace:GrpcGreeterWpfClient.Views"
              xmlns:converters="clr-namespace:GrpcGreeterWpfClient.Utilities">
   <Application.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-    <converters:InverseBooleanToVisibilityConverter x:Key="InvBoolToVisConverter"/>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+      </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}">
-      <Setter Property="Width" Value="100"/>
-      <Setter Property="Height" Value="auto"/>
-      <Setter Property="Margin" Value="5,5,5,5"/>
-    </Style>
-    <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
-      <Setter Property="Width" Value="auto"/>
-      <Setter Property="Height" Value="auto"/>
-      <Setter Property="Margin" Value="5,0,5,0"/>
-      <Setter Property="Padding" Value="5"/>
-    </Style>
-    <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
-      <Setter Property="Width" Value="auto"/>
-      <Setter Property="Height" Value="auto"/>
-      <Setter Property="Margin" Value="5,0,5,0"/>
-      <Setter Property="Padding" Value="0"/>
-    </Style>
-    <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
-      <Setter Property="Width" Value="auto"/>
-      <Setter Property="Height" Value="auto"/>
-      <Setter Property="Margin" Value="5,0,5,0"/>
-      <Setter Property="Padding" Value="5"/>
-    </Style>
-    <Style x:Key="{x:Type StackPanel}" TargetType="{x:Type StackPanel}">
-      <Setter Property="Orientation" Value="Horizontal"/>
-      <Setter Property="Height" Value="auto"/>
-      <Setter Property="Width" Value="auto"/>
-    </Style>
+      <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+      <converters:InverseBooleanToVisibilityConverter x:Key="InvBoolToVisConverter"/>
 
-    <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
-      <views:HomeView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:AccountViewModel}">
-      <views:AccountView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
-      <views:LoginView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewModels:SignUpViewModel}">
-      <views:SignUpView/>
-    </DataTemplate>
+      <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Margin" Value="5,5,5,5"/>
+      </Style>
+      <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Margin" Value="5,0,5,0"/>
+        <Setter Property="Padding" Value="5"/>
+      </Style>
+      <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Margin" Value="5,0,5,0"/>
+        <Setter Property="Padding" Value="0"/>
+      </Style>
+      <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
+        <Setter Property="Width" Value="125"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+      </Style>
+      <Style x:Key="{x:Type StackPanel}" TargetType="{x:Type StackPanel}">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Width" Value="auto"/>
+      </Style>
+
+      <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
+        <views:HomeView/>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewModels:AccountViewModel}">
+        <views:AccountView/>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+        <views:LoginView/>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewModels:SignUpViewModel}">
+        <views:SignUpView/>
+      </DataTemplate>
+    </ResourceDictionary>
   </Application.Resources>
 </Application>

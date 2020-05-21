@@ -23,7 +23,7 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       this.userCRUDClient = userCRUDClient;
       this.accountCRUDClient = accountCRUDClient;
-      Navigator = new Navigator(userCRUDClient, accountCRUDClient);
+      Navigator = new Navigator(userCRUDClient, accountCRUDClient, new SessionInstance(null, null, Guid.Empty));
     }
   }
 }

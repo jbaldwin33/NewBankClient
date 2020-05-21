@@ -21,11 +21,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0872" />
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
   </ItemGroup>
   
   <ItemGroup>
+    <Reference Include="BankServer">
+      <HintPath>..\..\NewBank\BankServer\obj\Debug\netcoreapp3.1\BankServer.dll</HintPath>
+    </Reference>
     <Reference Include="GrpcGreeterClient">
       <HintPath>..\GrpcGreeterClient\obj\Debug\netcoreapp3.1\GrpcGreeterClient.dll</HintPath>
     </Reference>

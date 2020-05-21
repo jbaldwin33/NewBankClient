@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
-             xmlns:converters="clr-namespace:GrpcGreeterWpfClient.Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
   <Grid>
@@ -17,7 +16,6 @@
     <StackPanel Visibility="{Binding SignUpDetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
       <Grid>
         <Grid.RowDefinitions>
-          <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
@@ -47,14 +45,10 @@
           <TextBox Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="5">
-          <TextBlock Text="Skill:"/>
-          <TextBox Text="{Binding UserSkill, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+          <TextBlock Text="Account type:"/>
+          <ComboBox IsEditable="False" IsReadOnly="True" ItemsSource="{Binding AccountTypes}" DisplayMemberPath="Name" SelectedValuePath="AccType" SelectedValue="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>
-        <StackPanel Grid.Row="6" Visibility="{Binding ProficiencyVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
-          <TextBlock Text="Skill proficiency:"/>
-          <ComboBox ItemsSource="{Binding ProficiencyItems}" SelectedItem="{Binding Proficiency, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="7">
+        <StackPanel Grid.Row="6">
           <Button Content="Sign up" Command="{Binding SignUpCommand}"/>
         </StackPanel>
       </Grid>

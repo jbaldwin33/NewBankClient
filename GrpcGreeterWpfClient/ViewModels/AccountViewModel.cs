@@ -1,6 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿using BankServer.Services;
+using GalaSoft.MvvmLight;
 using GrpcGreeter.Protos;
 using GrpcGreeterWpfClient.Models;
+using GrpcGreeterWpfClient.Navigators;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -13,12 +15,13 @@ namespace GrpcGreeterWpfClient.ViewModels
   public class AccountViewModel : ViewModelBase
   {
     private UserCRUD.UserCRUDClient userCRUDClient;
-    private readonly UserModel currentUser;
+    private readonly SessionService sessionService;
+    private readonly SessionInstance sessionInstance;
     private string firstName;
     private string lastName;
     private string username;
-    private int age;
-    private string userSkill;
+    private int? age;
+    private string accountType;
     private bool detailsVisible;
 
     public string FirstName
@@ -40,16 +43,17 @@ namespace GrpcGreeterWpfClient.ViewModels
       set => Set(ref username, value);
     }
 
-    public int Age
+    public int? Age
     {
       get => age;
       set => Set(ref age, value);
     }
 
-    public string UserSkill
+
+    public string AccountType
     {
-      get => userSkill;
-      set => Set(ref userSkill, value);
+      get => accountType;
+      set => Set(ref accountType, value);
     }
 
     public bool DetailsVisible
@@ -58,22 +62,35 @@ namespace GrpcGreeterWpfClient.ViewModels
       set => Set(ref detailsVisible, value);
     }
 
-    public AccountViewModel(UserCRUD.UserCRUDClient client, UserModel user)
+    public AccountViewModel(UserCRUD.UserCRUDClient client, SessionService sessionService, SessionInstance sessionInstance)
     {
+
       userCRUDClient = client;
-      currentUser = user;
-      DetailsVisible = currentUser != null;
-      if (currentUser != null)
+      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
+      this.sessionService = sessionService;
+      DetailsVisible = sessionInstance.CurrentUser != null;
+      if (sessionInstance.CurrentUser != null)
         UpdateUserDetails();
+      else
+        ClearDetails();
     }
 
     private void UpdateUserDetails()
     {
-      FirstName = currentUser.FirstName;
-      LastName = currentUser.LastName;
-      Username = currentUser.Username;
-      Age = currentUser.Age;
-      UserSkill = currentUser.Skill.Name;
+      FirstName = sessionInstance.CurrentUser.FirstName;
+      LastName = sessionInstance.CurrentUser.LastName;
+      Username = sessionInstance.CurrentUser.Username;
+      Age = sessionInstance.CurrentUser?.Age;
+      AccountType = sessionInstance.CurrentAccount?.AccountType.ToString();
+    }
+
+    private void ClearDetails()
+    {
+      FirstName = string.Empty;
+      LastName =  string.Empty;
+      Username =  string.Empty;
+      Age = 0;
+      AccountType = string.Empty;
     }
   }
 }

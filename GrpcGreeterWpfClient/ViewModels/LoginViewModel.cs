@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using BankServer.Services;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Net.Client;
 using GrpcGreeter.Protos;
@@ -19,22 +20,24 @@ namespace GrpcGreeterWpfClient.ViewModels
 {
   public class LoginViewModel : ViewModelBase
   {
+    private readonly SessionService sessionService;
+    private readonly SessionInstance sessionInstance;
     private string username;
     private string password;
     private UserCRUD.UserCRUDClient client;
     private readonly INavigator navigator;
     private RelayCommand loginCommand;
     private RelayCommand logoutCommand;
-    private UserModel currentUser;
     private bool loggedIn;
 
 
-    public LoginViewModel(INavigator navigator, UserCRUD.UserCRUDClient client, UserModel currentUser)
+    public LoginViewModel(INavigator navigator, UserCRUD.UserCRUDClient client, SessionService sessionService, SessionInstance sessionInstance)
     {
       this.client = client;
       this.navigator = navigator;
-      CurrentUser = currentUser;
-      LoggedIn = false;
+      this.sessionService = sessionService;
+      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
+      LoggedIn = sessionService.IsValidSession(sessionInstance.SessionID);
     }
 
     public string Username
@@ -47,12 +50,6 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       get => password;
       set => Set(ref password, value);
-    }
-
-    public UserModel CurrentUser
-    {
-      get => currentUser;
-      set => Set(ref currentUser, value);
     }
 
     public bool LoggedIn
@@ -76,8 +73,9 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       using var channel = GrpcChannel.ForAddress("https://localhost:5001");
       var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
-
-      var user = userCRUDClient.GetUsers(new Empty()).Items.FirstOrDefault(u => u.Username == username);
+      var authenticationClient = new Authentication.AuthenticationClient(channel);
+      var accountClient = new AccountCRUD.AccountCRUDClient(channel);
+      var user = userCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
       if (user == null)
         MessageBox.Show("This username does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
       else
@@ -85,34 +83,48 @@ namespace GrpcGreeterWpfClient.ViewModels
         var hash = new SecurePassword(password, user.PasswordSalt).ComputeSaltedHash();
         if (hash == user.PasswordHash)
         {
-          var skillClient = new SkillCRUD.SkillCRUDClient(channel);
-          var skill = skillClient.GetByID(new SkillFilter { Id = user.SkillId });
-          var newUser = new UserModel(
-            user.Username,
-            password,
-            user.FirstName,
-            user.LastName,
-            user.Age,
-            UserModel.ConvertToUserDbType(user.UserType),
-            new SkillModel
+          try
+          {
+            var loginResponse = authenticationClient.Login(new LoginRequest
             {
-              ID = Guid.Parse(user.SkillId),
-              Name = skill.Name,
-              SkillProficiency = SkillModel.ConvertFromProtoType(skill.Proficiency)
+              Username = username,
+              PasswordHash = hash
             });
-          LoggedIn = true;
-          navigator.CurrentUser = newUser;
 
-          MessageBox.Show("Log in successful.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            var account = accountClient.GetByUserID(new AccountRequest { UserId = loginResponse.User.Id }).Account;
+
+            sessionInstance.SessionID = Guid.Parse(loginResponse.SessionID);
+            sessionInstance.CurrentUser = UserModel.ConvertUser(loginResponse.User);
+            sessionInstance.CurrentAccount = AccountModel.ConvertAccount(account);
+            LoggedIn = true;
+
+            MessageBox.Show("Log in successful.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+          }
+          catch (Exception ex)
+          {
+            MessageBox.Show($"Log in failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          }
         }
       }
     }
 
     private void LogoutCommandExecute()
     {
-      CurrentUser = null;
-      LoggedIn = false;
-      navigator.CurrentUser = null;
+      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+      var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
+      var authenticationClient = new Authentication.AuthenticationClient(channel);
+      try
+      {
+        authenticationClient.Logout(new LogoutRequest { SessionId = sessionInstance.SessionID.ToString() });
+        sessionInstance.CurrentUser = null;
+        sessionInstance.SessionID = Guid.Empty;
+        LoggedIn = false;
+        MessageBox.Show("Log out successful.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show($"Log in failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
     }
   }
 
