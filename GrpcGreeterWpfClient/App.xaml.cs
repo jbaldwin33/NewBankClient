@@ -24,10 +24,7 @@ namespace GrpcGreeterWpfClient
   {
     protected override void OnStartup(StartupEventArgs e)
     {
-      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-      var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
-      var accountCRUDClient = new AccountCRUD.AccountCRUDClient(channel);
-      var window = new MainWindow { DataContext = new MainViewModel(userCRUDClient, accountCRUDClient) };
+      var window = new MainWindow { DataContext = new MainViewModel() };
       window.Show();
       base.OnStartup(e);
     }

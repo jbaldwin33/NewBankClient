@@ -9,16 +9,9 @@ namespace GrpcGreeterWpfClient.ViewModels
 {
   public class HomeViewModel : ViewModelBase
   {
-    private UserCRUD.UserCRUDClient client;
-
     public HomeViewModel()
     {
 
-    }
-
-    public HomeViewModel(UserCRUD.UserCRUDClient client)
-    {
-      this.client = client;
     }
   }
 }

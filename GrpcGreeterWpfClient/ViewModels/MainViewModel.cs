@@ -15,15 +15,11 @@ namespace GrpcGreeterWpfClient.ViewModels
 {
   public class MainViewModel : ViewModelBase
   {
-    private readonly UserCRUD.UserCRUDClient userCRUDClient;
-    private readonly AccountCRUD.AccountCRUDClient accountCRUDClient;
     public INavigator Navigator { get; set; }
 
-    public MainViewModel(UserCRUD.UserCRUDClient userCRUDClient, AccountCRUD.AccountCRUDClient accountCRUDClient)
+    public MainViewModel()
     {
-      this.userCRUDClient = userCRUDClient;
-      this.accountCRUDClient = accountCRUDClient;
-      Navigator = new Navigator(userCRUDClient, accountCRUDClient, new SessionInstance(null, null, Guid.Empty));
+      Navigator = new Navigator(new SessionInstance(null, null, Guid.Empty));
     }
   }
 }

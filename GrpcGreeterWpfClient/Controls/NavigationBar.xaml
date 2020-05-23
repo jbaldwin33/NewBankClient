@@ -19,13 +19,15 @@
         <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="auto"/>
+        <ColumnDefinition Width="auto"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" Content="Home" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Home}"/>
       <Button Grid.Column="1" Content="Account" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Account}"/>
-      <Button Grid.Column="2" Content="Log in" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.LogIn}"/>
-      <Button Grid.Column="3" Content="Sign up" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.SignUp}"/>
+      <Button Grid.Column="2" Content="User details" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.UserDetails}"/>
+      <Button Grid.Column="3" Content="Log in" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.LogIn}"/>
+      <Button Grid.Column="4" Content="Sign up" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.SignUp}"/>
     </Grid>
   </Grid>
 </UserControl>

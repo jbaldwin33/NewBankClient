@@ -1,4 +1,5 @@
-﻿using BankServer.Services;
+﻿//using BankServer.Services;
+using ControlzEx.Standard;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Net.Client;
@@ -6,47 +7,41 @@ using GrpcGreeter.Protos;
 using GrpcGreeterWpfClient.Models;
 using GrpcGreeterWpfClient.Navigators;
 using GrpcGreeterWpfClient.Utilities;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+using System.Security.Cryptography;
 using System.Windows;
-using System.Windows.Input;
 using static GrpcGreeterWpfClient.Models.Enums;
-using static GrpcGreeterWpfClient.Utilities.Utilities;
 
 namespace GrpcGreeterWpfClient.ViewModels
 {
   public class SignUpViewModel : ViewModelBase
   {
-    //private readonly UserCRUD.UserCRUDClient userCRUDClient;
-    //private readonly AccountCRUD.AccountCRUDClient accountCRUDClient;
     private string firstName;
     private string lastName;
     private string username;
     private string password;
     private int age;
     private ObservableCollection<AccountTypeViewModel> accountTypes;
-    private AccountTypeEnum accountType;
+    private AccountEnum accountType;
     private RelayCommand signUpCommand;
-    private readonly SessionService sessionService;
+    //private readonly SessionService sessionService;
     private readonly SessionInstance sessionInstance;
     private bool signUpDetailsVisible;
 
-    public SignUpViewModel(UserCRUD.UserCRUDClient userCRUDClient, AccountCRUD.AccountCRUDClient accountCRUDClient, SessionService sessionService, SessionInstance sessionInstance)
+    public SignUpViewModel(/*SessionService sessionService, */SessionInstance sessionInstance)
     {
-      //this.userCRUDClient = userCRUDClient;
-      //this.accountCRUDClient = accountCRUDClient;
-      this.sessionService = sessionService;
+      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+      var sessionClient = new SessionCRUD.SessionCRUDClient(channel);
+      //this.sessionService = sessionService;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      SignUpDetailsVisible = !sessionService.IsValidSession(sessionInstance.SessionID);
+      SignUpDetailsVisible = !sessionClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
       AccountTypes = new ObservableCollection<AccountTypeViewModel>
       {
-        new AccountTypeViewModel(AccountTypeEnum.Checking, "Checking"),
-        new AccountTypeViewModel(AccountTypeEnum.Saving, "Saving")
+        new AccountTypeViewModel(AccountEnum.Checking, "Checking"),
+        new AccountTypeViewModel(AccountEnum.Saving, "Saving")
       };
     }
 
@@ -88,7 +83,7 @@ namespace GrpcGreeterWpfClient.ViewModels
     }
 
 
-    public AccountTypeEnum AccountType
+    public AccountEnum AccountType
     {
       get => accountType;
       set => Set(ref accountType, value);
@@ -109,7 +104,7 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       using var channel = GrpcChannel.ForAddress("https://localhost:5001");
       var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
-      var accountCRUDClient = new AccountCRUD.AccountCRUDClient(channel);
+      var creationClient = new Creation.CreationClient(channel);
       try
       {
         var users = userCRUDClient.GetUsers(new Empty());
@@ -122,7 +117,7 @@ namespace GrpcGreeterWpfClient.ViewModels
           var skillID = Guid.NewGuid();
           var passwordSalt = SecurePassword.CreateSalt();
 
-          var userReply = userCRUDClient.Insert(new User
+          var user = new User
           {
             Username = username,
             PasswordSalt = passwordSalt,
@@ -133,14 +128,17 @@ namespace GrpcGreeterWpfClient.ViewModels
             Age = age,
             AccountId = accountID.ToString(),
             UserType = UserProtoType.User
-          });
-          var accountReply = accountCRUDClient.Insert(new Account
+          };
+          var account = new Account
           {
             Id = accountID.ToString(),
             UserId = userID.ToString(),
             Balance = 0.0,
             AccountType = AccountModel.ConvertAccountType(AccountType)
-          });
+          };
+
+          creationClient.SignUp(new SignUpRequest { Account = account, User = user });
+
           MessageBox.Show("Sign up successful", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
       }
@@ -153,10 +151,10 @@ namespace GrpcGreeterWpfClient.ViewModels
 
   public class AccountTypeViewModel
   {
-    public AccountTypeEnum AccType { get; set; }
+    public AccountEnum AccType { get; set; }
     public string Name { get; set; }
 
-    public AccountTypeViewModel(AccountTypeEnum accountType, string name)
+    public AccountTypeViewModel(AccountEnum accountType, string name)
     {
       AccType = accountType;
       Name = name;

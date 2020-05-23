@@ -1,16 +1,16 @@
 ﻿<UserControl x:Class="GrpcGreeterWpfClient.Views.AccountView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
-        xmlns:converters="clr-namespace:GrpcGreeterWpfClient.Utilities"
-        mc:Ignorable="d">
-  <Grid>
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
     <StackPanel Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
       <TextBlock Text="Log in to see account details"/>
     </StackPanel>
-    <StackPanel Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
+    <StackPanel Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="auto"/>
@@ -18,27 +18,23 @@
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-          <TextBlock Text="First name:"/>
-          <TextBlock Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-          <TextBlock Text="Last name:"/>
-          <TextBlock Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-          <TextBlock Text="Username:"/>
-          <TextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
-          <TextBlock Text="Age:"/>
-          <TextBlock Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
+        <StackPanel Grid.Row="0">
           <TextBlock Text="Account type:"/>
           <TextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+          <TextBlock Text="Balance:"/>
+          <TextBlock Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
+          <Button Command="{Binding DepositCommand}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3">
+          <Button Command="{Binding WithdrawCommand}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="4">
+          <Button Command="{Binding TransferCommand}"/>
         </StackPanel>
       </Grid>
     </StackPanel>

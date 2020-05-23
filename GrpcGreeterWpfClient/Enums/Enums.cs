@@ -8,7 +8,7 @@ namespace GrpcGreeterWpfClient.Models
 {
   public static class Enums
   {
-    public enum AccountTypeEnum
+    public enum AccountEnum
     {
       Checking,
       Saving

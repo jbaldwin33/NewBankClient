@@ -1,4 +1,4 @@
-﻿using BankServer.Services;
+﻿//using BankServer.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Net.Client;
@@ -20,24 +20,22 @@ namespace GrpcGreeterWpfClient.ViewModels
 {
   public class LoginViewModel : ViewModelBase
   {
-    private readonly SessionService sessionService;
+    //private readonly SessionService sessionService;
     private readonly SessionInstance sessionInstance;
     private string username;
     private string password;
-    private UserCRUD.UserCRUDClient client;
-    private readonly INavigator navigator;
     private RelayCommand loginCommand;
     private RelayCommand logoutCommand;
     private bool loggedIn;
 
 
-    public LoginViewModel(INavigator navigator, UserCRUD.UserCRUDClient client, SessionService sessionService, SessionInstance sessionInstance)
+    public LoginViewModel(/*SessionService sessionService, */SessionInstance sessionInstance)
     {
-      this.client = client;
-      this.navigator = navigator;
-      this.sessionService = sessionService;
+      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+      var sessionClient = new SessionCRUD.SessionCRUDClient(channel);
+      //this.sessionService = sessionService;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      LoggedIn = sessionService.IsValidSession(sessionInstance.SessionID);
+      LoggedIn = sessionClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
     }
 
     public string Username

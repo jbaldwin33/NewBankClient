@@ -8,17 +8,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace GrpcGreeterWpfClient.Views
 {
   /// <summary>
-  /// Interaction logic for AccountView.xaml
+  /// Interaction logic for DetailWindow.xaml
   /// </summary>
-  public partial class AccountView : UserControl
+  public partial class UserDetailsView : UserControl
   {
-    public AccountView()
+    public UserDetailsView()
     {
       InitializeComponent();
     }

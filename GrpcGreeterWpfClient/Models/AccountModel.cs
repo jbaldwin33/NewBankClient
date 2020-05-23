@@ -15,10 +15,10 @@ namespace GrpcGreeterWpfClient.Models
     public Guid ID { get; private set; }
     public double Balance { get; set; }
     public Guid UserID { get; set; }
-    public AccountTypeEnum AccountType { get; set; }
+    public AccountEnum AccountType { get; set; }
 
     public AccountModel() { }
-    public AccountModel(double balance, AccountTypeEnum accountType)
+    public AccountModel(double balance, AccountEnum accountType)
     {
       ID = Guid.NewGuid();
       Balance = balance;
@@ -38,22 +38,22 @@ namespace GrpcGreeterWpfClient.Models
       UserID = Guid.Parse(account.UserId)
     };
 
-    public static AccountTypeEnum ConvertAccountType(AccountType accountType)
+    public static AccountEnum ConvertAccountType(AccountType accountType)
     {
       return accountType switch
       {
-        GrpcGreeter.Protos.AccountType.Checking => AccountTypeEnum.Checking,
-        GrpcGreeter.Protos.AccountType.Saving => AccountTypeEnum.Saving,
+        GrpcGreeter.Protos.AccountType.Checking => AccountEnum.Checking,
+        GrpcGreeter.Protos.AccountType.Saving => AccountEnum.Saving,
         _ => throw new NotSupportedException($"{accountType} is not supported"),
       };
     }
 
-    public static AccountType ConvertAccountType(AccountTypeEnum accountType)
+    public static AccountType ConvertAccountType(AccountEnum accountType)
     {
       return accountType switch
       {
-        AccountTypeEnum.Checking => GrpcGreeter.Protos.AccountType.Checking,
-        AccountTypeEnum.Saving => GrpcGreeter.Protos.AccountType.Saving,
+        AccountEnum.Checking => GrpcGreeter.Protos.AccountType.Checking,
+        AccountEnum.Saving => GrpcGreeter.Protos.AccountType.Saving,
         _ => throw new NotSupportedException($"{accountType} is not supported"),
       };
     }

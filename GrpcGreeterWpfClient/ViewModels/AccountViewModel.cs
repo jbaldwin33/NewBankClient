@@ -1,96 +1,78 @@
-﻿using BankServer.Services;
+﻿//using BankServer.Services;
 using GalaSoft.MvvmLight;
-using GrpcGreeter.Protos;
-using GrpcGreeterWpfClient.Models;
+using GalaSoft.MvvmLight.Command;
 using GrpcGreeterWpfClient.Navigators;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.Text;
-using System.Threading.Tasks;
+using static GrpcGreeterWpfClient.Models.Enums;
 
 namespace GrpcGreeterWpfClient.ViewModels
 {
   public class AccountViewModel : ViewModelBase
   {
-    private UserCRUD.UserCRUDClient userCRUDClient;
-    private readonly SessionService sessionService;
-    private readonly SessionInstance sessionInstance;
-    private string firstName;
-    private string lastName;
-    private string username;
-    private int? age;
-    private string accountType;
-    private bool detailsVisible;
-
-    public string FirstName
-    {
-      get => firstName;
-      set => Set(ref firstName, value);
-    }
-
-    public string LastName
-    {
-      get => lastName;
-      set => Set(ref lastName, value);
-    }
+		//private readonly SessionService sessionService;
+		private readonly SessionInstance sessionInstance;
+		private double balance;
+		private AccountEnum accountType;
+		private double depositAmount;
+		private double withdrawAmount;
+		private double transferAmount;
+		private bool detailsVisible;
+		private RelayCommand depositCommand;
+		private RelayCommand withdrawCommand;
+		private RelayCommand transferCommand;
 
 
-    public string Username
-    {
-      get => username;
-      set => Set(ref username, value);
-    }
+		public AccountViewModel(/*SessionService sessionService, */SessionInstance sessionInstance)
+		{
+			//this.sessionService = sessionService;
+			this.sessionInstance = sessionInstance;
+		}
 
-    public int? Age
-    {
-      get => age;
-      set => Set(ref age, value);
-    }
+		public double Balance
+		{
+			get => balance;
+			set => Set(ref balance, value);
+		}
 
+		public AccountEnum AccountType
+		{
+			get => accountType;
+			set => Set(ref accountType, value);
+		}
 
-    public string AccountType
-    {
-      get => accountType;
-      set => Set(ref accountType, value);
-    }
+		public double DepositAmount
+		{
+			get => depositAmount;
+			set => Set(ref depositAmount, value);
+		}
 
-    public bool DetailsVisible
-    {
-      get => detailsVisible;
-      set => Set(ref detailsVisible, value);
-    }
+		public double WithdrawAmount
+		{
+			get => withdrawAmount;
+			set => Set(ref withdrawAmount, value);
+		}
 
-    public AccountViewModel(UserCRUD.UserCRUDClient client, SessionService sessionService, SessionInstance sessionInstance)
-    {
+		public double TransferAmount
+		{
+			get => transferAmount;
+			set => Set(ref transferAmount, value);
+		}
 
-      userCRUDClient = client;
-      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      this.sessionService = sessionService;
-      DetailsVisible = sessionInstance.CurrentUser != null;
-      if (sessionInstance.CurrentUser != null)
-        UpdateUserDetails();
-      else
-        ClearDetails();
-    }
+		public bool DetailsVisible
+		{
+			get => detailsVisible;
+			set => Set(ref detailsVisible, value);
+		}
 
-    private void UpdateUserDetails()
-    {
-      FirstName = sessionInstance.CurrentUser.FirstName;
-      LastName = sessionInstance.CurrentUser.LastName;
-      Username = sessionInstance.CurrentUser.Username;
-      Age = sessionInstance.CurrentUser?.Age;
-      AccountType = sessionInstance.CurrentAccount?.AccountType.ToString();
-    }
+		public RelayCommand DepositCommand => depositCommand ??= new RelayCommand(DepositCommandExecute, DepositCommandCanExecute);
 
-    private void ClearDetails()
-    {
-      FirstName = string.Empty;
-      LastName =  string.Empty;
-      Username =  string.Empty;
-      Age = 0;
-      AccountType = string.Empty;
-    }
-  }
+		private bool DepositCommandCanExecute() => true;
+
+		private void DepositCommandExecute()
+		{
+			
+		}
+	}
 }

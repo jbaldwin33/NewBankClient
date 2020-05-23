@@ -17,8 +17,10 @@
   <ItemGroup>
     <Protobuf Include="Protos\authentication.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\accountCRUD.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\creation.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\common.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\userCRUD.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\sessionCRUD.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>
