@@ -32,14 +32,8 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      try
-      {
-        LoggedIn = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
-      }
-      catch (RpcException rex)
-      {
-
-      }
+      
+      LoggedIn = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
     }
 
     public string Username
@@ -78,7 +72,7 @@ namespace GrpcGreeterWpfClient.ViewModels
       {
         user = serviceClient.UserCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
       }
-      catch (RpcException rex) 
+      catch (RpcException rex)
       {
         //user doesn't exist
       }
