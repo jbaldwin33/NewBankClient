@@ -1,0 +1,27 @@
+﻿<Window x:Class="GrpcGreeterWpfClient.Views.AccountCommandView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
+             mc:Ignorable="d"
+        MaxHeight="200" MaxWidth="350">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="0">
+      <TextBlock Text="How much would like to deposit?"/>
+    </StackPanel>
+    <StackPanel Grid.Row="1">
+      <TextBlock Text="Amount:"/>
+      <TextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="2">
+      <Button Content="Finish" Command="{Binding OkCommand}"/>
+      <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+    </StackPanel>
+  </Grid>
+</Window>

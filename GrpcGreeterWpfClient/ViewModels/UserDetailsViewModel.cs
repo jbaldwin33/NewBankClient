@@ -1,31 +1,31 @@
-﻿//using BankServer.Services;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GrpcGreeter.Protos;
+﻿using GalaSoft.MvvmLight;
 using GrpcGreeterWpfClient.Models;
 using GrpcGreeterWpfClient.Navigators;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using GrpcGreeterWpfClient.ServiceClients;
 using System;
-using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls.Primitives;
 
 namespace GrpcGreeterWpfClient.ViewModels
 {
   public class UserDetailsViewModel : ViewModelBase
   {
-    //private readonly SessionService sessionService;
+    private readonly ServiceClient serviceClient;
     private readonly SessionInstance sessionInstance;
     private string firstName;
     private string lastName;
     private string username;
-    private double? balance;
     private string accountType;
     private bool detailsVisible;
-    
+
+    public UserDetailsViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
+    {
+      this.serviceClient = serviceClient;
+      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
+      DetailsVisible = sessionInstance.CurrentUser != null;
+      if (sessionInstance.CurrentUser != null)
+        UpdateUserDetails();
+      else
+        ClearDetails();
+    }
 
     public string FirstName
     {
@@ -46,13 +46,6 @@ namespace GrpcGreeterWpfClient.ViewModels
       set => Set(ref username, value);
     }
 
-    public double? Balance
-    {
-      get => balance;
-      set => Set(ref balance, value);
-    }
-
-
     public string AccountType
     {
       get => accountType;
@@ -65,24 +58,11 @@ namespace GrpcGreeterWpfClient.ViewModels
       set => Set(ref detailsVisible, value);
     }
 
-    public UserDetailsViewModel(/*SessionService sessionService, */SessionInstance sessionInstance)
-    {
-
-      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      //this.sessionService = sessionService;
-      DetailsVisible = sessionInstance.CurrentUser != null;
-      if (sessionInstance.CurrentUser != null)
-        UpdateUserDetails();
-      else
-        ClearDetails();
-    }
-
     private void UpdateUserDetails()
     {
       FirstName = sessionInstance.CurrentUser.FirstName;
       LastName = sessionInstance.CurrentUser.LastName;
       Username = sessionInstance.CurrentUser.Username;
-      Balance = sessionInstance.CurrentUser?.Age;
       AccountType = sessionInstance.CurrentAccount?.AccountType.ToString();
     }
 
@@ -91,7 +71,6 @@ namespace GrpcGreeterWpfClient.ViewModels
       FirstName = string.Empty;
       LastName =  string.Empty;
       Username =  string.Empty;
-      Balance = 0;
       AccountType = string.Empty;
     }
   }

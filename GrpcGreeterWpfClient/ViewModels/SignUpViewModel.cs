@@ -1,11 +1,12 @@
-﻿//using BankServer.Services;
-using ControlzEx.Standard;
+﻿using ControlzEx.Standard;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcGreeter.Protos;
 using GrpcGreeterWpfClient.Models;
 using GrpcGreeterWpfClient.Navigators;
+using GrpcGreeterWpfClient.ServiceClients;
 using GrpcGreeterWpfClient.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,21 +24,18 @@ namespace GrpcGreeterWpfClient.ViewModels
     private string lastName;
     private string username;
     private string password;
-    private int age;
     private ObservableCollection<AccountTypeViewModel> accountTypes;
     private AccountEnum accountType;
     private RelayCommand signUpCommand;
-    //private readonly SessionService sessionService;
+    private readonly ServiceClient serviceClient;
     private readonly SessionInstance sessionInstance;
     private bool signUpDetailsVisible;
 
-    public SignUpViewModel(/*SessionService sessionService, */SessionInstance sessionInstance)
+    public SignUpViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
     {
-      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-      var sessionClient = new SessionCRUD.SessionCRUDClient(channel);
-      //this.sessionService = sessionService;
+      this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      SignUpDetailsVisible = !sessionClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
+      SignUpDetailsVisible = !serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
       AccountTypes = new ObservableCollection<AccountTypeViewModel>
       {
         new AccountTypeViewModel(AccountEnum.Checking, "Checking"),
@@ -69,12 +67,6 @@ namespace GrpcGreeterWpfClient.ViewModels
       set => Set(ref password, value);
     }
 
-    public int Age
-    {
-      get => age;
-      set => Set(ref age, value);
-    }
-
 
     public ObservableCollection<AccountTypeViewModel> AccountTypes
     {
@@ -102,12 +94,9 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void SignUpCommandExecute()
     {
-      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-      var userCRUDClient = new UserCRUD.UserCRUDClient(channel);
-      var creationClient = new Creation.CreationClient(channel);
       try
       {
-        var users = userCRUDClient.GetUsers(new Empty());
+        var users = serviceClient.UserCRUDClient.GetUsers(new Empty());
         if (users.Items.Any(u => u.Username == username))
           MessageBox.Show("This username already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         else
@@ -125,7 +114,6 @@ namespace GrpcGreeterWpfClient.ViewModels
             FirstName = firstName,
             LastName = lastName,
             Id = userID.ToString(),
-            Age = age,
             AccountId = accountID.ToString(),
             UserType = UserProtoType.User
           };
@@ -137,14 +125,14 @@ namespace GrpcGreeterWpfClient.ViewModels
             AccountType = AccountModel.ConvertAccountType(AccountType)
           };
 
-          creationClient.SignUp(new SignUpRequest { Account = account, User = user });
+          serviceClient.CreationClient.SignUp(new SignUpRequest { Account = account, User = user });
 
           MessageBox.Show("Sign up successful", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
       }
-      catch (Exception ex)
+      catch (RpcException rex)
       {
-        MessageBox.Show($"Sign up failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show($"Sign up failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
   }

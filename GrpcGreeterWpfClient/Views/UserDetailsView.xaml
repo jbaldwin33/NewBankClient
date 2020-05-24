@@ -17,8 +17,6 @@
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
           <TextBlock Text="First name:"/>
@@ -33,10 +31,6 @@
           <TextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal">
-          <TextBlock Text="Age:"/>
-          <TextBlock Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
           <TextBlock Text="Account type:"/>
           <TextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>

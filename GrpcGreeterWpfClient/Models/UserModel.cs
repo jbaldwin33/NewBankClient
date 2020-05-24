@@ -21,18 +21,16 @@ namespace GrpcGreeterWpfClient.Models
     public string Username { get; set; }
     public string PasswordHash { get; set; }
     public string PasswordSalt { get; set; }
-    public int Age { get; set; }
     public UserEnum UserType { get; set; }
 
     public UserModel() { }
-    public UserModel(string username, string password, string firstName, string lastName, int age, UserEnum userType)
+    public UserModel(string username, string password, string firstName, string lastName, UserEnum userType)
     {
       Username = username;
       PasswordSalt = SecurePassword.CreateSalt();
       PasswordHash = new SecurePassword(password, PasswordSalt).ComputeSaltedHash();
       FirstName = firstName;
       LastName = lastName;
-      Age = age;
       UserType = userType;
       ID = Guid.NewGuid();
     }
@@ -64,7 +62,6 @@ namespace GrpcGreeterWpfClient.Models
       return new UserModel
       {
         AccountID = Guid.Parse(user.AccountId),
-        Age = user.Age,
         FirstName = user.FirstName,
         ID = Guid.Parse(user.Id),
         LastName = user.LastName,

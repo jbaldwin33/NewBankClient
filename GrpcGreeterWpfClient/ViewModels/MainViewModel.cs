@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GrpcGreeter.Protos;
 using GrpcGreeterWpfClient.Navigators;
+using GrpcGreeterWpfClient.ServiceClients;
 using GrpcGreeterWpfClient.Views;
 using Microsoft.Extensions.Options;
 
@@ -17,9 +18,9 @@ namespace GrpcGreeterWpfClient.ViewModels
   {
     public INavigator Navigator { get; set; }
 
-    public MainViewModel()
+    public MainViewModel(INavigator navigator)
     {
-      Navigator = new Navigator(new SessionInstance(null, null, Guid.Empty));
+      Navigator = navigator;
     }
   }
 }

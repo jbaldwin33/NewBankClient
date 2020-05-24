@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GrpcGreeter.Protos;
 using GrpcGreeterWpfClient.Models;
+using GrpcGreeterWpfClient.ServiceClients;
 using GrpcGreeterWpfClient.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -27,12 +28,14 @@ namespace GrpcGreeterWpfClient.Navigators
   {
     ViewModelBase CurrentViewModel { get; set; }
     SessionInstance SessionInstance { get; set; }
+    ServiceClient ServiceClient { get; set; }
     ICommand UpdateCurrentViewModelCommand { get; }
   }
   public class Navigator : INavigator, INotifyPropertyChanged
   {
     private ViewModelBase currentViewModel;
     private SessionInstance sessionInstance;
+    private ServiceClient serviceClient;
 
     public ViewModelBase CurrentViewModel
     {
@@ -54,10 +57,21 @@ namespace GrpcGreeterWpfClient.Navigators
       }
     }
 
+    public ServiceClient ServiceClient
+    {
+      get => serviceClient;
+      set
+      {
+        serviceClient = value;
+        OnPropertyChanged(nameof(serviceClient));
+      }
+    }
 
-    public Navigator(SessionInstance sessionInstance)
+
+    public Navigator(SessionInstance sessionInstance, ServiceClient serviceClient)
     {
       SessionInstance = sessionInstance;
+      ServiceClient = serviceClient;
     }
 
     public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this);
@@ -105,10 +119,10 @@ namespace GrpcGreeterWpfClient.Navigators
         navigator.CurrentViewModel = viewType switch
         {
           ViewType.Home => new HomeViewModel(),
-          ViewType.Account => new AccountViewModel(navigator.SessionInstance),
-          ViewType.UserDetails=> new UserDetailsViewModel(navigator.SessionInstance),
-          ViewType.LogIn => new LoginViewModel(navigator.SessionInstance),
-          ViewType.SignUp => new SignUpViewModel(navigator.SessionInstance),
+          ViewType.Account => new AccountViewModel(navigator.SessionInstance, navigator.ServiceClient),
+          ViewType.UserDetails=> new UserDetailsViewModel(navigator.SessionInstance, navigator.ServiceClient),
+          ViewType.LogIn => new LoginViewModel(navigator.SessionInstance, navigator.ServiceClient),
+          ViewType.SignUp => new SignUpViewModel(navigator.SessionInstance, navigator.ServiceClient),
           _ => throw new NotSupportedException(),
         };
       }
