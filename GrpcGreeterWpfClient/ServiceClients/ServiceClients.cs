@@ -3,6 +3,7 @@ using Grpc.Net.Client;
 using GrpcGreeter.Protos;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -25,7 +26,7 @@ namespace GrpcGreeterWpfClient.ServiceClients
 
     public ServiceClient()
     {
-      channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { Credentials = new SslCredentials() });
+      channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { Credentials = new SslCredentials(File.ReadAllText("C:\\Program Files\\OpenSSL-Win64\\bin\\server.crt")) });
     }
     
     public static ServiceClient Instance => instance.Value;
