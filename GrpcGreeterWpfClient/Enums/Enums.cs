@@ -26,5 +26,12 @@ namespace GrpcGreeterWpfClient.Models
       Edit,
       Delete
     }
+
+    public enum TransactionEnum
+    {
+      Deposit,
+      Withdraw,
+      Transfer
+    }
   }
 }

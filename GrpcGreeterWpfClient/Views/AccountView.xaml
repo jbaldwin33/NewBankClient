@@ -6,37 +6,30 @@
              xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-    <StackPanel Orientation="Horizontal" Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
-      <TextBlock Text="Log in to see account details"/>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="0">
+      <TextBlock Text="Account type:"/>
+      <TextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
-    <StackPanel Visibility="{Binding DetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
-          <TextBlock Text="Account type:"/>
-          <TextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1">
-          <TextBlock Text="Balance:"/>
-          <TextBlock Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="2">
-          <Button Content="Deposit" Command="{Binding DepositCommand}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="3">
-          <Button Content="Withdraw" Command="{Binding WithdrawCommand}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="4">
-          <Button Content="Transfer" Command="{Binding TransferCommand}"/>
-        </StackPanel>
-      </Grid>
+    <StackPanel Grid.Row="1">
+      <TextBlock Text="Balance:"/>
+      <TextBlock Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="2">
+      <Button Content="Deposit" Command="{Binding DepositCommand}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="3">
+      <Button Content="Withdraw" Command="{Binding WithdrawCommand}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="4">
+      <Button Content="Transfer" Command="{Binding TransferCommand}"/>
     </StackPanel>
   </Grid>
 </UserControl>

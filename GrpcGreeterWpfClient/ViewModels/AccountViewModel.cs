@@ -183,7 +183,7 @@ namespace GrpcGreeterWpfClient.ViewModels
               }
               else
               {
-                serviceClient.AccountCRUDClient.Transfer(new TransferRequest { Amount = transferAmount, Username = e.Username });
+                serviceClient.AccountCRUDClient.Transfer(new TransferRequest { Amount = transferAmount, ToUsername = e.Username, FromUsername = sessionInstance.CurrentUser.Username });
               }
             }
             catch (RpcException rex)

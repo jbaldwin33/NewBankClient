@@ -117,7 +117,7 @@ namespace GrpcGreeterWpfClient.ViewModels
             LastName = lastName,
             Id = userID.ToString(),
             AccountId = accountID.ToString(),
-            UserType = UserProtoType.User
+            UserType = UserProtoEnum.User
           };
           var account = new Account
           {

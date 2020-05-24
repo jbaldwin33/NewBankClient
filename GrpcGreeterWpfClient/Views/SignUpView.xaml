@@ -9,49 +9,39 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Visibility="{Binding SignUpDetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
-      <TextBlock Text="Log out to create another account"/>
+    <StackPanel Grid.Row="0">
+      <TextBlock Text="First name:"/>
+      <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
-    <StackPanel Visibility="{Binding SignUpDetailsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-          <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
-          <TextBlock Text="First name:"/>
-          <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1">
-          <TextBlock Text="Last name:"/>
-          <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="2">
-          <TextBlock Text="Username:"/>
-          <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="3">
-          <TextBlock Text="Password:"/>
-          <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="4">
-          <TextBlock Text="Age:"/>
-          <TextBox Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="5">
-          <TextBlock Text="Account type:"/>
-          <ComboBox IsEditable="False" IsReadOnly="True" ItemsSource="{Binding AccountTypes}" DisplayMemberPath="Name" SelectedValuePath="AccType" SelectedValue="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="6">
-          <Button Content="Sign up" Command="{Binding SignUpCommand}"/>
-        </StackPanel>
-      </Grid>
+    <StackPanel Grid.Row="1">
+      <TextBlock Text="Last name:"/>
+      <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="2">
+      <TextBlock Text="Username:"/>
+      <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="3">
+      <TextBlock Text="Password:"/>
+      <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="4">
+      <TextBlock Text="Age:"/>
+      <TextBox Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="5">
+      <TextBlock Text="Account type:"/>
+      <ComboBox IsEditable="False" IsReadOnly="True" ItemsSource="{Binding AccountTypes}" DisplayMemberPath="Name" SelectedValuePath="AccType" SelectedValue="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="6">
+      <Button Content="Sign up" Command="{Binding SignUpCommand}"/>
     </StackPanel>
   </Grid>
 </UserControl>

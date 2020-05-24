@@ -38,22 +38,22 @@ namespace GrpcGreeterWpfClient.Models
       UserID = Guid.Parse(account.UserId)
     };
 
-    public static AccountEnum ConvertAccountType(AccountType accountType)
+    public static AccountEnum ConvertAccountType(AccountProtoEnum accountType)
     {
       return accountType switch
       {
-        GrpcGreeter.Protos.AccountType.Checking => AccountEnum.Checking,
-        GrpcGreeter.Protos.AccountType.Saving => AccountEnum.Saving,
+        AccountProtoEnum.Checking => AccountEnum.Checking,
+        AccountProtoEnum.Saving => AccountEnum.Saving,
         _ => throw new NotSupportedException($"{accountType} is not supported"),
       };
     }
 
-    public static AccountType ConvertAccountType(AccountEnum accountType)
+    public static AccountProtoEnum ConvertAccountType(AccountEnum accountType)
     {
       return accountType switch
       {
-        AccountEnum.Checking => GrpcGreeter.Protos.AccountType.Checking,
-        AccountEnum.Saving => GrpcGreeter.Protos.AccountType.Saving,
+        AccountEnum.Checking => AccountProtoEnum.Checking,
+        AccountEnum.Saving => AccountProtoEnum.Saving,
         _ => throw new NotSupportedException($"{accountType} is not supported"),
       };
     }

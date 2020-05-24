@@ -59,6 +59,7 @@ namespace GrpcGreeterWpfClient.ServiceClients
     public Authentication.AuthenticationClient AuthenticationClient { get; internal set; }
     public SessionCRUD.SessionCRUDClient SessionCRUDClient { get; internal set; }
     public Creation.CreationClient CreationClient { get; internal set; }
+    public TransactionCRUD.TransactionCRUDClient TransactionCRUDClient { get; internal set; }
 
     public void CreateClients()
     {
@@ -67,6 +68,7 @@ namespace GrpcGreeterWpfClient.ServiceClients
       AuthenticationClient = new Authentication.AuthenticationClient(channel);
       SessionCRUDClient = new SessionCRUD.SessionCRUDClient(channel);
       CreationClient = new Creation.CreationClient(channel);
+      TransactionCRUDClient = new TransactionCRUD.TransactionCRUDClient(channel);
     }
 
     public void DisposeClients()

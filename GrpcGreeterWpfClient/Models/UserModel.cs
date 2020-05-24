@@ -35,22 +35,22 @@ namespace GrpcGreeterWpfClient.Models
       ID = Guid.NewGuid();
     }
 
-    public static UserEnum ConvertToUserDbType(UserProtoType userProtoType)
+    public static UserEnum ConvertToUserDbType(UserProtoEnum userProtoType)
     {
       return userProtoType switch
       {
-        UserProtoType.Admin => UserEnum.Administrator,
-        UserProtoType.User => UserEnum.User,
+        UserProtoEnum.Admin => UserEnum.Administrator,
+        UserProtoEnum.User => UserEnum.User,
         _ => throw new NotSupportedException()
       };
     }
 
-    public static UserProtoType ConvertToUserProtoType(UserEnum userDbType)
+    public static UserProtoEnum ConvertToUserProtoType(UserEnum userDbType)
     {
       return userDbType switch
       {
-        UserEnum.Administrator => UserProtoType.Admin,
-        UserEnum.User => UserProtoType.User,
+        UserEnum.Administrator => UserProtoEnum.Admin,
+        UserEnum.User => UserProtoEnum.User,
         _ => throw new NotSupportedException()
       };
     }
