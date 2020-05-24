@@ -23,7 +23,7 @@ namespace GrpcGreeterWpfClient.ViewModels
   {
     Deposit,
     Withdraw,
-    //Transfer
+    Transfer
   }
 
   public class AccountViewModel : ViewModelBase
@@ -129,47 +129,76 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void TransferCommandExecute()
     {
-      MessageBox.Show("Not implemented", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-      //var vm = new AccountCommandsViewModel(CommandEnum.Transfer);
-      //vm.OnFinishEventHandler += ModalDialogClosed;
-      //var commandView = new AccountCommandView(vm)
-      //{
-      //  WindowStartupLocation = WindowStartupLocation.CenterScreen
-      //};
-      //commandView.Show();
+      var vm = new AccountCommandsViewModel(CommandEnum.Transfer);
+      vm.OnFinishEventHandler += ModalDialogClosed;
+      var commandView = new AccountCommandView(vm, this)
+      {
+        WindowStartupLocation = WindowStartupLocation.CenterScreen
+      };
+      commandView.Show();
     }
 
     private void ModalDialogClosed(object sender, WindowPopupEventArgs e)
     {
-      switch (e.CommandType)
+      var failed = false;
+      if (e.Amount < 1)
       {
-        case CommandEnum.Deposit:
-          DepositAmount = e.Amount;
-          break;
-        case CommandEnum.Withdraw:
-          WithdrawAmount = e.Amount;
-          break;
-        //case CommandEnum.Transfer:
-        //  TransferAmount = e.Amount;
-        //  break;
-        default:
-          throw new NotSupportedException($"{e.CommandType} is not supported");
+        failed = true;
+        MessageBox.Show("Please enter an amount greater than 0");
       }
-      var newBalance = Balance + DepositAmount - WithdrawAmount;
-      if (newBalance != Balance)
+      else
       {
-        Balance = newBalance;
-        try
+        switch (e.CommandType)
         {
-          serviceClient.AccountCRUDClient.Deposit(new DepositRequest { AccountId = sessionInstance.CurrentUser.AccountID.ToString(), Amount = balance });
-        }
-        catch (RpcException rex)
-        {
-          MessageBox.Show($"Operation failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          case CommandEnum.Deposit:
+            Balance += e.Amount;
+            try
+            {
+              serviceClient.AccountCRUDClient.Deposit(new DepositRequest { AccountId = sessionInstance.CurrentUser.AccountID.ToString(), Amount = e.Amount });
+            }
+            catch (RpcException rex)
+            {
+              MessageBox.Show($"Operation failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            break;
+          case CommandEnum.Withdraw:
+            Balance -= e.Amount;
+            try
+            {
+              serviceClient.AccountCRUDClient.Withdraw(new WithdrawRequest { AccountId = sessionInstance.CurrentUser.AccountID.ToString(), Amount = e.Amount });
+            }
+            catch (RpcException rex)
+            {
+              MessageBox.Show($"Operation failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            break;
+          case CommandEnum.Transfer:
+            TransferAmount = e.Amount;
+            try
+            {
+              if (string.IsNullOrEmpty(e.Username))
+              {
+                failed = true;
+                MessageBox.Show("Please enter a user to transfer funds to", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+              }
+              else
+              {
+                serviceClient.AccountCRUDClient.Transfer(new TransferRequest { Amount = transferAmount, Username = e.Username });
+              }
+            }
+            catch (RpcException rex)
+            {
+              failed = true;
+              MessageBox.Show($"Transfer failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            break;
+          default:
+            throw new NotSupportedException($"{e.CommandType} is not supported");
         }
       }
 
-      OnModelDialogFinished?.Invoke(this, new EventArgs());
+      if (!failed)
+        OnModelDialogFinished?.Invoke(this, new EventArgs());
     }
 
 

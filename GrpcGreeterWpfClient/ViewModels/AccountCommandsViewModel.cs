@@ -11,7 +11,11 @@ namespace GrpcGreeterWpfClient.ViewModels
   public class AccountCommandsViewModel : ViewModelBase
   {
     private double amount;
+    private string toUsername;
+    private bool usernameVisible;
     private CommandEnum commandType;
+    private string questionText;
+
     private RelayCommand okCommand;
     private RelayCommand cancelCommand;
 
@@ -21,6 +25,16 @@ namespace GrpcGreeterWpfClient.ViewModels
     public AccountCommandsViewModel(CommandEnum command)
     {
       CommandType = command;
+      UsernameVisible = command == CommandEnum.Transfer;
+      string text = string.Empty;
+      text = command switch
+      {
+        CommandEnum.Deposit => "deposit",
+        CommandEnum.Withdraw => "withdraw",
+        CommandEnum.Transfer => "transfer",
+        _ => throw new NotSupportedException($"{command} is not supported"),
+      };
+      QuestionText = $"How much would you like to {text}?";
     }
 
     public double Amount
@@ -29,10 +43,28 @@ namespace GrpcGreeterWpfClient.ViewModels
       set => Set(ref amount, value);
     }
 
+    public string ToUsername
+    {
+      get => toUsername;
+      set => Set(ref toUsername, value);
+    }
+
+    public bool UsernameVisible
+    {
+      get => usernameVisible;
+      set => Set(ref usernameVisible, value);
+    }
+
     public CommandEnum CommandType
     {
       get => commandType;
       set => Set(ref commandType, value);
+    }
+
+    public string QuestionText
+    {
+      get => questionText;
+      set => Set(ref questionText, value);
     }
 
     public RelayCommand OkCommand => okCommand ??= new RelayCommand(OkCommandExecute);
@@ -40,7 +72,7 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void OkCommandExecute()
     {
-      OnFinishEventHandler?.Invoke(this, new WindowPopupEventArgs(amount, commandType));
+      OnFinishEventHandler?.Invoke(this, new WindowPopupEventArgs(amount, commandType, toUsername));
     }
 
     private void CancelCommandExecute()
@@ -53,10 +85,12 @@ namespace GrpcGreeterWpfClient.ViewModels
   {
     public CommandEnum CommandType { get; set; }
     public double Amount { get; set; }
-    public WindowPopupEventArgs(double amount, CommandEnum commandType)
+    public string Username { get; set; }
+    public WindowPopupEventArgs(double amount, CommandEnum commandType, string username)
     {
       Amount = amount;
       CommandType = commandType;
+      Username = username;
     }
   }
 }

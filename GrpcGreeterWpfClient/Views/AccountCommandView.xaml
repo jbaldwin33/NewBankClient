@@ -12,11 +12,12 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0">
-      <TextBlock Text="How much would like to deposit?"/>
+    <StackPanel Grid.Row="0" Visibility="{Binding UsernameVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TextBlock Text="Username of recipient:"/>
+      <TextBox Text="{Binding ToUsername, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
-      <TextBlock Text="Amount:"/>
+      <TextBlock Text="{Binding QuestionText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
       <TextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2">
