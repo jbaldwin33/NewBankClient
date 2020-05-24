@@ -3,12 +3,12 @@ using Grpc.Net.Client;
 using GrpcGreeter.Protos;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Channels;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace GrpcGreeterWpfClient.ServiceClients
@@ -26,9 +26,23 @@ namespace GrpcGreeterWpfClient.ServiceClients
 
     public ServiceClient()
     {
-      channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { Credentials = new SslCredentials(File.ReadAllText("C:\\Program Files\\OpenSSL-Win64\\bin\\server.crt")) });
+      var credentials = CallCredentials.FromInterceptor((context, metadata) =>
+      {
+        metadata.Add("Authorization", $"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijc1MjhlNGFmLWE3YzAtNDVlZC04YTc1LWNjYzVkODRjZGU2MiIsImlhdCI6MTU5MDMwMjQzNywiZXhwIjoxNTkwMzA2MDM3fQ.C9npZuOU-R1Oxy87lM-a2SMuX9ydbuMoe6l4Shc6IEM");
+        return Task.CompletedTask;
+      });
+
+      // SslCredentials is used here because this channel is using TLS.
+      // CallCredentials can't be used with ChannelCredentials.Insecure on non-TLS channels.
+      channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions
+      {
+        Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
+      });
+
+      //channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { Credentials = new SslCredentials() });
     }
-    
+
+
     public static ServiceClient Instance => instance.Value;
 
 
