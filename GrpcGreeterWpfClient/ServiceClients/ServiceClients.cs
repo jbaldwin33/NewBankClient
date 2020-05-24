@@ -26,18 +26,26 @@ namespace GrpcGreeterWpfClient.ServiceClients
 
     public ServiceClient()
     {
-      var credentials = CallCredentials.FromInterceptor((context, metadata) =>
-      {
-        metadata.Add("Authorization", $"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijc1MjhlNGFmLWE3YzAtNDVlZC04YTc1LWNjYzVkODRjZGU2MiIsImlhdCI6MTU5MDMwMjQzNywiZXhwIjoxNTkwMzA2MDM3fQ.C9npZuOU-R1Oxy87lM-a2SMuX9ydbuMoe6l4Shc6IEM");
-        return Task.CompletedTask;
-      });
+      //var credentials = CallCredentials.FromInterceptor((context, metadata) =>
+      //{
+      //  metadata.Add("Authorization", $"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijc1MjhlNGFmLWE3YzAtNDVlZC04YTc1LWNjYzVkODRjZGU2MiIsImlhdCI6MTU5MDMwMjQzNywiZXhwIjoxNTkwMzA2MDM3fQ.C9npZuOU-R1Oxy87lM-a2SMuX9ydbuMoe6l4Shc6IEM");
+      //  return Task.CompletedTask;
+      //});
 
-      // SslCredentials is used here because this channel is using TLS.
-      // CallCredentials can't be used with ChannelCredentials.Insecure on non-TLS channels.
-      channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions
-      {
-        Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
-      });
+      //// SslCredentials is used here because this channel is using TLS.
+      //// CallCredentials can't be used with ChannelCredentials.Insecure on non-TLS channels.
+      //channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions
+      //{
+      //  Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
+      //});
+
+      var httpClientHandler = new HttpClientHandler();
+      // Return `true` to allow certificates that are untrusted/invalid
+      httpClientHandler.ServerCertificateCustomValidationCallback =
+          HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+      var httpClient = new HttpClient(httpClientHandler);
+
+      channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { HttpClient = httpClient });
 
       //channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { Credentials = new SslCredentials() });
     }
