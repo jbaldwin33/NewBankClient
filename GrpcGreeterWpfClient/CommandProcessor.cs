@@ -11,18 +11,18 @@ namespace GrpcGreeterWpfClient
 {
   public interface ICommandProcessor
   {
-    void ExecuteCommand(Type commandType, string method);
+    void ExecuteCommand<T>(Type commandType, string method) where T : ClientBase;
   }
 
   public class CommandProcessor : ICommandProcessor
   {
-    public void ExecuteCommand(Type commandType, string method)
+    public void ExecuteCommand<T>(Type commandType, string method) where T : ClientBase
     {
-      //ClientBase client;
+      //T client;
       //if (commandType == typeof(AccountCRUD.AccountCRUDClient))
       //{
-      //  var client = ServiceClient.Instance.AccountCRUDClient;
-      //  client.
+      //  (client as AccountCRUD.AccountCRUDClient).Update(new Account { });
+        
       //}
       //else if (commandType == typeof(Authentication.AuthenticationClient))
       //  client = ServiceClient.Instance.AuthenticationClient;

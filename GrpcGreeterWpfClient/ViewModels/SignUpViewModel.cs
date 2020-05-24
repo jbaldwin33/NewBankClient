@@ -94,6 +94,8 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void SignUpCommandExecute()
     {
+      serviceClient.SessionCRUDClient.ClearSessions(new Empty());
+
       try
       {
         var users = serviceClient.UserCRUDClient.GetUsers(new Empty());

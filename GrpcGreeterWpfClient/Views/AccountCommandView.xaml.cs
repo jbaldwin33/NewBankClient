@@ -30,10 +30,7 @@ namespace GrpcGreeterWpfClient.Views
       this.parentViewModel.OnModelDialogFinished += OnModelDialogFinished;
     }
 
-    private void OnModelDialogFinished(object sender, EventArgs e)
-    {
-      throw new NotImplementedException();
-    }
+    private void OnModelDialogFinished(object sender, EventArgs e) => Close();
 
     private void OnFinishEventHandler(object sender, WindowPopupEventArgs e) => Close();
 
