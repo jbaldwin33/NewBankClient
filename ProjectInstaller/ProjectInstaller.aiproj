@@ -23,11 +23,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GrpcGreeterWpfClient\GrpcGreeterWpfClient.csproj">
-      <Name>GrpcGreeterWpfClient</Name>
+    <ProjectReference Include="..\NewBankWpfClient\NewBankWpfClient.csproj">
+      <Name>NewBankWpfClient</Name>
       <Project>{1f517af0-108a-4d4f-9367-0280963bbe54}</Project>
       <Private>True</Private>
-      <OutputsToImport>PrimaryOutput;References;ContentOutput</OutputsToImport>
     </ProjectReference>
   </ItemGroup>
   <Target Name="Build">

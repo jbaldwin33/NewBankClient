@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.11.4" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.28.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.28.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0872" />
+    <PackageReference Include="MvvmLight" Version="5.4.1.1" />
+    <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="NewBankClientGrpc">
+      <HintPath>..\NewBankClientGrpc\obj\Debug\netcoreapp3.1\NewBankClientGrpc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option csharp_namespace = "NewBankClientGrpc.Protos";
+
+package protos.common;
+
+message Empty{
+
+}
