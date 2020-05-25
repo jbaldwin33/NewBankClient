@@ -39,15 +39,51 @@ namespace NewBankWpfClient.ServiceClients
       //  Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
       //});
 
+      AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
+      AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+      string s = GetRootCertificates();
+      var channel_creds = new SslCredentials(s);
+
       var httpClientHandler = new HttpClientHandler();
       // Return `true` to allow certificates that are untrusted/invalid
       httpClientHandler.ServerCertificateCustomValidationCallback =
           HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-      var httpClient = new HttpClient(httpClientHandler);
+      var httpClient = new HttpClient(httpClientHandler) 
+      {
+        DefaultRequestVersion = new Version(2, 0)
+      };
 
-      channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { HttpClient = httpClient });
-
+      channel = GrpcChannel.ForAddress("https://mywebserver.hopto.org:443", new GrpcChannelOptions { HttpClient = httpClient });
       //channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { Credentials = new SslCredentials() });
+    }
+
+    public static string GetRootCertificates()
+    {
+      StringBuilder builder = new StringBuilder();
+      X509Store store = new X509Store(StoreName.Root);
+      store.Open(OpenFlags.ReadOnly);
+      foreach (X509Certificate2 mCert in store.Certificates)
+      {
+        builder.AppendLine(
+            "# Issuer: " + mCert.Issuer.ToString() + "\n" +
+            "# Subject: " + mCert.Subject.ToString() + "\n" +
+            "# Label: " + mCert.FriendlyName.ToString() + "\n" +
+            "# Serial: " + mCert.SerialNumber.ToString() + "\n" +
+            "# SHA1 Fingerprint: " + mCert.GetCertHashString().ToString() + "\n" +
+            ExportToPEM(mCert) + "\n");
+      }
+      return builder.ToString();
+    }
+    public static string ExportToPEM(X509Certificate cert)
+    {
+      StringBuilder builder = new StringBuilder();
+
+      builder.AppendLine("-----BEGIN CERTIFICATE-----");
+      builder.AppendLine(Convert.ToBase64String(cert.Export(X509ContentType.Cert), Base64FormattingOptions.InsertLineBreaks));
+      builder.AppendLine("-----END CERTIFICATE-----");
+
+      return builder.ToString();
     }
 
 
