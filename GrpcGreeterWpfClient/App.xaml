@@ -36,7 +36,7 @@
       <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
         <Setter Property="Width" Value="125"/>
         <Setter Property="Height" Value="30"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
       </Style>
       <Style x:Key="{x:Type StackPanel}" TargetType="{x:Type StackPanel}">
         <Setter Property="Orientation" Value="Horizontal"/>
@@ -58,6 +58,9 @@
       </DataTemplate>
       <DataTemplate DataType="{x:Type viewModels:SignUpViewModel}">
         <views:SignUpView/>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type viewModels:TransactionLogsViewModel}">
+        <views:TransactionLogsView/>
       </DataTemplate>
     </ResourceDictionary>
   </Application.Resources>

@@ -112,7 +112,7 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       try
       {
-        serviceClient.AuthenticationClient.Logout(new LogoutRequest { SessionId = sessionInstance.SessionID.ToString() });
+        serviceClient.AuthenticationClient.Logout(new LogoutRequest { SessionId = sessionInstance.SessionID.ToString(), User = UserModel.ConvertUser(sessionInstance.CurrentUser) });
         sessionInstance.CurrentUser = null;
         sessionInstance.SessionID = Guid.Empty;
         LoggedIn = false;

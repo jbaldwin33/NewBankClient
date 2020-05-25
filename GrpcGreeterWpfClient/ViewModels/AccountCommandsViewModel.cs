@@ -10,6 +10,7 @@ namespace GrpcGreeterWpfClient.ViewModels
 {
   public class AccountCommandsViewModel : ViewModelBase
   {
+    private readonly double currentBalance;
     private double amount;
     private string toUsername;
     private bool usernameVisible;
@@ -22,8 +23,9 @@ namespace GrpcGreeterWpfClient.ViewModels
     public event EventHandler<WindowPopupEventArgs> OnFinishEventHandler;
     public event EventHandler OnCancelledEventHandler;
 
-    public AccountCommandsViewModel(CommandEnum command)
+    public AccountCommandsViewModel(CommandEnum command, double currentBalance)
     {
+      this.currentBalance = currentBalance;
       CommandType = command;
       UsernameVisible = command == CommandEnum.Transfer;
       string text = string.Empty;
@@ -72,12 +74,27 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void OkCommandExecute()
     {
-      OnFinishEventHandler?.Invoke(this, new WindowPopupEventArgs(amount, commandType, toUsername));
+      if (CommandAllowed())
+        OnFinishEventHandler?.Invoke(this, new WindowPopupEventArgs(amount, commandType, toUsername));
     }
 
     private void CancelCommandExecute()
     {
       OnCancelledEventHandler?.Invoke(this, new EventArgs());
+    }
+
+    private bool CommandAllowed()
+    {
+      switch (commandType)
+      {
+        case CommandEnum.Deposit:
+          return true;
+        case CommandEnum.Withdraw:
+        case CommandEnum.Transfer:
+          return amount < currentBalance;
+        default:
+          throw new NotSupportedException($"{commandType} is not supported");
+      }
     }
   }
 

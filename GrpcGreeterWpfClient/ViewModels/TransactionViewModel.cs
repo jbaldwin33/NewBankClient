@@ -20,6 +20,11 @@ namespace GrpcGreeterWpfClient.ViewModels
       Message = message;
     }
 
+    //public string DateHeader => "Transaction date";
+    //public string MessageHeader => "Transaction details";
+    //public string AmountHeader => "Amount";
+    //public string TypeHeader => "Type of transaction";
+
     public DateTime CreatedDateTime
     {
       get => createdDateTime;

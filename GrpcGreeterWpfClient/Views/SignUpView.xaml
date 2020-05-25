@@ -14,7 +14,6 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0">
       <TextBlock Text="First name:"/>
@@ -33,14 +32,10 @@
       <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="4">
-      <TextBlock Text="Age:"/>
-      <TextBox Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="5">
       <TextBlock Text="Account type:"/>
       <ComboBox IsEditable="False" IsReadOnly="True" ItemsSource="{Binding AccountTypes}" DisplayMemberPath="Name" SelectedValuePath="AccType" SelectedValue="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
-    <StackPanel Grid.Row="6">
+    <StackPanel Grid.Row="5">
       <Button Content="Sign up" Command="{Binding SignUpCommand}"/>
     </StackPanel>
   </Grid>

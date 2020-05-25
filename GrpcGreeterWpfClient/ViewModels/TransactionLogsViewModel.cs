@@ -6,10 +6,12 @@ using GrpcGreeterWpfClient.ServiceClients;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace GrpcGreeterWpfClient.ViewModels
 {
@@ -24,22 +26,56 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       this.sessionInstance = sessionInstance;
       this.serviceClient = serviceClient;
+      SortDirection = ListSortDirection.Descending;
+      SortedProp = nameof(TransactionViewModel.CreatedDateTime);
       Transactions = new ObservableCollection<TransactionViewModel>();
+      GetTransactions();
     }
 
     public ObservableCollection<TransactionViewModel> Transactions
     {
       get => transactions;
-      set => Set(ref transactions, value);
+      set
+      {
+        Set(ref transactions, value);
+      }
     }
+
+    private CollectionView collectionView;
+
+    public CollectionView CollectionView
+    {
+      get
+      {
+        collectionView = (CollectionView)CollectionViewSource.GetDefaultView(Transactions);
+        if (collectionView != null)
+          collectionView.SortDescriptions.Add(new SortDescription(sortedProp, sortDirection));
+        return collectionView;
+      }
+    }
+
+    private string sortedProp;
+    private ListSortDirection sortDirection;
+
+    public string SortedProp
+    {
+      get => sortedProp;
+      set => Set(ref sortedProp, value);
+    }
+
+    public ListSortDirection SortDirection
+    {
+      get => sortDirection;
+      set => Set(ref sortDirection, value);
+    }
+
 
     public async Task GetTransactions()
     {
-      var tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(20));
-      using var logs = serviceClient.TransactionCRUDClient.GetAllUserTransactions(new GetAllUserTransactionsRequest { UserId = sessionInstance.CurrentUser.ID.ToString() }, cancellationToken: tokenSource.Token);
+      using var logs = serviceClient.TransactionCRUDClient.GetAllUserTransactions(new GetAllUserTransactionsRequest { UserId = sessionInstance.CurrentUser.ID.ToString() });
       try
       {
-        await foreach (var transaction in logs.ResponseStream.ReadAllAsync(tokenSource.Token))
+        await foreach (var transaction in logs.ResponseStream.ReadAllAsync())
           Transactions.Add(new TransactionViewModel(transaction.TransactionCreatedTime.ToDateTime(), transaction.Amount, transaction.TransactionType.ToString(), transaction.Message));
       }
       catch (RpcException rex)

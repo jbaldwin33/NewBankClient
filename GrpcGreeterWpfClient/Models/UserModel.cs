@@ -35,7 +35,7 @@ namespace GrpcGreeterWpfClient.Models
       ID = Guid.NewGuid();
     }
 
-    public static UserEnum ConvertToUserDbType(UserProtoEnum userProtoType)
+    public static UserEnum ConvertUserType(UserProtoEnum userProtoType)
     {
       return userProtoType switch
       {
@@ -45,7 +45,7 @@ namespace GrpcGreeterWpfClient.Models
       };
     }
 
-    public static UserProtoEnum ConvertToUserProtoType(UserEnum userDbType)
+    public static UserProtoEnum ConvertUserType(UserEnum userDbType)
     {
       return userDbType switch
       {
@@ -55,33 +55,40 @@ namespace GrpcGreeterWpfClient.Models
       };
     }
 
-    public static UserModel ConvertUser(User user)
+    public static UserModel ConvertUser(User user) => new UserModel
     {
-      using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-      
-      return new UserModel
-      {
-        AccountID = Guid.Parse(user.AccountId),
-        FirstName = user.FirstName,
-        ID = Guid.Parse(user.Id),
-        LastName = user.LastName,
-        PasswordHash = user.PasswordHash,
-        PasswordSalt = user.PasswordSalt,
-        Username = user.Username,
-        UserType = ConvertToUserDbType(user.UserType)
-      };
-    }
+      AccountID = Guid.Parse(user.AccountId),
+      FirstName = user.FirstName,
+      ID = Guid.Parse(user.Id),
+      LastName = user.LastName,
+      PasswordHash = user.PasswordHash,
+      PasswordSalt = user.PasswordSalt,
+      Username = user.Username,
+      UserType = ConvertUserType(user.UserType)
+    };
+
+    public static User ConvertUser(UserModel user) => new User
+    {
+      AccountId = user.AccountID.ToString(),
+      FirstName = user.FirstName,
+      Id = user.ID.ToString(),
+      LastName = user.LastName,
+      PasswordHash = user.PasswordHash,
+      PasswordSalt = user.PasswordSalt,
+      Username = user.Username,
+      UserType = ConvertUserType(user.UserType)
+    };
 
     public void SeeActivity(UserModel user, string password, UserEnum type)
-    {
-      //if (string.Equals(user.Password, password))
-      //{
-      //  //Utilities.ShowActivity(user);
-      //}
-    }
-    public void Validate()
-    {
-
-    }
+  {
+    //if (string.Equals(user.Password, password))
+    //{
+    //  //Utilities.ShowActivity(user);
+    //}
   }
+  public void Validate()
+  {
+
+  }
+}
 }

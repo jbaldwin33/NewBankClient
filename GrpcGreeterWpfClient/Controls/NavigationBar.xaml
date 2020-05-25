@@ -28,7 +28,7 @@
       <Button Grid.Column="1" Content="Account" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Account}" Visibility="{Binding IsActiveSession, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}"/>
       <Button Grid.Column="2" Content="User details" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.UserDetails}" Visibility="{Binding IsActiveSession, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}"/>
       <Button Grid.Column="3" Content="Log in" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.LogIn}"/>
-      <Button Grid.Column="4" Content="Sign up" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.SignUp}" Visibility="{Binding IsActiveSession, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}"/>
+      <Button Grid.Column="4" Content="Sign up" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.SignUp}" Visibility="{Binding IsActiveSession, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}"/>
       <Button Grid.Column="5" Content="Transactions" Command="{Binding UpdateCurrentViewModelCommand}" CommandParameter="{x:Static nav:ViewType.Transactions}" Visibility="{Binding IsActiveSession, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}"/>
     </Grid>
   </Grid>

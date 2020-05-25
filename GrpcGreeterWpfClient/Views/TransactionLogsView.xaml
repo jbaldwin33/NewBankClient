@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GrpcGreeterWpfClient.Views"
+             xmlns:vm="clr-namespace:GrpcGreeterWpfClient.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" x:Name="root">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
@@ -15,7 +16,16 @@
       <TextBlock Text="Recent transactions"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
-      <ListView ItemsSource="{Binding Transactions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <ListView x:Name="MyListView" ItemsSource="{Binding CollectionView}">
+        <ListView.View>
+          <GridView AllowsColumnReorder="True">
+            <GridViewColumn Header="Transaction date" DisplayMemberBinding="{Binding CreatedDateTime}" Width="auto"/>
+            <GridViewColumn Header="Transaction details" DisplayMemberBinding="{Binding Message}" Width="auto"/>
+            <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" Width="auto"/>
+            <GridViewColumn Header="Type of transaction" DisplayMemberBinding="{Binding TransactionType}" Width="auto"/>
+          </GridView>
+        </ListView.View>
+      </ListView>
     </StackPanel>
   </Grid>
 </UserControl>

@@ -33,9 +33,6 @@ namespace GrpcGreeterWpfClient.ViewModels
     private double balance;
     private AccountEnum accountType;
     private bool detailsVisible;
-    private double depositAmount;
-    private double withdrawAmount;
-    private double transferAmount;
     private RelayCommand depositCommand;
     private RelayCommand withdrawCommand;
     private RelayCommand transferCommand;
@@ -61,24 +58,6 @@ namespace GrpcGreeterWpfClient.ViewModels
     {
       get => accountType;
       set => Set(ref accountType, value);
-    }
-
-    public double DepositAmount
-    {
-      get => depositAmount;
-      set => Set(ref depositAmount, value);
-    }
-
-    public double WithdrawAmount
-    {
-      get => withdrawAmount;
-      set => Set(ref withdrawAmount, value);
-    }
-
-    public double TransferAmount
-    {
-      get => transferAmount;
-      set => Set(ref transferAmount, value);
     }
 
     public bool DetailsVisible
@@ -107,7 +86,7 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void DepositCommandExecute()
     {
-      var vm = new AccountCommandsViewModel(CommandEnum.Deposit);
+      var vm = new AccountCommandsViewModel(CommandEnum.Deposit, balance);
       vm.OnFinishEventHandler += ModalDialogClosed;
       var commandView = new AccountCommandView(vm, this)
       {
@@ -118,7 +97,7 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void WithdrawCommandExecute()
     {
-      var vm = new AccountCommandsViewModel(CommandEnum.Withdraw);
+      var vm = new AccountCommandsViewModel(CommandEnum.Withdraw, balance);
       vm.OnFinishEventHandler += ModalDialogClosed;
       var commandView = new AccountCommandView(vm, this)
       {
@@ -129,7 +108,7 @@ namespace GrpcGreeterWpfClient.ViewModels
 
     private void TransferCommandExecute()
     {
-      var vm = new AccountCommandsViewModel(CommandEnum.Transfer);
+      var vm = new AccountCommandsViewModel(CommandEnum.Transfer, balance);
       vm.OnFinishEventHandler += ModalDialogClosed;
       var commandView = new AccountCommandView(vm, this)
       {
@@ -173,7 +152,7 @@ namespace GrpcGreeterWpfClient.ViewModels
             }
             break;
           case CommandEnum.Transfer:
-            TransferAmount = e.Amount;
+            Balance -= e.Amount;
             try
             {
               if (string.IsNullOrEmpty(e.Username))
@@ -183,7 +162,7 @@ namespace GrpcGreeterWpfClient.ViewModels
               }
               else
               {
-                serviceClient.AccountCRUDClient.Transfer(new TransferRequest { Amount = transferAmount, ToUsername = e.Username, FromUsername = sessionInstance.CurrentUser.Username });
+                serviceClient.AccountCRUDClient.Transfer(new TransferRequest { Amount = e.Amount, ToUsername = e.Username, FromUsername = sessionInstance.CurrentUser.Username });
               }
             }
             catch (RpcException rex)
