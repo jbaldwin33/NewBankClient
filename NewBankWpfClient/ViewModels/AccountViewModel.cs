@@ -48,10 +48,11 @@ namespace NewBankWpfClient.ViewModels
       if (detailsVisible)
         UpdateAccountDetails();
     }
-
-    public Translatable DepositLabel => new DepositCommandTranslatable();
-    public Translatable WithdrawLabel => new WithdrawCommandTranslatable();
-    public Translatable TransferLabel => new TransferCommandTranslatable();
+    public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
+    public string BalanceLabel => $"{new BalanceLabelTranslatable()}:";
+    public string DepositLabel => new DepositCommandTranslatable();
+    public string WithdrawLabel => new WithdrawCommandTranslatable();
+    public string TransferLabel => new TransferCommandTranslatable();
 
     public double Balance
     {

@@ -16,6 +16,7 @@ using System.Security.Cryptography;
 using System.Windows;
 using static NewBankWpfClient.Models.Enums;
 using NewBankClientGrpc;
+using NewBankClientGrpc.Localization;
 
 namespace NewBankWpfClient.ViewModels
 {
@@ -43,6 +44,13 @@ namespace NewBankWpfClient.ViewModels
         new AccountTypeViewModel(AccountEnum.Saving, new SavingLabelTranslatable())
       };
     }
+
+    public string FirstNameLabel => $"{new FirstNameLabelTranslatable()}:";
+    public string LastNameLabel => $"{new LastNameLabelTranslatable()}:";
+    public string UsernameLabel => $"{new UsernameLabelTranslatable()}:";
+    public string PasswordLabel => $"{new PasswordLabelTranslatable()}:";
+    public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
+    public string SignUpLabel => new SignUpLabelTranslatable();
 
     #region Properties
     public string FirstName
@@ -91,11 +99,12 @@ namespace NewBankWpfClient.ViewModels
 
     #endregion
 
-    public RelayCommand SignUpCommand => signUpCommand ?? (signUpCommand = new RelayCommand(SignUpCommandExecute));
+    public RelayCommand SignUpCommand => signUpCommand ??= new RelayCommand(SignUpCommandExecute);
 
     private void SignUpCommandExecute()
     {
-      serviceClient.SessionCRUDClient.ClearSessions(new Empty());
+      if (!ValidInput())
+        return;
 
       try
       {
@@ -104,32 +113,7 @@ namespace NewBankWpfClient.ViewModels
           MessageBox.Show(new UsernameAlreadyExistsTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
         else
         {
-          var accountID = Guid.NewGuid();
-          var userID = Guid.NewGuid();
-          var skillID = Guid.NewGuid();
-          var passwordSalt = SecurePassword.CreateSalt();
-
-          var user = new User
-          {
-            Username = username,
-            PasswordSalt = passwordSalt,
-            PasswordHash = new SecurePassword(password, passwordSalt).ComputeSaltedHash(),
-            FirstName = firstName,
-            LastName = lastName,
-            Id = userID.ToString(),
-            AccountId = accountID.ToString(),
-            UserType = UserProtoEnum.User
-          };
-          var account = new Account
-          {
-            Id = accountID.ToString(),
-            UserId = userID.ToString(),
-            Balance = 0.0,
-            AccountType = AccountModel.ConvertAccountType(AccountType)
-          };
-
-          serviceClient.CreationClient.SignUp(new SignUpRequest { Account = account, User = user });
-
+          DoSignUp();
           MessageBox.Show(new SignUpSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
         }
       }
@@ -137,6 +121,53 @@ namespace NewBankWpfClient.ViewModels
       {
         MessageBox.Show(new SignUpFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
       }
+    }
+
+    private void DoSignUp()
+    {
+      var accountID = Guid.NewGuid();
+      var userID = Guid.NewGuid();
+      var passwordSalt = SecurePassword.CreateSalt();
+
+      var user = new User
+      {
+        Username = username,
+        PasswordSalt = passwordSalt,
+        PasswordHash = new SecurePassword(password, passwordSalt).ComputeSaltedHash(),
+        FirstName = firstName,
+        LastName = lastName,
+        Id = userID.ToString(),
+        AccountId = accountID.ToString(),
+        UserType = UserProtoEnum.User
+      };
+      var account = new Account
+      {
+        Id = accountID.ToString(),
+        UserId = userID.ToString(),
+        Balance = 0.0,
+        AccountType = AccountModel.ConvertAccountType(AccountType)
+      };
+
+      serviceClient.CreationClient.SignUp(new SignUpRequest { Account = account, User = user });
+    }
+
+    private bool ValidInput()
+    {
+      Translatable errorMessage = null;
+      if (string.IsNullOrEmpty(username))
+        errorMessage = new UsernameEmptyTranslatable();
+      else if (string.IsNullOrEmpty(password))
+        errorMessage = new PasswordEmptyTranslatable();
+      else if (string.IsNullOrEmpty(firstName))
+        errorMessage = new FirstNameEmptyTranslatable();
+      else if (string.IsNullOrEmpty(lastName))
+        errorMessage = new LastNameEmptyTranslatable();
+
+      if (errorMessage == null)
+        return true;
+
+      MessageBox.Show(errorMessage, new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+      return false;
     }
   }
 

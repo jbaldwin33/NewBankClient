@@ -16,27 +16,27 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0">
-      <TextBlock Text="First name:"/>
+      <TextBlock Text="{Binding FirstNameLabel}"/>
       <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
-      <TextBlock Text="Last name:"/>
+      <TextBlock Text="{Binding LastNameLabel}"/>
       <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2">
-      <TextBlock Text="Username:"/>
+      <TextBlock Text="{Binding UsernameLabel}"/>
       <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="3">
-      <TextBlock Text="Password:"/>
+      <TextBlock Text="{Binding PasswordLabel}"/>
       <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="4">
-      <TextBlock Text="Account type:"/>
+      <TextBlock Text="{Binding AccountTypeLabel}"/>
       <ComboBox IsEditable="False" IsReadOnly="True" ItemsSource="{Binding AccountTypes}" DisplayMemberPath="Name" SelectedValuePath="AccType" SelectedValue="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="5">
-      <Button Content="Sign up" Command="{Binding SignUpCommand}"/>
+      <Button Content="{Binding SignUpLabel}" Command="{Binding SignUpCommand}"/>
     </StackPanel>
   </Grid>
 </UserControl>

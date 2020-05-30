@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Razor;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -10,17 +11,17 @@ namespace NewBankClientGrpc.Localization
 {
   public static class TranslationCache
   {
-    private static readonly string localizationFileName = Path.Combine(Assembly.GetExecutingAssembly().Location, @"..\..\..\..\..\Localization.xml");
-    private static Localization programLocalization = new Localization();
-    private static int preferredLCID = 0;
+    private static readonly string localizationFileName = Path.Combine(Environment.CurrentDirectory, "Localization.xml");
+    private static readonly Localization programLocalization = new Localization();
+    private static readonly int preferredLCID = 0;
     private static XmlSerializer _xmlSerializer;
-    private static XmlSerializer xmlSerializer => _xmlSerializer ?? new XmlSerializer(typeof(Localization));
+    private static XmlSerializer xmlSerializer => _xmlSerializer ??= new XmlSerializer(typeof(Localization));
     static TranslationCache()
     {
       var tmpProgramLocalization = LoadLocalizatonFile(localizationFileName);
 
       programLocalization = tmpProgramLocalization;
-      preferredLCID = programLocalization.PreferredLCID;
+      preferredLCID = System.Threading.Thread.CurrentThread.CurrentCulture.LCID;
     }
 
     public static Localization LoadLocalizatonFile(string filename)
@@ -59,7 +60,7 @@ namespace NewBankClientGrpc.Localization
     {
       using (var stringWriter = new StringWriter())
       {
-        xmlSerializer.Serialize(stringWriter, new Localization());
+        xmlSerializer.Serialize(stringWriter, programLocalization);
         File.WriteAllText(localizationFileName, stringWriter.ToString(), Encoding.Unicode);
       }
     }
@@ -103,6 +104,8 @@ namespace NewBankClientGrpc.Localization
         }
       };
       programLocalization.Items = translatableList.ToArray();
+      programLocalization.PreferredLCID = preferredLCID;
+      SaveToFile();
       return new TranslationBasis[1] { translatable.DefaultTranslationBasis };
     }
   }

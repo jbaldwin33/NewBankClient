@@ -12,6 +12,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Windows.Input;
 using System.Windows.Media;
+using NewBankClientGrpc;
 
 namespace NewBankWpfClient.Navigators
 {
@@ -48,6 +49,13 @@ namespace NewBankWpfClient.Navigators
         OnPropertyChanged(nameof(CurrentViewModel));
       }
     }
+
+    public string HomeLabel => new HomeLabelTranslatable();
+    public string AccountLabel => new AccountLabelTranslatable();
+    public string UserDetailsLabel => new UserDetailsLabelTranslatable();
+    public string LoginLabel => new LoginLabelTranslatable();
+    public string SignUpLabel => new SignUpLabelTranslatable();
+    public string TransactionsLabel => new TransactionsLabelTranslatable();
 
     public SessionInstance SessionInstance
     {

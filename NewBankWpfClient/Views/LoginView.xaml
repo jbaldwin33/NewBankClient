@@ -11,7 +11,7 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
-      <Button Content="Log out" Command="{Binding LogoutCommand}"/>
+      <Button Content="{Binding LogoutLabel}" Command="{Binding LogoutCommand}"/>
     </StackPanel>
     <StackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
       <Grid>
@@ -21,15 +21,15 @@
           <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-          <TextBlock Text="Username:"/>
+          <TextBlock Text="{Binding UsernameLabel}"/>
           <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
-          <TextBlock Text="Password:"/>
+          <TextBlock Text="{Binding PasswordLabel}"/>
           <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="2">
-          <Button Content="Log in" Command="{Binding LoginCommand}"/>
+          <Button Content="{Binding LoginLabel}" Command="{Binding LoginCommand}"/>
         </StackPanel>
       </Grid>
     </StackPanel>

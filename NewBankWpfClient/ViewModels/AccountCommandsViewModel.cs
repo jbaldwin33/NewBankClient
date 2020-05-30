@@ -41,6 +41,10 @@ namespace NewBankWpfClient.ViewModels
       QuestionText = new OperationQuestionTranslatable(text);
     }
 
+    public string RecipientLabel => $"{new NameOfRecipientTranslatable()}:";
+    public string ConfirmLabel => new ConfirmTranslatable();
+    public string CancelLabel => new CancelTranslatable();
+
     public double Amount
     {
       get => amount;

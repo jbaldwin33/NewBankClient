@@ -142,4 +142,109 @@ namespace NewBankClientGrpc
     public FailedToGetTransactionsErrorTranslatable(string error) : base(error) { }
     protected override string GetDefaultTransalationBasisText() => "Failed to get transactions: {0}";
   }
+
+  public class LoginLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Log in";
+  }
+
+  public class LogoutLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Log out";
+  }
+
+  public class SignUpLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Sign up";
+  }
+
+  public class UsernameLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Username";
+  }
+
+  public class PasswordLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Password";
+  }
+
+  public class FirstNameLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "First name";
+  }
+
+  public class LastNameLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Last name";
+  }
+
+  public class AccountTypeLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Account type";
+  }
+
+  public class BalanceLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Balance";
+  }
+
+  public class RecentTransactionsLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Recent transactions";
+  }
+
+  public class HomeLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Home";
+  }
+
+  public class AccountLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Account";
+  }
+
+  public class UserDetailsLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "User details";
+  }
+
+  public class TransactionsLabelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Transactions";
+  }
+
+  public class ConfirmTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Confirm";
+  }
+
+  public class CancelTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Cancel";
+  }
+
+  public class UsernameEmptyTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Please enter a username";
+  }
+
+  public class PasswordEmptyTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Please enter a password";
+  }
+
+  public class FirstNameEmptyTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Please enter a first name";
+  }
+
+  public class LastNameEmptyTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Please enter a last name";
+  }
+
+  public class NameOfRecipientTranslatable : Translatable
+  {
+    protected override string GetDefaultTransalationBasisText() => "Username of recipient";
+  }
 }

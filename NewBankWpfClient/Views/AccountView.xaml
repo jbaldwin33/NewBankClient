@@ -15,11 +15,11 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0">
-      <TextBlock Text="Account type:"/>
+      <TextBlock Text="{Binding AccountTypeLabel}"/>
       <TextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
-      <TextBlock Text="Balance:"/>
+      <TextBlock Text="{Binding BalanceLabel}"/>
       <TextBlock Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2">

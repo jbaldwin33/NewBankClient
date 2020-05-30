@@ -14,19 +14,19 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text="First name:"/>
+      <TextBlock Text="{Binding FirstNameLabel}"/>
       <TextBlock Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="1" Orientation="Horizontal">
-      <TextBlock Text="Last name:"/>
+      <TextBlock Text="{Binding LastNameLabel}"/>
       <TextBlock Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2" Orientation="Horizontal">
-      <TextBlock Text="Username:"/>
+      <TextBlock Text="{Binding UsernameLabel}"/>
       <TextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="3" Orientation="Horizontal">
-      <TextBlock Text="Account type:"/>
+      <TextBlock Text="{Binding AccountTypeLabel}"/>
       <TextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
   </Grid>

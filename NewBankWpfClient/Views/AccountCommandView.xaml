@@ -13,16 +13,16 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Visibility="{Binding UsernameVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-      <TextBlock Text="Username of recipient:"/>
+      <TextBlock Text="{Binding RecipientLabel}"/>
       <TextBox Text="{Binding ToUsername, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
-      <TextBlock Text="{Binding QuestionText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <TextBlock Text="{Binding QuestionText}"/>
       <TextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2">
-      <Button Content="Finish" Command="{Binding OkCommand}"/>
-      <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+      <Button Content="{Binding ConfirmLabel}" Command="{Binding OkCommand}"/>
+      <Button Content="{Binding CancelLabel}" Command="{Binding CancelCommand}"/>
     </StackPanel>
   </Grid>
 </Window>

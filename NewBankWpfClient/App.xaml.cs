@@ -39,8 +39,6 @@ namespace NewBankWpfClient
     {
       navigator = new Navigator(new SessionInstance(null, null, Guid.Empty), ServiceClient.Instance);
       ServiceClient.Instance.CreateClients();
-
-      var t = new NewBankClientGrpc.WelcomeTranslatable();
     }
 
     protected override void OnExit(ExitEventArgs e)

@@ -23,5 +23,8 @@
     <Protobuf Include="Protos\sessionCRUD.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\transaction.proto" GrpcServices="Client" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /Y &quot;E:\VSProjects\NewBankClient\assemblies\*&quot; &quot;E:\VSProjects\NewBankClient\NewBankWpfClient\bin\Debug\netcoreapp3.1&quot;&#xD;&#xA;" />
+  </Target>
 
 </Project>

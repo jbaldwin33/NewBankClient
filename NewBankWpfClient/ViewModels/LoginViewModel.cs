@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
 using Grpc.Net.Client;
 using NewBankClientGrpc;
+using NewBankClientGrpc.Localization;
 using NewBankServer.Protos;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
@@ -33,9 +34,14 @@ namespace NewBankWpfClient.ViewModels
     {
       this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      
+
       LoggedIn = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
     }
+
+    public string LoginLabel => new LoginLabelTranslatable();
+    public string LogoutLabel => new LogoutLabelTranslatable();
+    public string UsernameLabel => $"{new UsernameLabelTranslatable()}:";
+    public string PasswordLabel => $"{new PasswordLabelTranslatable()}:";
 
     public string Username
     {
@@ -68,45 +74,59 @@ namespace NewBankWpfClient.ViewModels
 
     private void LoginCommandExecute()
     {
-      User user = null;
-      try
+      if (!InputIsValid(out User user))
+        return;
+
+      var hash = new SecurePassword(password, user.PasswordSalt).ComputeSaltedHash();
+      if (hash == user.PasswordHash)
       {
-        user = serviceClient.UserCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
-      }
-      catch (RpcException rex)
-      {
-        //user doesn't exist
-      }
-      if (user == null)
-        MessageBox.Show(new UsernameDoesNotExistTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-      else
-      {
-        var hash = new SecurePassword(password, user.PasswordSalt).ComputeSaltedHash();
-        if (hash == user.PasswordHash)
+        try
         {
-          try
+          var loginResponse = serviceClient.AuthenticationClient.Login(new LoginRequest
           {
-            var loginResponse = serviceClient.AuthenticationClient.Login(new LoginRequest
-            {
-              Username = username,
-              PasswordHash = hash
-            });
+            Username = username,
+            PasswordHash = hash
+          });
 
-            var account = serviceClient.AccountCRUDClient.GetByUserID(new AccountRequest { UserId = loginResponse.User.Id }).Account;
+          var account = serviceClient.AccountCRUDClient.GetByUserID(new AccountRequest { UserId = loginResponse.User.Id }).Account;
 
-            sessionInstance.SessionID = Guid.Parse(loginResponse.SessionID);
-            sessionInstance.CurrentUser = UserModel.ConvertUser(loginResponse.User);
-            sessionInstance.CurrentAccount = AccountModel.ConvertAccount(account);
-            LoggedIn = true;
+          sessionInstance.SessionID = Guid.Parse(loginResponse.SessionID);
+          sessionInstance.CurrentUser = UserModel.ConvertUser(loginResponse.User);
+          sessionInstance.CurrentAccount = AccountModel.ConvertAccount(account);
+          LoggedIn = true;
 
-            MessageBox.Show(new LoginSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
-          }
-          catch (RpcException rex)
-          {
-            MessageBox.Show(new LoginFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-          }
+          MessageBox.Show(new LoginSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (RpcException rex)
+        {
+          MessageBox.Show(new LoginFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
         }
       }
+    }
+
+    private bool InputIsValid(out User user)
+    {
+      Translatable errorMessage = null;
+      if (string.IsNullOrEmpty(username))
+        errorMessage = new UsernameEmptyTranslatable();
+      else if (string.IsNullOrEmpty(password))
+        errorMessage = new PasswordEmptyTranslatable();
+
+      User foundUser = null;
+      try
+      {
+        foundUser = serviceClient.UserCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
+      }
+      catch (RpcException rex) when (rex.StatusCode == StatusCode.NotFound)
+      {
+        errorMessage = new UsernameDoesNotExistTranslatable();
+      }
+      user = foundUser;
+      if (errorMessage == null)
+        return true;
+
+      MessageBox.Show(errorMessage, new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+      return false;
     }
 
     private void LogoutCommandExecute()

@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
+using NewBankClientGrpc;
+using NewBankClientGrpc.Localization;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -26,6 +28,11 @@ namespace NewBankWpfClient.ViewModels
       else
         ClearDetails();
     }
+
+    public string FirstNameLabel => $"{new FirstNameLabelTranslatable()}:";
+    public string LastNameLabel => $"{new LastNameLabelTranslatable()}:";
+    public string UsernameLabel => $"{new UsernameLabelTranslatable()}:";
+    public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
 
     public string FirstName
     {

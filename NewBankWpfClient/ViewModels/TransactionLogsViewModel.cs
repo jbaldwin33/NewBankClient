@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using Grpc.Core;
 using NewBankClientGrpc;
+using NewBankClientGrpc.Localization;
 using NewBankServer.Protos;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -32,6 +33,8 @@ namespace NewBankWpfClient.ViewModels
       Transactions = new ObservableCollection<TransactionViewModel>();
       GetTransactions();
     }
+
+    public Translatable RecentTransactionsLabel => new RecentTransactionsLabelTranslatable();
 
     public ObservableCollection<TransactionViewModel> Transactions
     {
