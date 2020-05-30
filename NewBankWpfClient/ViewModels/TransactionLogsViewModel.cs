@@ -1,19 +1,15 @@
 ﻿using GalaSoft.MvvmLight;
 using Grpc.Core;
 using NewBankServer.Protos;
-using NewBankShared;
 using NewBankShared.Localization;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using static NewBankWpfClient.Utilities.Utilities;
 
 namespace NewBankWpfClient.ViewModels
 {
@@ -23,7 +19,6 @@ namespace NewBankWpfClient.ViewModels
     private readonly SessionInstance sessionInstance;
     private readonly ServiceClient serviceClient;
 
-    public event EventHandler OnShown;
     public TransactionLogsViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
     {
       this.sessionInstance = sessionInstance;
@@ -78,9 +73,18 @@ namespace NewBankWpfClient.ViewModels
     {
       try
       {
-        using var logs = serviceClient.TransactionCRUDClient.GetAllUserTransactions(new GetAllUserTransactionsRequest { UserId = sessionInstance.CurrentUser.ID.ToString() });
+        using var logs = serviceClient.TransactionCRUDClient.GetAllUserTransactions(new GetAllUserTransactionsRequest 
+        {
+          UserId = sessionInstance.CurrentUser.ID.ToString(),
+          SessionId = sessionInstance.SessionID.ToString()
+        });
         await foreach (var transaction in logs.ResponseStream.ReadAllAsync())
           Transactions.Add(new TransactionViewModel(transaction.TransactionCreatedTime.ToDateTime(), transaction.Amount, transaction.TransactionType.ToString(), transaction.Message));
+      }
+      catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
+      {
+        MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+        SetPropertiesOnLogout(sessionInstance);
       }
       catch (RpcException rex)
       {

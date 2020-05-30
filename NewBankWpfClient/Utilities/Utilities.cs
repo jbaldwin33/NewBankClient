@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using static NewBankWpfClient.Models.Enums;
+﻿using NewBankWpfClient.Navigators;
+using System;
 
 namespace NewBankWpfClient.Utilities
 {
   public static class Utilities
   {
-    
+    public static void SetPropertiesOnLogout(SessionInstance sessionInstance)
+    {
+      sessionInstance.CurrentAccount = null;
+      sessionInstance.CurrentUser = null;
+      sessionInstance.SessionID = Guid.Empty;
+    }
   }
 }

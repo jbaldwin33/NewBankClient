@@ -30,27 +30,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Update="Properties\stringsjp.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>stringsjp.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\strings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>strings.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\stringsjp.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>stringsjp.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\strings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

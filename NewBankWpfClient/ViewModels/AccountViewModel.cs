@@ -1,8 +1,6 @@
-﻿using ControlzEx.Standard;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
-using Grpc.Net.Client;
 using NewBankServer.Protos;
 using NewBankShared.Localization;
 using NewBankWpfClient.Models;
@@ -10,12 +8,9 @@ using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
 using NewBankWpfClient.Views;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using static NewBankWpfClient.Models.Enums;
+using static NewBankWpfClient.Utilities.Utilities;
 
 namespace NewBankWpfClient.ViewModels
 {
@@ -89,7 +84,7 @@ namespace NewBankWpfClient.ViewModels
     {
       try
       {
-        var account = serviceClient.AccountCRUDClient.GetByUserID(new AccountRequest { UserId = sessionInstance.CurrentUser.ID.ToString() }).Account;
+        var account = serviceClient.AccountCRUDClient.GetByUserID(new AccountRequest { UserId = sessionInstance.CurrentUser.ID.ToString(), SessionId = sessionInstance.SessionID.ToString() }).Account;
         Balance = account.Balance;
         AccountType = AccountModel.ConvertAccountType(account.AccountType);
       }
@@ -152,7 +147,17 @@ namespace NewBankWpfClient.ViewModels
             Balance += e.Amount;
             try
             {
-              serviceClient.AccountCRUDClient.Deposit(new DepositRequest { AccountId = sessionInstance.CurrentUser.AccountID.ToString(), Amount = e.Amount });
+              serviceClient.AccountCRUDClient.Deposit(new DepositRequest 
+              {
+                AccountId = sessionInstance.CurrentUser.AccountID.ToString(),
+                Amount = e.Amount,
+                SessionId = sessionInstance.SessionID.ToString() 
+              });
+            }
+            catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
+            {
+              MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+              SetPropertiesOnLogout(sessionInstance);
             }
             catch (RpcException rex)
             {
@@ -163,7 +168,17 @@ namespace NewBankWpfClient.ViewModels
             Balance -= e.Amount;
             try
             {
-              serviceClient.AccountCRUDClient.Withdraw(new WithdrawRequest { AccountId = sessionInstance.CurrentUser.AccountID.ToString(), Amount = e.Amount });
+              serviceClient.AccountCRUDClient.Withdraw(new WithdrawRequest 
+              {
+                AccountId = sessionInstance.CurrentUser.AccountID.ToString(), 
+                Amount = e.Amount,
+                SessionId = sessionInstance.SessionID.ToString()
+              });
+            }
+            catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
+            {
+              MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+              SetPropertiesOnLogout(sessionInstance);
             }
             catch (RpcException rex)
             {
@@ -181,8 +196,19 @@ namespace NewBankWpfClient.ViewModels
               }
               else
               {
-                serviceClient.AccountCRUDClient.Transfer(new TransferRequest { Amount = e.Amount, ToUsername = e.Username, FromUsername = sessionInstance.CurrentUser.Username });
+                serviceClient.AccountCRUDClient.Transfer(new TransferRequest 
+                {
+                  Amount = e.Amount, 
+                  ToUsername = e.Username, 
+                  FromUsername = sessionInstance.CurrentUser.Username,
+                  SessionId = sessionInstance.SessionID.ToString()
+                });
               }
+            }
+            catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
+            {
+              MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+              SetPropertiesOnLogout(sessionInstance);
             }
             catch (RpcException rex)
             {

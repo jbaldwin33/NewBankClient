@@ -29,7 +29,7 @@ namespace NewBankWpfClient.ViewModels
       this.currentBalance = currentBalance;
       CommandType = command;
       UsernameVisible = command == CommandEnum.Transfer;
-      Translatable text = null;
+      Translatable text;
       text = command switch
       {
         CommandEnum.Deposit => new DepositTranslatable(),

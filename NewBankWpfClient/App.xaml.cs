@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading;
-using System.Globalization;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using Grpc.Net.Client;
 using NewBankServer.Protos;
 using NewBankWpfClient.ViewModels;
 using NewBankWpfClient.Views;
 using NewBankWpfClient.ServiceClients;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using NewBankWpfClient.Navigators;
-using NewBankWpfClient.Properties;
 using Grpc.Core;
 using NewBankShared.Localization;
 

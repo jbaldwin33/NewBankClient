@@ -164,7 +164,6 @@ namespace NewBankWpfClient.Navigators
   {
     public event EventHandler CanExecuteChanged;
     private INavigator navigator;
-    //private readonly SessionService sessionService = SessionService.Instance;
 
     public UpdateCurrentViewModelCommand(INavigator navigator)
     {

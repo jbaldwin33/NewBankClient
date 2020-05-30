@@ -1,18 +1,14 @@
-﻿using ControlzEx.Standard;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
-using Grpc.Net.Client;
 using NewBankServer.Protos;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
 using NewBankWpfClient.Utilities;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows;
 using static NewBankWpfClient.Models.Enums;
 using NewBankShared.Localization;
@@ -25,7 +21,6 @@ namespace NewBankWpfClient.ViewModels
     private string firstName;
     private string lastName;
     private string username;
-    //private string password;
     private SecureString securePassword;
     private ObservableCollection<AccountTypeViewModel> accountTypes;
     private AccountEnum accountType;
@@ -38,7 +33,7 @@ namespace NewBankWpfClient.ViewModels
     {
       this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      CheckValidity();
+      SignUpDetailsVisible = sessionInstance.CurrentUser == null;
       AccountTypes = new ObservableCollection<AccountTypeViewModel>
       {
         new AccountTypeViewModel(AccountEnum.Checking, new CheckingLabelTranslatable()),
@@ -71,11 +66,6 @@ namespace NewBankWpfClient.ViewModels
       get => username;
       set => Set(ref username, value);
     }
-    //public string Password
-    //{
-    //  get => password;
-    //  set => Set(ref password, value);
-    //}
 
     public SecureString SecurePassword
     {
@@ -109,18 +99,6 @@ namespace NewBankWpfClient.ViewModels
 
     public RelayCommand SignUpCommand => signUpCommand ??= new RelayCommand(SignUpCommandExecute);
 
-    private void CheckValidity()
-    {
-      try
-      {
-        SignUpDetailsVisible = !serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
-      }
-      catch (RpcException rex)
-      {
-        MessageBox.Show(new ErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-    }
-
     private void SignUpCommandExecute()
     {
       if (!ValidInput())
@@ -128,6 +106,7 @@ namespace NewBankWpfClient.ViewModels
 
       try
       {
+        //this should only get usernames, not passwords
         var users = serviceClient.UserCRUDClient.GetUsers(new Empty());
         if (users.Items.Any(u => u.Username == username))
           MessageBox.Show(new UsernameAlreadyExistsTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);

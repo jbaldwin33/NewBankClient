@@ -34,7 +34,7 @@ namespace NewBankWpfClient.ViewModels
     {
       this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      CheckValidity();
+      LoggedIn = sessionInstance.CurrentUser != null;
     }
 
     public string LoginLabel => new LoginLabelTranslatable();
@@ -71,23 +71,20 @@ namespace NewBankWpfClient.ViewModels
     public RelayCommand LoginCommand => loginCommand ??= new RelayCommand(LoginCommandExecute);
     public RelayCommand LogoutCommand => logoutCommand ??= new RelayCommand(LogoutCommandExecute);
 
-    private void CheckValidity()
-    {
-      try
-      {
-        LoggedIn = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
-      }
-      catch (RpcException rex)
-      {
-        LoggedIn = false;
-        MessageBox.Show(new ErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-    }
-
     private void LoginCommandExecute()
     {
-      if (!InputIsValid(out User user))
+      if (!InputIsValid())
         return;
+      User user;
+      try
+      {
+        user = serviceClient.UserCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
+      }
+      catch (RpcException rex) when (rex.StatusCode == StatusCode.NotFound)
+      {
+        MessageBox.Show(new UsernameDoesNotExistTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
 
       var hash = new SecurePasswordUtility(securePassword, user.PasswordSalt).ComputeSaltedHash();
       if (hash == user.PasswordHash)
@@ -100,7 +97,7 @@ namespace NewBankWpfClient.ViewModels
             PasswordHash = hash
           });
 
-          var account = serviceClient.AccountCRUDClient.GetByUserID(new AccountRequest { UserId = loginResponse.User.Id }).Account;
+          var account = serviceClient.AccountCRUDClient.GetByUserID(new AccountRequest { UserId = loginResponse.User.Id, SessionId = loginResponse.SessionID.ToString() }).Account;
 
           sessionInstance.SessionID = Guid.Parse(loginResponse.SessionID);
           sessionInstance.CurrentUser = UserModel.ConvertUser(loginResponse.User);
@@ -116,28 +113,14 @@ namespace NewBankWpfClient.ViewModels
       }
     }
 
-    private bool InputIsValid(out User user)
+    private bool InputIsValid()
     {
-      User foundUser = null;
-
       Translatable errorMessage = null;
       if (string.IsNullOrEmpty(username))
         errorMessage = new UsernameEmptyTranslatable();
       else if (securePassword == null)
         errorMessage = new PasswordEmptyTranslatable();
-      else
-      {
 
-        try
-        {
-          foundUser = serviceClient.UserCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
-        }
-        catch (RpcException rex) when (rex.StatusCode == StatusCode.NotFound)
-        {
-          errorMessage = new UsernameDoesNotExistTranslatable();
-        }
-      }
-      user = foundUser;
       if (errorMessage == null)
         return true;
 
