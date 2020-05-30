@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using NewBankClientGrpc;
-using NewBankClientGrpc.Localization;
+using NewBankShared.Localization;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;

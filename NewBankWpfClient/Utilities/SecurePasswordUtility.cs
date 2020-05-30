@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NewBankWpfClient.Utilities
 {
-  public class SecurePassword
+  public class SecurePasswordUtility
   {
-    private readonly string _password;
+    private readonly SecureString _password;
     private readonly string _salt;
 
-    public SecurePassword(string password, string salt)
+    public SecurePasswordUtility(SecureString password, string salt)
     {
       _password = password;
       _salt = salt;
@@ -20,7 +21,23 @@ namespace NewBankWpfClient.Utilities
 
     public string ComputeSaltedHash()
     {
-      byte[] secretBytes = Encoding.UTF8.GetBytes(_password);
+      byte[] secretBytes = new byte[_password.Length];
+
+      IntPtr valuePtr = IntPtr.Zero;
+      try
+      {
+        valuePtr = System.Runtime.InteropServices.Marshal.SecureStringToGlobalAllocUnicode(_password);
+        for (int i = 0; i < _password.Length; i++)
+        {
+          short unicodeChar = System.Runtime.InteropServices.Marshal.ReadInt16(valuePtr, i * 2);
+          secretBytes[i] = Convert.ToByte(unicodeChar);
+        }
+      }
+      finally
+      {
+        System.Runtime.InteropServices.Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
+      }
+
 
       //create a new salt
       byte[] saltBytes = Convert.FromBase64String(_salt);

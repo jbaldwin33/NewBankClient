@@ -16,6 +16,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.Properties;
+using Grpc.Core;
+using NewBankShared.Localization;
 
 namespace NewBankWpfClient
 {
@@ -43,8 +45,16 @@ namespace NewBankWpfClient
 
     protected override void OnExit(ExitEventArgs e)
     {
-      if (navigator.SessionInstance.SessionID != Guid.Empty)
-        navigator.ServiceClient.SessionCRUDClient.RemoveSession(new SessionRequest { SessionId = navigator.SessionInstance.SessionID.ToString() });
+      try
+      {
+        if (navigator.SessionInstance.SessionID != Guid.Empty)
+          navigator.ServiceClient.SessionCRUDClient.RemoveSession(new SessionRequest { SessionId = navigator.SessionInstance.SessionID.ToString() });
+      }
+      catch(RpcException rex)
+      {
+        MessageBox.Show(new ErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+
       navigator.ServiceClient.DisposeClients();
       base.OnExit(e);
     }

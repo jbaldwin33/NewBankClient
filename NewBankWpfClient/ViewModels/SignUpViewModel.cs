@@ -15,8 +15,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows;
 using static NewBankWpfClient.Models.Enums;
-using NewBankClientGrpc;
-using NewBankClientGrpc.Localization;
+using NewBankShared.Localization;
+using System.Security;
 
 namespace NewBankWpfClient.ViewModels
 {
@@ -25,7 +25,8 @@ namespace NewBankWpfClient.ViewModels
     private string firstName;
     private string lastName;
     private string username;
-    private string password;
+    //private string password;
+    private SecureString securePassword;
     private ObservableCollection<AccountTypeViewModel> accountTypes;
     private AccountEnum accountType;
     private RelayCommand signUpCommand;
@@ -37,7 +38,7 @@ namespace NewBankWpfClient.ViewModels
     {
       this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-      SignUpDetailsVisible = !serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
+      CheckValidity();
       AccountTypes = new ObservableCollection<AccountTypeViewModel>
       {
         new AccountTypeViewModel(AccountEnum.Checking, new CheckingLabelTranslatable()),
@@ -70,11 +71,18 @@ namespace NewBankWpfClient.ViewModels
       get => username;
       set => Set(ref username, value);
     }
-    public string Password
+    //public string Password
+    //{
+    //  get => password;
+    //  set => Set(ref password, value);
+    //}
+
+    public SecureString SecurePassword
     {
-      get => password;
-      set => Set(ref password, value);
+      get => securePassword;
+      set => Set(ref securePassword, value);
     }
+
 
 
     public ObservableCollection<AccountTypeViewModel> AccountTypes
@@ -100,6 +108,18 @@ namespace NewBankWpfClient.ViewModels
     #endregion
 
     public RelayCommand SignUpCommand => signUpCommand ??= new RelayCommand(SignUpCommandExecute);
+
+    private void CheckValidity()
+    {
+      try
+      {
+        SignUpDetailsVisible = !serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
+      }
+      catch (RpcException rex)
+      {
+        MessageBox.Show(new ErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+    }
 
     private void SignUpCommandExecute()
     {
@@ -127,13 +147,13 @@ namespace NewBankWpfClient.ViewModels
     {
       var accountID = Guid.NewGuid();
       var userID = Guid.NewGuid();
-      var passwordSalt = SecurePassword.CreateSalt();
+      var passwordSalt = SecurePasswordUtility.CreateSalt();
 
       var user = new User
       {
         Username = username,
         PasswordSalt = passwordSalt,
-        PasswordHash = new SecurePassword(password, passwordSalt).ComputeSaltedHash(),
+        PasswordHash = new SecurePasswordUtility(securePassword, passwordSalt).ComputeSaltedHash(),
         FirstName = firstName,
         LastName = lastName,
         Id = userID.ToString(),
@@ -154,14 +174,15 @@ namespace NewBankWpfClient.ViewModels
     private bool ValidInput()
     {
       Translatable errorMessage = null;
-      if (string.IsNullOrEmpty(username))
-        errorMessage = new UsernameEmptyTranslatable();
-      else if (string.IsNullOrEmpty(password))
-        errorMessage = new PasswordEmptyTranslatable();
-      else if (string.IsNullOrEmpty(firstName))
+      
+      if (string.IsNullOrEmpty(firstName))
         errorMessage = new FirstNameEmptyTranslatable();
       else if (string.IsNullOrEmpty(lastName))
         errorMessage = new LastNameEmptyTranslatable();
+      else if (string.IsNullOrEmpty(username))
+        errorMessage = new UsernameEmptyTranslatable();
+      else if (securePassword == null)
+        errorMessage = new PasswordEmptyTranslatable();
 
       if (errorMessage == null)
         return true;

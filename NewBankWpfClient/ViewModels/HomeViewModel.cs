@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GalaSoft.MvvmLight;
-using NewBankServer.Protos;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading;
-using System.Globalization;
-using NewBankWpfClient.Properties;
-using NewBankClientGrpc;
+﻿using GalaSoft.MvvmLight;
+using NewBankShared.Localization;
 
 namespace NewBankWpfClient.ViewModels
 {

@@ -3,9 +3,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
 using Grpc.Net.Client;
-using NewBankClientGrpc;
-using NewBankClientGrpc.Localization;
 using NewBankServer.Protos;
+using NewBankShared.Localization;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -44,10 +43,9 @@ namespace NewBankWpfClient.ViewModels
     {
       this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance;
-      DetailsVisible = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
-      if (detailsVisible)
-        UpdateAccountDetails();
+      SetVisibility();
     }
+
     public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
     public string BalanceLabel => $"{new BalanceLabelTranslatable()}:";
     public string DepositLabel => new DepositCommandTranslatable();
@@ -70,6 +68,21 @@ namespace NewBankWpfClient.ViewModels
     {
       get => detailsVisible;
       set => Set(ref detailsVisible, value);
+    }
+
+    private void SetVisibility()
+    {
+      try
+      {
+        DetailsVisible = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
+      }
+      catch (RpcException rex)
+      {
+        DetailsVisible = false;
+        MessageBox.Show(new ErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      if (DetailsVisible)
+        UpdateAccountDetails();
     }
 
     private void UpdateAccountDetails()

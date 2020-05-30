@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
-using NewBankClientGrpc;
-using NewBankClientGrpc.Localization;
+using NewBankShared.Localization;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -10,7 +9,6 @@ namespace NewBankWpfClient.ViewModels
 {
   public class UserDetailsViewModel : ViewModelBase
   {
-    private readonly ServiceClient serviceClient;
     private readonly SessionInstance sessionInstance;
     private string firstName;
     private string lastName;
@@ -18,9 +16,8 @@ namespace NewBankWpfClient.ViewModels
     private string accountType;
     private bool detailsVisible;
 
-    public UserDetailsViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
+    public UserDetailsViewModel(SessionInstance sessionInstance)
     {
-      this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
       DetailsVisible = sessionInstance.CurrentUser != null;
       if (sessionInstance.CurrentUser != null)

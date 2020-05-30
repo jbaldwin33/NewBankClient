@@ -29,15 +29,80 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
+    <ROW Directory="CommonFiles64Folder" Directory_Parent="TARGETDIR" DefaultDir="COMMON~1|CommonFiles64Folder" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{3AA428A8-F490-4768-846A-C2848F6DEB23}" Directory_="APPDIR" Attributes="0"/>
+    <ROW Component="ControlzEx.dll" ComponentId="{F16B9738-E844-443A-80B0-FB31CB70CD77}" Directory_="APPDIR" Attributes="0" KeyPath="ControlzEx.dll"/>
+    <ROW Component="GalaSoft.MvvmLight.dll" ComponentId="{982FE203-33A9-4DA5-87B5-1101A6E20421}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="GalaSoft.MvvmLight.dll"/>
+    <ROW Component="GalaSoft.MvvmLight.dll_1" ComponentId="{3FC8A31C-1D65-4906-B240-CC495BC1D2EB}" Directory_="APPDIR" Attributes="0" KeyPath="GalaSoft.MvvmLight.dll_1"/>
+    <ROW Component="Google.Protobuf.dll" ComponentId="{2CC43C94-C46B-41EE-8FA6-D0098999308C}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Google.Protobuf.dll"/>
+    <ROW Component="Google.Protobuf.dll_1" ComponentId="{4A366189-D15D-4AB0-B945-4CCCC432F8FF}" Directory_="APPDIR" Attributes="0" KeyPath="Google.Protobuf.dll_1"/>
+    <ROW Component="Grpc.AspNetCore.Server.ClientFactory.dll" ComponentId="{6B793EC5-C0D8-40EF-B68B-672E573157FE}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Grpc.AspNetCore.Server.ClientFactory.dll"/>
+    <ROW Component="Grpc.AspNetCore.Server.ClientFactory.dll_1" ComponentId="{B82957D1-86BA-45DB-B1C0-077B63C4EB2A}" Directory_="APPDIR" Attributes="0" KeyPath="Grpc.AspNetCore.Server.ClientFactory.dll_1"/>
+    <ROW Component="Grpc.AspNetCore.Server.dll" ComponentId="{B40BA4AC-A065-429F-B9E5-24DA7B25AF9E}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Grpc.AspNetCore.Server.dll"/>
+    <ROW Component="Grpc.AspNetCore.Server.dll_1" ComponentId="{93F8B050-6CDE-40BE-A005-2874AB72E851}" Directory_="APPDIR" Attributes="0" KeyPath="Grpc.AspNetCore.Server.dll_1"/>
+    <ROW Component="Grpc.Core.Api.dll" ComponentId="{D31F81D5-8EAF-4D9A-BDE1-C1AF19A49C21}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Grpc.Core.Api.dll"/>
+    <ROW Component="Grpc.Core.Api.dll_1" ComponentId="{65CE330A-E3CC-441E-A823-11E4DC247163}" Directory_="APPDIR" Attributes="0" KeyPath="Grpc.Core.Api.dll_1"/>
+    <ROW Component="Grpc.Net.Client.dll" ComponentId="{FFDAA556-6E4F-4541-85E5-D8E206E77357}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Grpc.Net.Client.dll"/>
+    <ROW Component="Grpc.Net.Client.dll_1" ComponentId="{DB903DA9-35B4-4B42-A8A5-D43ED777BF21}" Directory_="APPDIR" Attributes="0" KeyPath="Grpc.Net.Client.dll_1"/>
+    <ROW Component="Grpc.Net.ClientFactory.dll" ComponentId="{D180FC8C-3EA5-47CD-9C51-C02E6123E438}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Grpc.Net.ClientFactory.dll"/>
+    <ROW Component="Grpc.Net.ClientFactory.dll_1" ComponentId="{34A3F58C-5316-4FBF-96F5-59B74743F86A}" Directory_="APPDIR" Attributes="0" KeyPath="Grpc.Net.ClientFactory.dll_1"/>
+    <ROW Component="Grpc.Net.Common.dll" ComponentId="{C9CC6520-83C5-4742-B790-59F8AE2A8169}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Grpc.Net.Common.dll"/>
+    <ROW Component="Grpc.Net.Common.dll_1" ComponentId="{2EC582D6-9BD0-4127-86BE-4FA43A5825D2}" Directory_="APPDIR" Attributes="0" KeyPath="Grpc.Net.Common.dll_1"/>
+    <ROW Component="Localization.xml" ComponentId="{D901934D-6FC8-424B-88DD-3F640D528D72}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Localization.xml" Type="0"/>
+    <ROW Component="Localization.xml_1" ComponentId="{8A105D94-276D-4674-B859-41EB8D729DA9}" Directory_="APPDIR" Attributes="0" KeyPath="Localization.xml_1" Type="0"/>
+    <ROW Component="MahApps.Metro.dll" ComponentId="{06846EE0-DEE4-475D-9C8D-15173514FB56}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="MahApps.Metro.dll"/>
+    <ROW Component="MahApps.Metro.dll_1" ComponentId="{1B8A1D94-9109-4662-B0E0-B5EE398997AA}" Directory_="APPDIR" Attributes="0" KeyPath="MahApps.Metro.dll_1"/>
+    <ROW Component="Microsoft.Xaml.Behaviors.dll" ComponentId="{61D8507B-5DEA-4ECB-A126-5DF0BF1A369E}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="Microsoft.Xaml.Behaviors.dll"/>
+    <ROW Component="Microsoft.Xaml.Behaviors.dll_1" ComponentId="{96A1AFAC-7D32-4039-82BC-0C8FBB97E2F3}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Xaml.Behaviors.dll_1"/>
+    <ROW Component="NewBankClientGrpc.dll" ComponentId="{BCA81845-9ED1-4AC4-9E13-E5F909D3C8E4}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="NewBankClientGrpc.dll"/>
+    <ROW Component="NewBankClientGrpc.dll_1" ComponentId="{E84C88D0-D35D-45C7-A5CF-5130FE49BF3B}" Directory_="APPDIR" Attributes="0" KeyPath="NewBankClientGrpc.dll_1"/>
+    <ROW Component="NewBankWpfClient.dll" ComponentId="{A0C6EC96-9AFF-4E1F-9C42-A3D9D5C9F9E9}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="NewBankWpfClient.dll"/>
+    <ROW Component="NewBankWpfClient.dll_1" ComponentId="{0F8B998F-654D-4EBE-8938-9F8A9904CBC1}" Directory_="APPDIR" Attributes="0" KeyPath="NewBankWpfClient.dll_1"/>
+    <ROW Component="NewBankWpfClient.exe" ComponentId="{4E2E3E27-2135-4280-AED4-A1E47F5EAD71}" Directory_="CommonFiles64Folder" Attributes="256" KeyPath="NewBankWpfClient.exe"/>
+    <ROW Component="NewBankWpfClient.exe_1" ComponentId="{6E7E311D-4D12-497F-BEF9-B61BD09CC46A}" Directory_="APPDIR" Attributes="256" KeyPath="NewBankWpfClient.exe_1"/>
     <ROW Component="ProductInformation" ComponentId="{B0567A39-7BDF-477E-AC4D-4E6365D4B9FD}" Directory_="APPDIR" Attributes="260" KeyPath="Version"/>
+    <ROW Component="System.Text.Json.dll" ComponentId="{510D9A42-30FB-4D4C-8B7D-36D98301B1E7}" Directory_="CommonFiles64Folder" Attributes="0" KeyPath="System.Text.Json.dll"/>
+    <ROW Component="System.Text.Json.dll_1" ComponentId="{D4E5EDBA-E2B7-40B2-A754-A191F2A3BB48}" Directory_="APPDIR" Attributes="0" KeyPath="System.Text.Json.dll_1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
+    <ROW File="Localization.xml" Component_="Localization.xml" FileName="LOCALI~1.XML|Localization.xml" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Localization.xml" SelfReg="false"/>
+    <ROW File="NewBankClientGrpc.dll" Component_="NewBankClientGrpc.dll" FileName="NEWBAN~1.DLL|NewBankClientGrpc.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\NewBankClientGrpc.dll" SelfReg="false"/>
+    <ROW File="GalaSoft.MvvmLight.dll" Component_="GalaSoft.MvvmLight.dll" FileName="GALASO~1.DLL|GalaSoft.MvvmLight.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\GalaSoft.MvvmLight.dll" SelfReg="false"/>
+    <ROW File="Google.Protobuf.dll" Component_="Google.Protobuf.dll" FileName="GOOGLE~1.DLL|Google.Protobuf.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Google.Protobuf.dll" SelfReg="false"/>
+    <ROW File="Grpc.AspNetCore.Server.ClientFactory.dll" Component_="Grpc.AspNetCore.Server.ClientFactory.dll" FileName="GRPCAS~1.DLL|Grpc.AspNetCore.Server.ClientFactory.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.AspNetCore.Server.ClientFactory.dll" SelfReg="false"/>
+    <ROW File="Grpc.AspNetCore.Server.dll" Component_="Grpc.AspNetCore.Server.dll" FileName="GRPCAS~2.DLL|Grpc.AspNetCore.Server.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.AspNetCore.Server.dll" SelfReg="false"/>
+    <ROW File="Grpc.Core.Api.dll" Component_="Grpc.Core.Api.dll" FileName="GRPCCO~1.DLL|Grpc.Core.Api.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Core.Api.dll" SelfReg="false"/>
+    <ROW File="Grpc.Net.Client.dll" Component_="Grpc.Net.Client.dll" FileName="GRPCNE~1.DLL|Grpc.Net.Client.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Net.Client.dll" SelfReg="false"/>
+    <ROW File="Grpc.Net.ClientFactory.dll" Component_="Grpc.Net.ClientFactory.dll" FileName="GRPCNE~2.DLL|Grpc.Net.ClientFactory.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Net.ClientFactory.dll" SelfReg="false"/>
+    <ROW File="Grpc.Net.Common.dll" Component_="Grpc.Net.Common.dll" FileName="GRPCNE~3.DLL|Grpc.Net.Common.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Net.Common.dll" SelfReg="false"/>
+    <ROW File="MahApps.Metro.dll" Component_="MahApps.Metro.dll" FileName="MAHAPP~1.DLL|MahApps.Metro.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\MahApps.Metro.dll" SelfReg="false"/>
+    <ROW File="Microsoft.Xaml.Behaviors.dll" Component_="Microsoft.Xaml.Behaviors.dll" FileName="MICROS~1.DLL|Microsoft.Xaml.Behaviors.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Microsoft.Xaml.Behaviors.dll" SelfReg="false"/>
+    <ROW File="NewBankWpfClient.dll" Component_="NewBankWpfClient.dll" FileName="NEWBAN~2.DLL|NewBankWpfClient.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\NewBankWpfClient.dll" SelfReg="false"/>
+    <ROW File="System.Text.Json.dll" Component_="System.Text.Json.dll" FileName="SYSTEM~1.DLL|System.Text.Json.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\System.Text.Json.dll" SelfReg="false"/>
+    <ROW File="NewBankWpfClient.exe" Component_="NewBankWpfClient.exe" FileName="NEWBAN~1.EXE|NewBankWpfClient.exe" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\NewBankWpfClient.exe" SelfReg="false" DigSign="true"/>
+    <ROW File="ControlzEx.dll" Component_="ControlzEx.dll" FileName="CONTRO~1.DLL|ControlzEx.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\ControlzEx.dll" SelfReg="false"/>
+    <ROW File="GalaSoft.MvvmLight.dll_1" Component_="GalaSoft.MvvmLight.dll_1" FileName="GALASO~1.DLL|GalaSoft.MvvmLight.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\GalaSoft.MvvmLight.dll" SelfReg="false"/>
+    <ROW File="Google.Protobuf.dll_1" Component_="Google.Protobuf.dll_1" FileName="GOOGLE~1.DLL|Google.Protobuf.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Google.Protobuf.dll" SelfReg="false"/>
+    <ROW File="Grpc.AspNetCore.Server.ClientFactory.dll_1" Component_="Grpc.AspNetCore.Server.ClientFactory.dll_1" FileName="GRPCAS~1.DLL|Grpc.AspNetCore.Server.ClientFactory.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.AspNetCore.Server.ClientFactory.dll" SelfReg="false"/>
+    <ROW File="Grpc.AspNetCore.Server.dll_1" Component_="Grpc.AspNetCore.Server.dll_1" FileName="GRPCAS~2.DLL|Grpc.AspNetCore.Server.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.AspNetCore.Server.dll" SelfReg="false"/>
+    <ROW File="Grpc.Core.Api.dll_1" Component_="Grpc.Core.Api.dll_1" FileName="GRPCCO~1.DLL|Grpc.Core.Api.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Core.Api.dll" SelfReg="false"/>
+    <ROW File="Grpc.Net.Client.dll_1" Component_="Grpc.Net.Client.dll_1" FileName="GRPCNE~1.DLL|Grpc.Net.Client.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Net.Client.dll" SelfReg="false"/>
+    <ROW File="Grpc.Net.ClientFactory.dll_1" Component_="Grpc.Net.ClientFactory.dll_1" FileName="GRPCNE~2.DLL|Grpc.Net.ClientFactory.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Net.ClientFactory.dll" SelfReg="false"/>
+    <ROW File="Grpc.Net.Common.dll_1" Component_="Grpc.Net.Common.dll_1" FileName="GRPCNE~3.DLL|Grpc.Net.Common.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Grpc.Net.Common.dll" SelfReg="false"/>
+    <ROW File="Localization.xml_1" Component_="Localization.xml_1" FileName="LOCALI~1.XML|Localization.xml" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Localization.xml" SelfReg="false"/>
+    <ROW File="MahApps.Metro.dll_1" Component_="MahApps.Metro.dll_1" FileName="MAHAPP~1.DLL|MahApps.Metro.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\MahApps.Metro.dll" SelfReg="false"/>
+    <ROW File="Microsoft.Xaml.Behaviors.dll_1" Component_="Microsoft.Xaml.Behaviors.dll_1" FileName="MICROS~1.DLL|Microsoft.Xaml.Behaviors.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\Microsoft.Xaml.Behaviors.dll" SelfReg="false"/>
+    <ROW File="NewBankClientGrpc.dll_1" Component_="NewBankClientGrpc.dll_1" FileName="NEWBAN~1.DLL|NewBankClientGrpc.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\NewBankClientGrpc.dll" SelfReg="false"/>
+    <ROW File="NewBankWpfClient.dll_1" Component_="NewBankWpfClient.dll_1" FileName="NEWBAN~2.DLL|NewBankWpfClient.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\NewBankWpfClient.dll" SelfReg="false"/>
+    <ROW File="System.Text.Json.dll_1" Component_="System.Text.Json.dll_1" FileName="SYSTEM~1.DLL|System.Text.Json.dll" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\System.Text.Json.dll" SelfReg="false"/>
+    <ROW File="NewBankWpfClient.exe_1" Component_="NewBankWpfClient.exe_1" FileName="NEWBAN~1.EXE|NewBankWpfClient.exe" Attributes="0" SourcePath="..\NewBankWpfClient\bin\Debug\netcoreapp3.1\NewBankWpfClient.exe" SelfReg="false" DigSign="true"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -115,6 +180,37 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
+    <ROW Feature_="MainFeature" Component_="Localization.xml"/>
+    <ROW Feature_="MainFeature" Component_="NewBankClientGrpc.dll"/>
+    <ROW Feature_="MainFeature" Component_="GalaSoft.MvvmLight.dll"/>
+    <ROW Feature_="MainFeature" Component_="Google.Protobuf.dll"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.AspNetCore.Server.ClientFactory.dll"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.AspNetCore.Server.dll"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Core.Api.dll"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Net.Client.dll"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Net.ClientFactory.dll"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Net.Common.dll"/>
+    <ROW Feature_="MainFeature" Component_="MahApps.Metro.dll"/>
+    <ROW Feature_="MainFeature" Component_="Microsoft.Xaml.Behaviors.dll"/>
+    <ROW Feature_="MainFeature" Component_="NewBankWpfClient.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Text.Json.dll"/>
+    <ROW Feature_="MainFeature" Component_="NewBankWpfClient.exe"/>
+    <ROW Feature_="MainFeature" Component_="ControlzEx.dll"/>
+    <ROW Feature_="MainFeature" Component_="GalaSoft.MvvmLight.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Google.Protobuf.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.AspNetCore.Server.ClientFactory.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.AspNetCore.Server.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Core.Api.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Net.Client.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Net.ClientFactory.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Grpc.Net.Common.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Localization.xml_1"/>
+    <ROW Feature_="MainFeature" Component_="MahApps.Metro.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="Microsoft.Xaml.Behaviors.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="NewBankClientGrpc.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="NewBankWpfClient.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="System.Text.Json.dll_1"/>
+    <ROW Feature_="MainFeature" Component_="NewBankWpfClient.exe_1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>

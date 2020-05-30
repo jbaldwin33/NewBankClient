@@ -9,6 +9,7 @@ using static NewBankWpfClient.Models.Enums;
 using NewBankWpfClient.Utilities;
 using NewBankServer.Protos;
 using Grpc.Net.Client;
+using System.Security;
 
 namespace NewBankWpfClient.Models
 {
@@ -24,11 +25,11 @@ namespace NewBankWpfClient.Models
     public UserEnum UserType { get; set; }
 
     public UserModel() { }
-    public UserModel(string username, string password, string firstName, string lastName, UserEnum userType)
+    public UserModel(string username, SecureString password, string firstName, string lastName, UserEnum userType)
     {
       Username = username;
-      PasswordSalt = SecurePassword.CreateSalt();
-      PasswordHash = new SecurePassword(password, PasswordSalt).ComputeSaltedHash();
+      PasswordSalt = SecurePasswordUtility.CreateSalt();
+      PasswordHash = new SecurePasswordUtility(password, PasswordSalt).ComputeSaltedHash();
       FirstName = firstName;
       LastName = lastName;
       UserType = userType;

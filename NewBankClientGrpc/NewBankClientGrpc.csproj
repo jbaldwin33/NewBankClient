@@ -5,6 +5,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
@@ -23,8 +27,5 @@
     <Protobuf Include="Protos\sessionCRUD.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\transaction.proto" GrpcServices="Client" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y &quot;E:\VSProjects\NewBankClient\assemblies\*&quot; &quot;E:\VSProjects\NewBankClient\NewBankWpfClient\bin\Debug\netcoreapp3.1&quot;&#xD;&#xA;" />
-  </Target>
 
 </Project>

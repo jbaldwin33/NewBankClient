@@ -12,7 +12,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Windows.Input;
 using System.Windows.Media;
-using NewBankClientGrpc;
+using NewBankShared.Localization;
 
 namespace NewBankWpfClient.Navigators
 {
@@ -181,7 +181,7 @@ namespace NewBankWpfClient.Navigators
         {
           ViewType.Home => new HomeViewModel(),
           ViewType.Account => new AccountViewModel(navigator.SessionInstance, navigator.ServiceClient),
-          ViewType.UserDetails=> new UserDetailsViewModel(navigator.SessionInstance, navigator.ServiceClient),
+          ViewType.UserDetails=> new UserDetailsViewModel(navigator.SessionInstance),
           ViewType.LogIn => new LoginViewModel(navigator.SessionInstance, navigator.ServiceClient),
           ViewType.SignUp => new SignUpViewModel(navigator.SessionInstance, navigator.ServiceClient),
           ViewType.Transactions => new TransactionLogsViewModel(navigator.SessionInstance, navigator.ServiceClient),

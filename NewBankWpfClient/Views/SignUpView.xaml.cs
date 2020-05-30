@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewBankWpfClient.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -22,5 +23,12 @@ namespace NewBankWpfClient.Views
     {
       InitializeComponent();
     }
+
+    private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+    {
+      var pBox = sender as PasswordBox;
+      PasswordBoxMVVMAttachedProperties.SetEncryptedPassword(pBox, pBox.SecurePassword);
+    }
+
   }
 }

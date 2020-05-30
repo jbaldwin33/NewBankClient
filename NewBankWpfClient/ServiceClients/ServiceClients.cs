@@ -51,7 +51,13 @@ namespace NewBankWpfClient.ServiceClients
         SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
       });
-      channel = GrpcChannel.ForAddress("https://192.168.0.10:443", new GrpcChannelOptions//"https://192.168.44.128:443", new GrpcChannelOptions
+      string uri = string.Empty;
+#if DEBUG
+      uri = "https://localhost:5001";
+#else
+      uri = "https://67.191.204.48:443";
+#endif
+      channel = GrpcChannel.ForAddress(uri, new GrpcChannelOptions//"https://192.168.44.128:443", new GrpcChannelOptions
       {
         HttpClient = httpClient
       });

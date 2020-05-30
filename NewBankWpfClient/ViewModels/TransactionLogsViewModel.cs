@@ -1,8 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using Grpc.Core;
-using NewBankClientGrpc;
-using NewBankClientGrpc.Localization;
 using NewBankServer.Protos;
+using NewBankShared;
+using NewBankShared.Localization;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
 using System;
@@ -76,9 +76,9 @@ namespace NewBankWpfClient.ViewModels
 
     public async Task GetTransactions()
     {
-      using var logs = serviceClient.TransactionCRUDClient.GetAllUserTransactions(new GetAllUserTransactionsRequest { UserId = sessionInstance.CurrentUser.ID.ToString() });
       try
       {
+        using var logs = serviceClient.TransactionCRUDClient.GetAllUserTransactions(new GetAllUserTransactionsRequest { UserId = sessionInstance.CurrentUser.ID.ToString() });
         await foreach (var transaction in logs.ResponseStream.ReadAllAsync())
           Transactions.Add(new TransactionViewModel(transaction.TransactionCreatedTime.ToDateTime(), transaction.Amount, transaction.TransactionType.ToString(), transaction.Message));
       }

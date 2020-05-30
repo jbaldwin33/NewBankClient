@@ -2,9 +2,8 @@
 using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
 using Grpc.Net.Client;
-using NewBankClientGrpc;
-using NewBankClientGrpc.Localization;
 using NewBankServer.Protos;
+using NewBankShared.Localization;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -12,6 +11,7 @@ using NewBankWpfClient.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,7 +24,7 @@ namespace NewBankWpfClient.ViewModels
     private readonly ServiceClient serviceClient;
     private readonly SessionInstance sessionInstance;
     private string username;
-    private string password;
+    private SecureString securePassword;
     private RelayCommand loginCommand;
     private RelayCommand logoutCommand;
     private bool loggedIn;
@@ -34,8 +34,7 @@ namespace NewBankWpfClient.ViewModels
     {
       this.serviceClient = serviceClient;
       this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
-
-      LoggedIn = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
+      CheckValidity();
     }
 
     public string LoginLabel => new LoginLabelTranslatable();
@@ -49,10 +48,10 @@ namespace NewBankWpfClient.ViewModels
       set => Set(ref username, value);
     }
 
-    public string Password
+    public SecureString SecurePassword
     {
-      get => password;
-      set => Set(ref password, value);
+      get => securePassword;
+      set => Set(ref securePassword, value);
     }
 
     public bool LoggedIn
@@ -72,12 +71,25 @@ namespace NewBankWpfClient.ViewModels
     public RelayCommand LoginCommand => loginCommand ??= new RelayCommand(LoginCommandExecute);
     public RelayCommand LogoutCommand => logoutCommand ??= new RelayCommand(LogoutCommandExecute);
 
+    private void CheckValidity()
+    {
+      try
+      {
+        LoggedIn = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
+      }
+      catch (RpcException rex)
+      {
+        LoggedIn = false;
+        MessageBox.Show(new ErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+    }
+
     private void LoginCommandExecute()
     {
       if (!InputIsValid(out User user))
         return;
 
-      var hash = new SecurePassword(password, user.PasswordSalt).ComputeSaltedHash();
+      var hash = new SecurePasswordUtility(securePassword, user.PasswordSalt).ComputeSaltedHash();
       if (hash == user.PasswordHash)
       {
         try
@@ -106,20 +118,24 @@ namespace NewBankWpfClient.ViewModels
 
     private bool InputIsValid(out User user)
     {
+      User foundUser = null;
+
       Translatable errorMessage = null;
       if (string.IsNullOrEmpty(username))
         errorMessage = new UsernameEmptyTranslatable();
-      else if (string.IsNullOrEmpty(password))
+      else if (securePassword == null)
         errorMessage = new PasswordEmptyTranslatable();
+      else
+      {
 
-      User foundUser = null;
-      try
-      {
-        foundUser = serviceClient.UserCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
-      }
-      catch (RpcException rex) when (rex.StatusCode == StatusCode.NotFound)
-      {
-        errorMessage = new UsernameDoesNotExistTranslatable();
+        try
+        {
+          foundUser = serviceClient.UserCRUDClient.GetByFilter(new UserFilter { Username = username }).Items.FirstOrDefault();
+        }
+        catch (RpcException rex) when (rex.StatusCode == StatusCode.NotFound)
+        {
+          errorMessage = new UsernameDoesNotExistTranslatable();
+        }
       }
       user = foundUser;
       if (errorMessage == null)

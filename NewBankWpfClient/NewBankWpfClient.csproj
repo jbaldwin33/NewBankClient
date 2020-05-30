@@ -9,7 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.28.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.29.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.29.0" />
     <PackageReference Include="Grpc.Tools" Version="2.28.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,6 +23,9 @@
   <ItemGroup>
     <Reference Include="NewBankClientGrpc">
       <HintPath>..\NewBankClientGrpc\obj\Debug\netcoreapp3.1\NewBankClientGrpc.dll</HintPath>
+    </Reference>
+    <Reference Include="NewBankShared">
+      <HintPath>..\..\NewBankShared\NewBankShared\bin\Debug\netcoreapp3.1\NewBankShared.dll</HintPath>
     </Reference>
   </ItemGroup>
   
