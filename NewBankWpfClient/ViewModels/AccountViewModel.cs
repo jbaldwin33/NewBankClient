@@ -3,7 +3,9 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
 using Grpc.Net.Client;
-using NewBankClientGrpc.Protos;
+using NewBankClientGrpc;
+using NewBankClientGrpc.Localization;
+using NewBankServer.Protos;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -47,6 +49,10 @@ namespace NewBankWpfClient.ViewModels
         UpdateAccountDetails();
     }
 
+    public Translatable DepositLabel => new DepositCommandTranslatable();
+    public Translatable WithdrawLabel => new WithdrawCommandTranslatable();
+    public Translatable TransferLabel => new TransferCommandTranslatable();
+
     public double Balance
     {
       get => balance;
@@ -75,7 +81,7 @@ namespace NewBankWpfClient.ViewModels
       }
       catch (RpcException rex)
       {
-        MessageBox.Show($"Failed to get account details: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(new FailedToGetAccountDetailsErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
 
@@ -122,7 +128,7 @@ namespace NewBankWpfClient.ViewModels
       if (e.Amount < 1)
       {
         failed = true;
-        MessageBox.Show("Please enter an amount greater than 0");
+        MessageBox.Show(new AmountGreaterThanZeroTranslatable());
       }
       else
       {
@@ -136,7 +142,7 @@ namespace NewBankWpfClient.ViewModels
             }
             catch (RpcException rex)
             {
-              MessageBox.Show($"Operation failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+              MessageBox.Show(new OperationFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             break;
           case CommandEnum.Withdraw:
@@ -147,7 +153,7 @@ namespace NewBankWpfClient.ViewModels
             }
             catch (RpcException rex)
             {
-              MessageBox.Show($"Operation failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+              MessageBox.Show(new OperationFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             break;
           case CommandEnum.Transfer:
@@ -157,7 +163,7 @@ namespace NewBankWpfClient.ViewModels
               if (string.IsNullOrEmpty(e.Username))
               {
                 failed = true;
-                MessageBox.Show("Please enter a user to transfer funds to", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(new EnterUserForTransferTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
               }
               else
               {
@@ -167,7 +173,7 @@ namespace NewBankWpfClient.ViewModels
             catch (RpcException rex)
             {
               failed = true;
-              MessageBox.Show($"Transfer failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+              MessageBox.Show(new TransferFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             break;
           default:

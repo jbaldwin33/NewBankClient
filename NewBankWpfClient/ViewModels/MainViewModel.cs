@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
 using NewBankWpfClient.Views;

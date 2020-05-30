@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static NewBankWpfClient.Models.Enums;
 using NewBankWpfClient.Utilities;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 using Grpc.Net.Client;
 
 namespace NewBankWpfClient.Models

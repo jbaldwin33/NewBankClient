@@ -1,9 +1,13 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
-using NewBankClientGrpc.Protos;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using NewBankServer.Protos;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Net.Security;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -39,23 +43,18 @@ namespace NewBankWpfClient.ServiceClients
       //  Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
       //});
 
-      AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
-      AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-
       string s = GetRootCertificates();
       var channel_creds = new SslCredentials(s);
 
-      var httpClientHandler = new HttpClientHandler();
-      // Return `true` to allow certificates that are untrusted/invalid
-      httpClientHandler.ServerCertificateCustomValidationCallback =
-          HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-      var httpClient = new HttpClient(httpClientHandler) 
+      var httpClient = new HttpClient(new HttpClientHandler
       {
-        DefaultRequestVersion = new Version(2, 0)
-      };
-
-      channel = GrpcChannel.ForAddress("https://mywebserver.hopto.org:443", new GrpcChannelOptions { HttpClient = httpClient });
-      //channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions { Credentials = new SslCredentials() });
+        SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+      });
+      channel = GrpcChannel.ForAddress("https://192.168.0.10:443", new GrpcChannelOptions//"https://192.168.44.128:443", new GrpcChannelOptions
+      {
+        HttpClient = httpClient
+      });
     }
 
     public static string GetRootCertificates()

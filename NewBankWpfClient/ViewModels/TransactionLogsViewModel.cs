@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using Grpc.Core;
-using NewBankClientGrpc.Protos;
+using NewBankClientGrpc;
+using NewBankServer.Protos;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
 using System;
@@ -80,7 +81,7 @@ namespace NewBankWpfClient.ViewModels
       }
       catch (RpcException rex)
       {
-        MessageBox.Show($"Failed to get transactions: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(new FailedToGetTransactionsErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
   }

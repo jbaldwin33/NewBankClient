@@ -2,7 +2,8 @@
 using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
 using Grpc.Net.Client;
-using NewBankClientGrpc.Protos;
+using NewBankClientGrpc;
+using NewBankServer.Protos;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -77,7 +78,7 @@ namespace NewBankWpfClient.ViewModels
         //user doesn't exist
       }
       if (user == null)
-        MessageBox.Show("This username does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(new UsernameDoesNotExistTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
       else
       {
         var hash = new SecurePassword(password, user.PasswordSalt).ComputeSaltedHash();
@@ -98,11 +99,11 @@ namespace NewBankWpfClient.ViewModels
             sessionInstance.CurrentAccount = AccountModel.ConvertAccount(account);
             LoggedIn = true;
 
-            MessageBox.Show("Log in successful.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(new LoginSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
           }
           catch (RpcException rex)
           {
-            MessageBox.Show($"Log in failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(new LoginFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
           }
         }
       }
@@ -116,11 +117,11 @@ namespace NewBankWpfClient.ViewModels
         sessionInstance.CurrentUser = null;
         sessionInstance.SessionID = Guid.Empty;
         LoggedIn = false;
-        MessageBox.Show("Log out successful.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        MessageBox.Show(new LogoutSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
       }
       catch (RpcException rex)
       {
-        MessageBox.Show($"Log in failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(new LogoutFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
   }

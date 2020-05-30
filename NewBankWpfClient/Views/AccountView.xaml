@@ -23,13 +23,13 @@
       <TextBlock Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2">
-      <Button Content="Deposit" Command="{Binding DepositCommand}"/>
+      <Button Content="{Binding DepositLabel}" Command="{Binding DepositCommand}"/>
     </StackPanel>
     <StackPanel Grid.Row="3">
-      <Button Content="Withdraw" Command="{Binding WithdrawCommand}"/>
+      <Button Content="{Binding WithdrawLabel}" Command="{Binding WithdrawCommand}"/>
     </StackPanel>
     <StackPanel Grid.Row="4">
-      <Button Content="Transfer" Command="{Binding TransferCommand}"/>
+      <Button Content="{Binding TransferLabel}" Command="{Binding TransferCommand}"/>
     </StackPanel>
   </Grid>
 </UserControl>

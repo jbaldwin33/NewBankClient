@@ -1,5 +1,5 @@
 ﻿using Grpc.Core;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 using NewBankWpfClient.ServiceClients;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 using Grpc.Net.Client;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +13,7 @@ namespace NewBankWpfClient.Factories
   }
   public class ServiceFactory : IServiceFactory
   {
-    private readonly GrpcChannel channel = GrpcChannel.ForAddress("https://192.168.0.18:5001");
+    private readonly GrpcChannel channel = GrpcChannel.ForAddress("https://mywebserver.hopto.org:443");
     public object GetService(Type serviceType)
     {
       if (serviceType == typeof(AccountCRUD.AccountCRUDClient))

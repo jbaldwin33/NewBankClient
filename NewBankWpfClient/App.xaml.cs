@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using Grpc.Net.Client;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 using NewBankWpfClient.ViewModels;
 using NewBankWpfClient.Views;
 using NewBankWpfClient.ServiceClients;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewBankWpfClient.Navigators;
+using NewBankWpfClient.Properties;
 
 namespace NewBankWpfClient
 {
@@ -37,7 +39,8 @@ namespace NewBankWpfClient
     {
       navigator = new Navigator(new SessionInstance(null, null, Guid.Empty), ServiceClient.Instance);
       ServiceClient.Instance.CreateClients();
-      
+
+      var t = new NewBankClientGrpc.WelcomeTranslatable();
     }
 
     protected override void OnExit(ExitEventArgs e)

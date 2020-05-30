@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.ServiceClients;
 using NewBankWpfClient.ViewModels;

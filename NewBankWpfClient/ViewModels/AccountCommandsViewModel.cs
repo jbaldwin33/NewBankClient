@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using NewBankClientGrpc;
+using NewBankClientGrpc.Localization;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -15,7 +17,7 @@ namespace NewBankWpfClient.ViewModels
     private string toUsername;
     private bool usernameVisible;
     private CommandEnum commandType;
-    private string questionText;
+    private Translatable questionText;
 
     private RelayCommand okCommand;
     private RelayCommand cancelCommand;
@@ -28,15 +30,15 @@ namespace NewBankWpfClient.ViewModels
       this.currentBalance = currentBalance;
       CommandType = command;
       UsernameVisible = command == CommandEnum.Transfer;
-      string text = string.Empty;
+      Translatable text = null;
       text = command switch
       {
-        CommandEnum.Deposit => "deposit",
-        CommandEnum.Withdraw => "withdraw",
-        CommandEnum.Transfer => "transfer",
+        CommandEnum.Deposit => new DepositTranslatable(),
+        CommandEnum.Withdraw => new WithdrawTranslatable(),
+        CommandEnum.Transfer => new TransferTranslatable(),
         _ => throw new NotSupportedException($"{command} is not supported"),
       };
-      QuestionText = $"How much would you like to {text}?";
+      QuestionText = new OperationQuestionTranslatable(text);
     }
 
     public double Amount
@@ -63,7 +65,7 @@ namespace NewBankWpfClient.ViewModels
       set => Set(ref commandType, value);
     }
 
-    public string QuestionText
+    public Translatable QuestionText
     {
       get => questionText;
       set => Set(ref questionText, value);

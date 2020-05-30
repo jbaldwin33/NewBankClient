@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
 using Grpc.Net.Client;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Navigators;
 using NewBankWpfClient.ServiceClients;
@@ -15,6 +15,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows;
 using static NewBankWpfClient.Models.Enums;
+using NewBankClientGrpc;
 
 namespace NewBankWpfClient.ViewModels
 {
@@ -38,8 +39,8 @@ namespace NewBankWpfClient.ViewModels
       SignUpDetailsVisible = !serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
       AccountTypes = new ObservableCollection<AccountTypeViewModel>
       {
-        new AccountTypeViewModel(AccountEnum.Checking, "Checking"),
-        new AccountTypeViewModel(AccountEnum.Saving, "Saving")
+        new AccountTypeViewModel(AccountEnum.Checking, new CheckingLabelTranslatable()),
+        new AccountTypeViewModel(AccountEnum.Saving, new SavingLabelTranslatable())
       };
     }
 
@@ -100,7 +101,7 @@ namespace NewBankWpfClient.ViewModels
       {
         var users = serviceClient.UserCRUDClient.GetUsers(new Empty());
         if (users.Items.Any(u => u.Username == username))
-          MessageBox.Show("This username already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+          MessageBox.Show(new UsernameAlreadyExistsTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
         else
         {
           var accountID = Guid.NewGuid();
@@ -129,12 +130,12 @@ namespace NewBankWpfClient.ViewModels
 
           serviceClient.CreationClient.SignUp(new SignUpRequest { Account = account, User = user });
 
-          MessageBox.Show("Sign up successful", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+          MessageBox.Show(new SignUpSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
         }
       }
       catch (RpcException rex)
       {
-        MessageBox.Show($"Sign up failed: {rex.Status.Detail}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(new SignUpFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
   }

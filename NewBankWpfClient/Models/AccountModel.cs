@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using static NewBankWpfClient.Models.Enums;
-using NewBankClientGrpc.Protos;
+using NewBankServer.Protos;
 
 namespace NewBankWpfClient.Models
 {

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "NewBankClientGrpc.Protos";
+option csharp_namespace = "NewBankServer.Protos";
 import "Protos/userCRUD.proto";
 import "Protos/accountCRUD.proto";
 

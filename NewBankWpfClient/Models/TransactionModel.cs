@@ -1,4 +1,4 @@
-﻿using NewBankClientGrpc.Protos;
+﻿using NewBankServer.Protos;
 using System;
 using System.Collections.Generic;
 using System.Text;
