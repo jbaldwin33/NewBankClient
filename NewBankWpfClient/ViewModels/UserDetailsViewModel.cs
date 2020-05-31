@@ -1,24 +1,22 @@
 ﻿using GalaSoft.MvvmLight;
 using NewBankShared.Localization;
 using NewBankWpfClient.Models;
-using NewBankWpfClient.Navigators;
-using NewBankWpfClient.ServiceClients;
+using NewBankWpfClient.Singletons;
 using System;
 
 namespace NewBankWpfClient.ViewModels
 {
   public class UserDetailsViewModel : ViewModelBase
   {
-    private readonly SessionInstance sessionInstance;
+    private readonly SessionInstance sessionInstance = SessionInstance.Instance;
     private string firstName;
     private string lastName;
     private string username;
     private string accountType;
     private bool detailsVisible;
 
-    public UserDetailsViewModel(SessionInstance sessionInstance)
+    public UserDetailsViewModel()
     {
-      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
       DetailsVisible = sessionInstance.CurrentUser != null;
       if (sessionInstance.CurrentUser != null)
         UpdateUserDetails();

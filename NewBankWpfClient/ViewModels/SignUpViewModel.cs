@@ -3,8 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Grpc.Core;
 using NewBankServer.Protos;
 using NewBankWpfClient.Models;
-using NewBankWpfClient.Navigators;
-using NewBankWpfClient.ServiceClients;
+using NewBankWpfClient.Singletons;
 using NewBankWpfClient.Utilities;
 using System;
 using System.Collections.ObjectModel;
@@ -25,14 +24,12 @@ namespace NewBankWpfClient.ViewModels
     private ObservableCollection<AccountTypeViewModel> accountTypes;
     private AccountEnum accountType;
     private RelayCommand signUpCommand;
-    private readonly ServiceClient serviceClient;
-    private readonly SessionInstance sessionInstance;
+    private readonly ServiceClient serviceClient = ServiceClient.Instance;
+    private readonly SessionInstance sessionInstance = SessionInstance.Instance;
     private bool signUpDetailsVisible;
 
-    public SignUpViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
+    public SignUpViewModel()
     {
-      this.serviceClient = serviceClient;
-      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
       SignUpDetailsVisible = sessionInstance.CurrentUser == null;
       AccountTypes = new ObservableCollection<AccountTypeViewModel>
       {

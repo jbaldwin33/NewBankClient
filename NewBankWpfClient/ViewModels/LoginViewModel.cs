@@ -5,8 +5,7 @@ using Grpc.Net.Client;
 using NewBankServer.Protos;
 using NewBankShared.Localization;
 using NewBankWpfClient.Models;
-using NewBankWpfClient.Navigators;
-using NewBankWpfClient.ServiceClients;
+using NewBankWpfClient.Singletons;
 using NewBankWpfClient.Utilities;
 using System;
 using System.Collections.Generic;
@@ -21,8 +20,8 @@ namespace NewBankWpfClient.ViewModels
 {
   public class LoginViewModel : ViewModelBase
   {
-    private readonly ServiceClient serviceClient;
-    private readonly SessionInstance sessionInstance;
+    private readonly ServiceClient serviceClient = ServiceClient.Instance;
+    private readonly SessionInstance sessionInstance = SessionInstance.Instance;
     private string username;
     private SecureString securePassword;
     private RelayCommand loginCommand;
@@ -30,10 +29,8 @@ namespace NewBankWpfClient.ViewModels
     private bool loggedIn;
 
 
-    public LoginViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
+    public LoginViewModel()
     {
-      this.serviceClient = serviceClient;
-      this.sessionInstance = sessionInstance ?? throw new ArgumentNullException(nameof(sessionInstance));
       LoggedIn = sessionInstance.CurrentUser != null;
     }
 

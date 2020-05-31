@@ -15,7 +15,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace NewBankWpfClient.ServiceClients
+namespace NewBankWpfClient.Singletons
 {
   public interface IServiceClient
   {
@@ -26,6 +26,8 @@ namespace NewBankWpfClient.ServiceClients
   public class ServiceClient : IServiceClient
   {
     private static readonly Lazy<ServiceClient> instance = new Lazy<ServiceClient>(() => new ServiceClient());
+    public static ServiceClient Instance => instance.Value;
+
     private readonly GrpcChannel channel;
 
     public ServiceClient()
@@ -90,10 +92,6 @@ namespace NewBankWpfClient.ServiceClients
 
       return builder.ToString();
     }
-
-
-    public static ServiceClient Instance => instance.Value;
-
 
     public UserCRUD.UserCRUDClient UserCRUDClient { get; internal set; }
     public AccountCRUD.AccountCRUDClient AccountCRUDClient { get; internal set; }

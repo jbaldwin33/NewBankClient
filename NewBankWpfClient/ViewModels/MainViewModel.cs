@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using NewBankServer.Protos;
-using NewBankWpfClient.Navigators;
-using NewBankWpfClient.ServiceClients;
+using NewBankWpfClient.Singletons;
 using NewBankWpfClient.Views;
 using Microsoft.Extensions.Options;
 

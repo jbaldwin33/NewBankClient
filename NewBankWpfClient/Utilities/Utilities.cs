@@ -1,15 +1,16 @@
-﻿using NewBankWpfClient.Navigators;
+﻿using NewBankWpfClient.Singletons;
 using System;
 
 namespace NewBankWpfClient.Utilities
 {
   public static class Utilities
   {
-    public static void SetPropertiesOnLogout(SessionInstance sessionInstance)
+    public static void SetPropertiesOnLogout()
     {
-      sessionInstance.CurrentAccount = null;
-      sessionInstance.CurrentUser = null;
-      sessionInstance.SessionID = Guid.Empty;
+      SessionInstance.Instance.CurrentAccount = null;
+      SessionInstance.Instance.CurrentUser = null;
+      SessionInstance.Instance.SessionID = Guid.Empty;
+      Navigator.Instance.UpdateCurrentViewModelCommand.Execute(ViewType.LogIn);
     }
   }
 }

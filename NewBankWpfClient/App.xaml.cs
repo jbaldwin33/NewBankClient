@@ -3,8 +3,7 @@ using System.Windows;
 using NewBankServer.Protos;
 using NewBankWpfClient.ViewModels;
 using NewBankWpfClient.Views;
-using NewBankWpfClient.ServiceClients;
-using NewBankWpfClient.Navigators;
+using NewBankWpfClient.Singletons;
 using Grpc.Core;
 using NewBankShared.Localization;
 
@@ -16,11 +15,10 @@ namespace NewBankWpfClient
 
   public partial class App : Application
   {
-    INavigator navigator;
     protected override void OnStartup(StartupEventArgs e)
     {
       Initialize();
-      var window = new MainWindow { DataContext = new MainViewModel(navigator) };
+      var window = new MainWindow { DataContext = new MainViewModel(Navigator.Instance) };
       window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
       window.Show();
       base.OnStartup(e);
@@ -28,7 +26,7 @@ namespace NewBankWpfClient
 
     private void Initialize()
     {
-      navigator = new Navigator(new SessionInstance(null, null, Guid.Empty), ServiceClient.Instance);
+      new Navigator();
       ServiceClient.Instance.CreateClients();
     }
 
@@ -36,15 +34,15 @@ namespace NewBankWpfClient
     {
       try
       {
-        if (navigator.SessionInstance.SessionID != Guid.Empty)
-          navigator.ServiceClient.SessionCRUDClient.RemoveSession(new SessionRequest { SessionId = navigator.SessionInstance.SessionID.ToString() });
+        if (SessionInstance.Instance.SessionID != Guid.Empty)
+          ServiceClient.Instance.SessionCRUDClient.RemoveSession(new SessionRequest { SessionId = SessionInstance.Instance.SessionID.ToString() });
       }
       catch(RpcException rex)
       {
         MessageBox.Show(new ErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
       }
 
-      navigator.ServiceClient.DisposeClients();
+      ServiceClient.Instance.DisposeClients();
       base.OnExit(e);
     }
   }

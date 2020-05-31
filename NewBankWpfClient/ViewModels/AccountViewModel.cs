@@ -4,8 +4,7 @@ using Grpc.Core;
 using NewBankServer.Protos;
 using NewBankShared.Localization;
 using NewBankWpfClient.Models;
-using NewBankWpfClient.Navigators;
-using NewBankWpfClient.ServiceClients;
+using NewBankWpfClient.Singletons;
 using NewBankWpfClient.Views;
 using System;
 using System.Windows;
@@ -23,8 +22,8 @@ namespace NewBankWpfClient.ViewModels
 
   public class AccountViewModel : ViewModelBase
   {
-    private readonly ServiceClient serviceClient;
-    private readonly SessionInstance sessionInstance;
+    private readonly ServiceClient serviceClient = ServiceClient.Instance;
+    private readonly SessionInstance sessionInstance = SessionInstance.Instance;
     private double balance;
     private AccountEnum accountType;
     private bool detailsVisible;
@@ -34,10 +33,8 @@ namespace NewBankWpfClient.ViewModels
 
     public event EventHandler OnModelDialogFinished;
 
-    public AccountViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
+    public AccountViewModel()
     {
-      this.serviceClient = serviceClient;
-      this.sessionInstance = sessionInstance;
       SetVisibility();
     }
 
@@ -157,7 +154,7 @@ namespace NewBankWpfClient.ViewModels
             catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
             {
               MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-              SetPropertiesOnLogout(sessionInstance);
+              SetPropertiesOnLogout();
             }
             catch (RpcException rex)
             {
@@ -178,7 +175,7 @@ namespace NewBankWpfClient.ViewModels
             catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
             {
               MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-              SetPropertiesOnLogout(sessionInstance);
+              SetPropertiesOnLogout();
             }
             catch (RpcException rex)
             {
@@ -208,7 +205,7 @@ namespace NewBankWpfClient.ViewModels
             catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
             {
               MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-              SetPropertiesOnLogout(sessionInstance);
+              SetPropertiesOnLogout();
             }
             catch (RpcException rex)
             {

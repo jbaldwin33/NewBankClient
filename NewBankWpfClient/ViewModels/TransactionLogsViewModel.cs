@@ -2,8 +2,7 @@
 using Grpc.Core;
 using NewBankServer.Protos;
 using NewBankShared.Localization;
-using NewBankWpfClient.Navigators;
-using NewBankWpfClient.ServiceClients;
+using NewBankWpfClient.Singletons;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -16,13 +15,11 @@ namespace NewBankWpfClient.ViewModels
   public class TransactionLogsViewModel : ViewModelBase
   {
     private ObservableCollection<TransactionViewModel> transactions;
-    private readonly SessionInstance sessionInstance;
-    private readonly ServiceClient serviceClient;
+    private readonly SessionInstance sessionInstance = SessionInstance.Instance;
+    private readonly ServiceClient serviceClient = ServiceClient.Instance;
 
-    public TransactionLogsViewModel(SessionInstance sessionInstance, ServiceClient serviceClient)
+    public TransactionLogsViewModel()
     {
-      this.sessionInstance = sessionInstance;
-      this.serviceClient = serviceClient;
       SortDirection = ListSortDirection.Descending;
       SortedProp = nameof(TransactionViewModel.CreatedDateTime);
       Transactions = new ObservableCollection<TransactionViewModel>();
@@ -84,7 +81,7 @@ namespace NewBankWpfClient.ViewModels
       catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
       {
         MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-        SetPropertiesOnLogout(sessionInstance);
+        SetPropertiesOnLogout();
       }
       catch (RpcException rex)
       {
