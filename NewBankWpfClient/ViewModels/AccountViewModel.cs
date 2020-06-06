@@ -75,11 +75,6 @@ namespace NewBankWpfClient.ViewModels
       }
       if (DetailsVisible)
         UpdateAccountDetails();
-      else
-      {
-        MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-        SetPropertiesOnLogout();
-      }
     }
 
     private void UpdateAccountDetails()

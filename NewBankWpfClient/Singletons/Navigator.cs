@@ -5,6 +5,8 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using NewBankShared.Localization;
+using System.Windows;
+using static NewBankWpfClient.Utilities.Utilities;
 
 namespace NewBankWpfClient.Singletons
 {
@@ -77,7 +79,7 @@ namespace NewBankWpfClient.Singletons
     protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
   }
 
-  
+
 
   public class UserChangedEventArgs : EventArgs
   {
@@ -102,19 +104,32 @@ namespace NewBankWpfClient.Singletons
 
     public void Execute(object parameter)
     {
+      var validSession = ServiceClient.Instance.SessionCRUDClient.IsValidSession(
+        new NewBankServer.Protos.SessionRequest
+        {
+          SessionId = SessionInstance.Instance.SessionID.ToString()
+        }).Valid;
       if (parameter is ViewType viewType)
       {
-        navigator.CurrentViewModel = viewType switch
+        navigator.CurrentViewModel = (viewType, validSession) switch
         {
-          ViewType.Home => new HomeViewModel(),
-          ViewType.Account => new AccountViewModel(),
-          ViewType.UserDetails=> new UserDetailsViewModel(),
-          ViewType.LogIn => new LoginViewModel(),
-          ViewType.SignUp => new SignUpViewModel(),
-          ViewType.Transactions => new TransactionLogsViewModel(),
-          _ => throw new NotSupportedException(),
+          (ViewType.Home, _) => new HomeViewModel(),
+          (ViewType.Account, true) => new AccountViewModel(),
+          (ViewType.Account, false) => InvalidSession(),
+          (ViewType.UserDetails, true) => new UserDetailsViewModel(),
+          (ViewType.UserDetails, false) => InvalidSession(),
+          (ViewType.LogIn, _) => new LoginViewModel(),
+          (ViewType.SignUp, _) => new SignUpViewModel(),
+          (ViewType.Transactions, true) => new TransactionLogsViewModel(),
+          (ViewType.Transactions, false) => InvalidSession(),
+          (_, _) => throw new NotSupportedException(),
         };
       }
+    }
+    private static ViewModelBase InvalidSession()
+    {
+      MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+      return SetPropertiesOnLogout();
     }
   }
 }
