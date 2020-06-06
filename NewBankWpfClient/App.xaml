@@ -16,37 +16,43 @@
       <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
       <converters:InverseBooleanToVisibilityConverter x:Key="InvBoolToVisConverter"/>
 
-      <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}">
+      <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MahApps.Styles.TextBox}">
         <Setter Property="Width" Value="100"/>
         <Setter Property="Height" Value="auto"/>
-        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Margin" Value="5,0,5,5"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
       </Style>
-      <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
+      <!--<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
         <Setter Property="Width" Value="120"/>
         <Setter Property="Height" Value="auto"/>
-        <Setter Property="Margin" Value="5,0,5,0"/>
-        <Setter Property="Padding" Value="5"/>
-      </Style>
-      <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
-        <Setter Property="Width" Value="80"/>
-        <Setter Property="Height" Value="auto"/>
-        <Setter Property="Margin" Value="5"/>
-        <!--<Setter Property="Padding" Value="5,0,0,0"/>-->
-      </Style>
-      <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
-        <Setter Property="Width" Value="125"/>
-        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Margin" Value="5,0,5,5"/>
+        <Setter Property="Padding" Value="5,5,5,5"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+      </Style>-->
+      <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button}">
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Margin" Value="5,0,5,5"/>
+        <Setter Property="Padding" Value="8"/>
       </Style>
-      <Style x:Key="{x:Type StackPanel}" TargetType="{x:Type StackPanel}">
+      <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
+        <Setter Property="Width" Value="125"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Margin" Value="5,0,5,5"/>
+        <Setter Property="Padding" Value="5,0,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+      </Style>
+      <Style TargetType="{x:Type StackPanel}">
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="Height" Value="auto"/>
         <Setter Property="Width" Value="auto"/>
       </Style>
-      <Style x:Key="{x:Type PasswordBox}" TargetType="PasswordBox">
+      <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MahApps.Styles.PasswordBox}">
         <Setter Property="Width" Value="100"/>
         <Setter Property="Height" Value="auto"/>
-        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Margin" Value="5,0,5,5"/>
       </Style>
 
       <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NewBankWpfClient.Views"
              xmlns:vm="clr-namespace:NewBankWpfClient.ViewModels"
+             xmlns:controls="clr-namespace:NewBankWpfClient.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" x:Name="root">
   <Grid>
@@ -13,16 +14,16 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0">
-      <TextBlock Text="{Binding RecentTransactionsLabel}"/>
+      <controls:DefaultTextBlock Text="{Binding RecentTransactionsLabel}"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
       <ListView x:Name="MyListView" ItemsSource="{Binding CollectionView}">
         <ListView.View>
           <GridView AllowsColumnReorder="True">
-            <GridViewColumn Header="Transaction date" DisplayMemberBinding="{Binding CreatedDateTime}" Width="auto"/>
-            <GridViewColumn Header="Transaction details" DisplayMemberBinding="{Binding Message}" Width="auto"/>
-            <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" Width="auto"/>
-            <GridViewColumn Header="Type of transaction" DisplayMemberBinding="{Binding TransactionType}" Width="auto"/>
+            <GridViewColumn Header="{Binding DataContext.DateHeader, RelativeSource={RelativeSource AncestorType={x:Type local:TransactionLogsView}}}" DisplayMemberBinding="{Binding CreatedDateTime}" Width="140"/>
+            <GridViewColumn Header="{Binding DataContext.MessageHeader, RelativeSource={RelativeSource AncestorType={x:Type local:TransactionLogsView}}}" DisplayMemberBinding="{Binding Message}" Width="400"/>
+            <GridViewColumn Header="{Binding DataContext.AmountHeader, RelativeSource={RelativeSource AncestorType={x:Type local:TransactionLogsView}}}" DisplayMemberBinding="{Binding Amount}" Width="80"/>
+            <GridViewColumn Header="{Binding DataContext.TypeHeader, RelativeSource={RelativeSource AncestorType={x:Type local:TransactionLogsView}}}" DisplayMemberBinding="{Binding TransactionType}" Width="140"/>
           </GridView>
         </ListView.View>
       </ListView>

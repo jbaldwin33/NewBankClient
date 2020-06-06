@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NewBankWpfClient.Views"
         xmlns:converters="clr-namespace:NewBankWpfClient.Utilities"
+        xmlns:controls="clr-namespace:NewBankWpfClient.Controls"
         mc:Ignorable="d">
   <Grid>
     <Grid.RowDefinitions>
@@ -14,20 +15,20 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Orientation="Horizontal">
-      <TextBlock Text="{Binding FirstNameLabel}"/>
-      <TextBlock Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <controls:DefaultTextBlock Text="{Binding FirstNameLabel}"/>
+      <controls:DefaultTextBlock Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="1" Orientation="Horizontal">
-      <TextBlock Text="{Binding LastNameLabel}"/>
-      <TextBlock Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <controls:DefaultTextBlock Text="{Binding LastNameLabel}"/>
+      <controls:DefaultTextBlock Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2" Orientation="Horizontal">
-      <TextBlock Text="{Binding UsernameLabel}"/>
-      <TextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <controls:DefaultTextBlock Text="{Binding UsernameLabel}"/>
+      <controls:DefaultTextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="3" Orientation="Horizontal">
-      <TextBlock Text="{Binding AccountTypeLabel}"/>
-      <TextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+      <controls:DefaultTextBlock Text="{Binding AccountTypeLabel}"/>
+      <controls:DefaultTextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
   </Grid>
 </UserControl>

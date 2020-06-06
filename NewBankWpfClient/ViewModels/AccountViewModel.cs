@@ -75,6 +75,11 @@ namespace NewBankWpfClient.ViewModels
       }
       if (DetailsVisible)
         UpdateAccountDetails();
+      else
+      {
+        MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+        SetPropertiesOnLogout();
+      }
     }
 
     private void UpdateAccountDetails()
@@ -153,7 +158,7 @@ namespace NewBankWpfClient.ViewModels
             }
             catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
             {
-              MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+              GlobalExceptionHandler.ProcessException(rex);
               SetPropertiesOnLogout();
             }
             catch (RpcException rex)

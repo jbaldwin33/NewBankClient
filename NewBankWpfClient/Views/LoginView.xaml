@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NewBankWpfClient.Views"
              xmlns:pwd="clr-namespace:NewBankWpfClient.Utilities"
+             xmlns:controls="clr-namespace:NewBankWpfClient.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
   <Grid>
@@ -22,11 +23,11 @@
           <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-          <TextBlock Text="{Binding UsernameLabel}"/>
+          <controls:DefaultTextBlock Text="{Binding UsernameLabel}"/>
           <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
-          <TextBlock Text="{Binding PasswordLabel}"/>
+          <controls:DefaultTextBlock Text="{Binding PasswordLabel}"/>
           <PasswordBox pwd:PasswordBoxMVVMAttachedProperties.EncryptedPassword="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" PasswordChanged="PasswordBox_PasswordChanged"/>
         </StackPanel>
         <StackPanel Grid.Row="2">

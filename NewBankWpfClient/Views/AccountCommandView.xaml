@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NewBankWpfClient.Views"
+             xmlns:controls="clr-namespace:NewBankWpfClient.Controls"
              mc:Ignorable="d"
         MaxHeight="200" MaxWidth="350">
   <Grid>
@@ -13,11 +14,11 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
     <StackPanel Grid.Row="0" Visibility="{Binding UsernameVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-      <TextBlock Text="{Binding RecipientLabel}"/>
+      <controls:DefaultTextBlock Text="{Binding RecipientLabel}"/>
       <TextBox Text="{Binding ToUsername, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="1">
-      <TextBlock Text="{Binding QuestionText}"/>
+      <controls:DefaultTextBlock Text="{Binding QuestionText}"/>
       <TextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </StackPanel>
     <StackPanel Grid.Row="2">

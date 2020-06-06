@@ -26,6 +26,10 @@ namespace NewBankWpfClient.ViewModels
       GetTransactions();
     }
 
+    public string DateHeader => "Transaction date";
+    public string MessageHeader => "Transaction details";
+    public string AmountHeader => "Amount";
+    public string TypeHeader => "Transaction type";
     public Translatable RecentTransactionsLabel => new RecentTransactionsLabelTranslatable();
 
     public ObservableCollection<TransactionViewModel> Transactions
