@@ -8,6 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
   <Grid>
-    <controls:DefaultTextBlock Text="{Binding WelcomeText}"/>
+    <controls:DefaultTextBlock Width="130" Text="{Binding WelcomeText}"/>
   </Grid>
 </UserControl>

@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Grpc.Net.Client;
 using NewBankServer.Protos;
@@ -18,7 +19,7 @@ using System.Windows.Media;
 
 namespace NewBankWpfClient.ViewModels
 {
-  public class LoginViewModel : ViewModelBase
+  public class LoginViewModel : ViewModelValidation
   {
     private readonly ServiceClient serviceClient = ServiceClient.Instance;
     private readonly SessionInstance sessionInstance = SessionInstance.Instance;
@@ -32,6 +33,8 @@ namespace NewBankWpfClient.ViewModels
     public LoginViewModel()
     {
       LoggedIn = sessionInstance.CurrentUser != null;
+      Username = string.Empty;
+      SecurePassword = null;
     }
 
     public string LoginLabel => new LoginLabelTranslatable();
@@ -42,7 +45,16 @@ namespace NewBankWpfClient.ViewModels
     public string Username
     {
       get => username;
-      set => Set(ref username, value);
+      set
+      {
+        if (String.IsNullOrEmpty(value))
+          Set(ref username, value, "Username cannot be empty", propertyName: nameof(Username));
+        else
+        {
+          ClearValidationErrors();
+          Set(ref username, value);
+        }
+      }
     }
 
     public SecureString SecurePassword
@@ -70,8 +82,15 @@ namespace NewBankWpfClient.ViewModels
 
     private void LoginCommandExecute()
     {
-      if (!InputIsValid())
+      var validator = new LoginValidation();
+      var result = validator.Validate(this);
+      if (!result.IsValid)
+      {
+        MessageBox.Show(result.Errors[0].ErrorMessage, new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
         return;
+      }
+      //if (!InputIsValid())
+      //  return;
       User user;
       try
       {
@@ -88,11 +107,13 @@ namespace NewBankWpfClient.ViewModels
       {
         try
         {
+          var headers = new Metadata();
+          headers.Add("Authorization", "Bearer mycustomtoken");
           var loginResponse = serviceClient.AuthenticationClient.Login(new LoginRequest
           {
             Username = username,
             PasswordHash = hash
-          });
+          }, headers);
 
           var account = serviceClient.AccountCRUDClient.GetByUserID(new AccountRequest { UserId = loginResponse.User.Id, SessionId = loginResponse.SessionID.ToString() }).Account;
 

@@ -13,7 +13,7 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <controls:DefaultTextBlock Grid.Row="0" Text="Main Application"/>
+    <controls:DefaultTextBlock Grid.Row="0" Width="200" Text="J Bank Desktop Application" HorizontalAlignment="Center"/>
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto"/>

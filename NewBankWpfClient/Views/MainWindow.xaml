@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NewBankWpfClient.Views"
         xmlns:controls="clr-namespace:NewBankWpfClient.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Height="450" Width="800">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>

@@ -32,37 +32,37 @@ namespace NewBankWpfClient.Singletons
 
     public ServiceClient()
     {
-      //var credentials = CallCredentials.FromInterceptor((context, metadata) =>
-      //{
-      //  metadata.Add("Authorization", $"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijc1MjhlNGFmLWE3YzAtNDVlZC04YTc1LWNjYzVkODRjZGU2MiIsImlhdCI6MTU5MDMwMjQzNywiZXhwIjoxNTkwMzA2MDM3fQ.C9npZuOU-R1Oxy87lM-a2SMuX9ydbuMoe6l4Shc6IEM");
-      //  return Task.CompletedTask;
-      //});
-
-      //// SslCredentials is used here because this channel is using TLS.
-      //// CallCredentials can't be used with ChannelCredentials.Insecure on non-TLS channels.
-      //channel = GrpcChannel.ForAddress("https://192.168.0.18:5001", new GrpcChannelOptions
-      //{
-      //  Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
-      //});
-
-      string s = GetRootCertificates();
-      var channel_creds = new SslCredentials(s);
+      string address = string.Empty;
+//#if DEBUG
+      address = "https://localhost:5001";
+//#else
+//      address = "https://67.191.204.48:443";
+//#endif
 
       var httpClient = new HttpClient(new HttpClientHandler
       {
         SslProtocols = System.Security.Authentication.SslProtocols.Tls12,
         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
       });
-      string uri = string.Empty;
-#if DEBUG
-      uri = "https://localhost:5001";
-#else
-      uri = "https://67.191.204.48:443";
-#endif
-      channel = GrpcChannel.ForAddress(uri, new GrpcChannelOptions//"https://192.168.44.128:443", new GrpcChannelOptions
+
+      //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijc1MjhlNGFmLWE3YzAtNDVlZC04YTc1LWNjYzVkODRjZGU2MiIsImlhdCI6MTU5MDMwMjQzNywiZXhwIjoxNTkwMzA2MDM3fQ.C9npZuOU-R1Oxy87lM-a2SMuX9ydbuMoe6l4Shc6IEM
+      //var credentials = CallCredentials.FromInterceptor((context, metadata) =>
+      //{
+      //  metadata.Add("Authorization", $"Bearer mycustomtoken");
+      //  return Task.CompletedTask;
+      //});
+
+      //// SslCredentials is used here because this channel is using TLS.
+      //// CallCredentials can't be used with ChannelCredentials.Insecure on non-TLS channels.
+      channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
       {
-        HttpClient = httpClient
+        HttpClient = httpClient,
+        //Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
       });
+
+      //string s = GetRootCertificates();
+      //var channel_creds = new SslCredentials(s);
+
     }
 
     public static string GetRootCertificates()

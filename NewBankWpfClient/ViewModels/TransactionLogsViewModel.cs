@@ -85,7 +85,7 @@ namespace NewBankWpfClient.ViewModels
       catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
       {
         MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-        SetPropertiesOnLogout();
+        SetPropertiesAndNavigateToLogInPage();
       }
       catch (RpcException rex)
       {

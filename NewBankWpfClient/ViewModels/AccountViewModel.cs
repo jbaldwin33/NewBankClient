@@ -141,7 +141,6 @@ namespace NewBankWpfClient.ViewModels
         switch (e.CommandType)
         {
           case CommandEnum.Deposit:
-            Balance += e.Amount;
             try
             {
               serviceClient.AccountCRUDClient.Deposit(new DepositRequest 
@@ -150,11 +149,12 @@ namespace NewBankWpfClient.ViewModels
                 Amount = e.Amount,
                 SessionId = sessionInstance.SessionID.ToString() 
               });
+              Balance += e.Amount;
             }
             catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
             {
               GlobalExceptionHandler.ProcessException(rex);
-              SetPropertiesOnLogout();
+              SetPropertiesAndNavigateToLogInPage();
             }
             catch (RpcException rex)
             {
@@ -162,7 +162,6 @@ namespace NewBankWpfClient.ViewModels
             }
             break;
           case CommandEnum.Withdraw:
-            Balance -= e.Amount;
             try
             {
               serviceClient.AccountCRUDClient.Withdraw(new WithdrawRequest 
@@ -171,11 +170,12 @@ namespace NewBankWpfClient.ViewModels
                 Amount = e.Amount,
                 SessionId = sessionInstance.SessionID.ToString()
               });
+              Balance -= e.Amount;
             }
             catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
             {
               MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-              SetPropertiesOnLogout();
+              SetPropertiesAndNavigateToLogInPage();
             }
             catch (RpcException rex)
             {
@@ -183,7 +183,6 @@ namespace NewBankWpfClient.ViewModels
             }
             break;
           case CommandEnum.Transfer:
-            Balance -= e.Amount;
             try
             {
               if (string.IsNullOrEmpty(e.Username))
@@ -200,12 +199,13 @@ namespace NewBankWpfClient.ViewModels
                   FromUsername = sessionInstance.CurrentUser.Username,
                   SessionId = sessionInstance.SessionID.ToString()
                 });
+                Balance -= e.Amount;
               }
             }
             catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
             {
               MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-              SetPropertiesOnLogout();
+              SetPropertiesAndNavigateToLogInPage();
             }
             catch (RpcException rex)
             {

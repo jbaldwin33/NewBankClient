@@ -7,6 +7,7 @@ using System.Windows.Input;
 using NewBankShared.Localization;
 using System.Windows;
 using static NewBankWpfClient.Utilities.Utilities;
+using Grpc.Core;
 
 namespace NewBankWpfClient.Singletons
 {
@@ -104,11 +105,25 @@ namespace NewBankWpfClient.Singletons
 
     public void Execute(object parameter)
     {
-      var validSession = ServiceClient.Instance.SessionCRUDClient.IsValidSession(
-        new NewBankServer.Protos.SessionRequest
-        {
-          SessionId = SessionInstance.Instance.SessionID.ToString()
-        }).Valid;
+      if ((ViewType)parameter == ViewType.LogIn)
+      {
+        navigator.CurrentViewModel = new LoginViewModel();
+        return;
+      }
+
+      bool validSession = false;
+      try
+      {
+        validSession = ServiceClient.Instance.SessionCRUDClient.IsValidSession(
+          new NewBankServer.Protos.SessionRequest
+          {
+            SessionId = SessionInstance.Instance.SessionID.ToString()
+          }).Valid;
+      }
+      catch (RpcException rex)
+      {
+        //something happened and session is not valid
+      }
       if (parameter is ViewType viewType)
       {
         navigator.CurrentViewModel = (viewType, validSession) switch

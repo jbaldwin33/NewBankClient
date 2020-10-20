@@ -123,13 +123,14 @@ namespace NewBankWpfClient.ViewModels
     {
       var accountID = Guid.NewGuid();
       var userID = Guid.NewGuid();
-      var passwordSalt = SecurePasswordUtility.CreateSalt();
-
+      var serverSalt = serviceClient.CreationClient.CreatePasswordSalt(new Empty());
+      var clientSalt = SecurePasswordUtility.CreateSalt();
+      var combinedSalt = $"{serverSalt}{clientSalt}";
       var user = new User
       {
         Username = username,
-        PasswordSalt = passwordSalt,
-        PasswordHash = new SecurePasswordUtility(securePassword, passwordSalt).ComputeSaltedHash(),
+        PasswordSalt = combinedSalt,
+        PasswordHash = new SecurePasswordUtility(securePassword, combinedSalt).ComputeSaltedHash(),
         FirstName = firstName,
         LastName = lastName,
         Id = userID.ToString(),
