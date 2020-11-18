@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using NewBankServer.Protos;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -14,6 +17,9 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
+using NewBankShared;
+using NewBankShared.Localization;
 
 namespace NewBankWpfClient.Singletons
 {
@@ -26,18 +32,42 @@ namespace NewBankWpfClient.Singletons
   public class ServiceClient : IServiceClient
   {
     private static readonly Lazy<ServiceClient> instance = new Lazy<ServiceClient>(() => new ServiceClient());
+    private static readonly string configFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ClientConfiguration.xml");
+    private ConfigurationModel model;
     public static ServiceClient Instance => instance.Value;
 
     private readonly GrpcChannel channel;
 
+    private string ReadAddressFromFile()
+    {
+      if (!File.Exists(configFile))
+      {
+        MessageBox.Show("ClientConfiguration.xml file not found. Please run NewBankClientConfiguration to create one. Application will now close.", new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+        Environment.Exit(0);
+      }
+
+      model = LoadConfigFile();
+      return model.LocalConnection 
+        ? "https://localhost:5001" 
+        : $"https://{model.Endpoint}:{model.Port}";
+    }
+
+    private ConfigurationModel LoadConfigFile()
+    {
+      var serializer = new XmlSerializer(typeof(ConfigurationModel));
+      using var stream = new StreamReader(configFile);
+      return serializer.Deserialize(stream) as ConfigurationModel;
+    }
+
     public ServiceClient()
     {
       string address = string.Empty;
-//#if DEBUG
+#if DEBUG
       address = "https://localhost:5001";
-//#else
-//      address = "https://67.191.204.48:443";
-//#endif
+#else
+      address = ReadAddressFromFile();
+      //address = "https://67.191.204.48:443";
+#endif
 
       var httpClient = new HttpClient(new HttpClientHandler
       {

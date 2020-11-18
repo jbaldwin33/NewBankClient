@@ -6,6 +6,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>C:\Users\Josh\VSProjects\NewBankClient\_debug\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
@@ -22,16 +26,16 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Reference Include="NewBankClientGrpc">
-      <HintPath>..\NewBankClientGrpc\obj\Debug\netcoreapp3.1\NewBankClientGrpc.dll</HintPath>
-    </Reference>
-    <Reference Include="NewBankShared">
-      <HintPath>..\..\NewBankShared\NewBankShared\bin\Debug\netcoreapp3.1\NewBankShared.dll</HintPath>
-    </Reference>
+    <Folder Include="Properties\" />
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Reference Include="NewBankClientGrpc">
+      <HintPath>..\_debug\netcoreapp3.1\NewBankClientGrpc.dll</HintPath>
+    </Reference>
+    <Reference Include="NewBankShared">
+      <HintPath>..\_debug\netcoreapp3.1\NewBankShared.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

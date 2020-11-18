@@ -1,0 +1,33 @@
+﻿<Window x:Class="NewBankClientConfiguration.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NewBankClientConfiguration"
+        xmlns:converters="clr-namespace:NewBankClientConfiguration.Utilities"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+  <Grid>
+    <Grid.Resources>
+      <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="150"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Content="Client Configuration"/>
+    <CheckBox Grid.Row="1" Content="Will this be a local connection?" IsChecked="{Binding LocalConnection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    <StackPanel Grid.Row="2" Orientation="Horizontal" IsEnabled="{Binding LocalConnection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InverseBooleanConverter}}">
+      <Label Content="Server endpoint:"/>
+      <TextBox Width="300" Text="{Binding Endpoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    </StackPanel>
+    <StackPanel Grid.Row="3" Orientation="Horizontal" IsEnabled="{Binding LocalConnection, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InverseBooleanConverter}}">
+      <Label Content="Port:"/>
+      <TextBox Width="100" Text="{Binding Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    </StackPanel>
+    <Button Grid.Row="4" Width="100" Content="{Binding SaveLabel}" Command="{Binding SaveCommand}"/>
+  </Grid>
+</Window>
