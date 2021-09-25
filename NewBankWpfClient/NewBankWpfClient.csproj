@@ -10,6 +10,10 @@
     <OutputPath>C:\Users\Josh\VSProjects\NewBankClient\_debug\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>C:\Users\Josh\VSProjects\NewBankClient\_release\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
@@ -22,7 +26,7 @@
     </PackageReference>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0872" />
     <PackageReference Include="MvvmLight" Version="5.4.1.1" />
-    <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
   </ItemGroup>
   
   <ItemGroup>

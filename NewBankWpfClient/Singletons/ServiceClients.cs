@@ -63,7 +63,7 @@ namespace NewBankWpfClient.Singletons
     {
       string address = string.Empty;
 #if DEBUG
-      address = "https://localhost:5001";
+      address = "https://localhost:5001";//address = "https://107.77.232.78:5001";
 #else
       address = ReadAddressFromFile();
       //address = "https://67.191.204.48:443";

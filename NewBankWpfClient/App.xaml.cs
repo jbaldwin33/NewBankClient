@@ -26,7 +26,7 @@ namespace NewBankWpfClient
 
     private void Initialize()
     {
-      new Navigator();
+      //new Navigator();
       ServiceClient.Instance.CreateClients();
     }
 

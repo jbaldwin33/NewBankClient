@@ -10,6 +10,10 @@
     <OutputPath>C:\Users\Josh\VSProjects\NewBankClient\_debug\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>C:\Users\Josh\VSProjects\NewBankClient\_release\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />

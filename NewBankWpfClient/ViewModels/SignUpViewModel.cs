@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using Grpc.Core;
 using NewBankServer.Protos;
 using NewBankWpfClient.Models;
@@ -125,7 +125,7 @@ namespace NewBankWpfClient.ViewModels
       var userID = Guid.NewGuid();
       var serverSalt = serviceClient.CreationClient.CreatePasswordSalt(new Empty());
       var clientSalt = SecurePasswordUtility.CreateSalt();
-      var combinedSalt = $"{serverSalt}{clientSalt}";
+      var combinedSalt = $"{serverSalt.ServerSalt}";
       var user = new User
       {
         Username = username,

@@ -1,21 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using Google.Protobuf.WellKnownTypes;
+﻿using GalaSoft.MvvmLight.CommandWpf;
 using Grpc.Core;
-using Grpc.Net.Client;
 using NewBankServer.Protos;
 using NewBankShared.Localization;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Singletons;
 using NewBankWpfClient.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 
 namespace NewBankWpfClient.ViewModels
 {

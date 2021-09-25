@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using Grpc.Core;
 using NewBankServer.Protos;
 using NewBankShared.Localization;
