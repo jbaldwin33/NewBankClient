@@ -1,14 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using NewBankShared.Localization;
+﻿using MVVMFramework.Localization;
+using MVVMFramework.ViewModels;
 
 namespace NewBankWpfClient.ViewModels
 {
-  public class HomeViewModel : ViewModelBase
-  {
-    public string WelcomeText { get; set; }
-    public HomeViewModel()
+    public class HomeViewModel : ViewModel
     {
-        WelcomeText = new WelcomeTranslatable();
+        public string WelcomeText { get; set; }
+        public HomeViewModel()
+        {
+            WelcomeText = new WelcomeTranslatable();
+        }
     }
-  }
 }

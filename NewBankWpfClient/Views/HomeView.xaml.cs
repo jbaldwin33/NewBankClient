@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MVVMFramework.ViewNavigator;
+using MVVMFramework.Views;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -13,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace NewBankWpfClient.Views
 {
-  /// <summary>
-  /// Interaction logic for ViewBase.xaml
-  /// </summary>
-  public partial class HomeView : UserControl
-  {
-    public HomeView()
+    /// <summary>
+    /// Interaction logic for ViewBase.xaml
+    /// </summary>
+    public partial class HomeView : ViewBaseControl
     {
-      InitializeComponent();
+        public HomeView() : base(Navigator.Instance.CurrentViewModel)
+        {
+            InitializeComponent();
+        }
     }
-  }
 }

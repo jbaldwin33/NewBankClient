@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -15,13 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MvvmLight" Version="5.4.1.1" />
-    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NewBankShared">
-      <HintPath>..\_debug\netcoreapp3.1\NewBankShared.dll</HintPath>
+    <Reference Include="MVVMFramework">
+      <HintPath>..\_debug\MVVMFramework.dll</HintPath>
     </Reference>
   </ItemGroup>
 

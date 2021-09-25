@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -15,6 +15,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controls\**" />
+    <EmbeddedResource Remove="Controls\**" />
+    <None Remove="Controls\**" />
+    <Page Remove="Controls\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Utilities\Converters.cs" />
+    <Compile Remove="Utilities\PasswordBoxMVVMAttachedProperties.cs" />
+    <Compile Remove="Utilities\SecurePasswordUtility.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Google.Protobuf" Version="3.11.4" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
@@ -25,8 +38,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0872" />
-    <PackageReference Include="MvvmLight" Version="5.4.1.1" />
-    <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
   </ItemGroup>
   
   <ItemGroup>
@@ -34,11 +45,14 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Reference Include="MVVMFramework">
+      <HintPath>..\_debug\MVVMFramework.dll</HintPath>
+    </Reference>
     <Reference Include="NewBankClientGrpc">
       <HintPath>..\_debug\netcoreapp3.1\NewBankClientGrpc.dll</HintPath>
     </Reference>
     <Reference Include="NewBankShared">
-      <HintPath>..\_debug\netcoreapp3.1\NewBankShared.dll</HintPath>
+      <HintPath>..\..\NewBankShared\_debug\net5.0\NewBankShared.dll</HintPath>
     </Reference>
   </ItemGroup>
 

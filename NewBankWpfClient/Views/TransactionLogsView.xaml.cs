@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MVVMFramework.ViewNavigator;
+using MVVMFramework.Views;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -13,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace NewBankWpfClient.Views
 {
-  /// <summary>
-  /// Interaction logic for TransactionLogsView.xaml
-  /// </summary>
-  public partial class TransactionLogsView : UserControl
-  {
-    public TransactionLogsView()
+    /// <summary>
+    /// Interaction logic for TransactionLogsView.xaml
+    /// </summary>
+    public partial class TransactionLogsView : ViewBaseControl
     {
-      InitializeComponent();
+        public TransactionLogsView() : base(Navigator.Instance.CurrentViewModel)
+        {
+            InitializeComponent();
+        }
     }
-  }
 }
