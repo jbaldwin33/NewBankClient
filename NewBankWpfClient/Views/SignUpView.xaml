@@ -18,28 +18,28 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Orientation="Horizontal">
+    <controls:DefaultStackPanel Grid.Row="0">
       <controls:MediumTextBlock Text="{Binding FirstNameLabel}" TextAlignment="Left"/>
       <controls:MediumTextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="1" Orientation="Horizontal">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="1">
       <controls:MediumTextBlock Text="{Binding LastNameLabel}" TextAlignment="Left"/>
       <controls:MediumTextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="2" Orientation="Horizontal">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="2">
       <controls:MediumTextBlock Text="{Binding UsernameLabel}" TextAlignment="Left"/>
       <controls:MediumTextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="3" Orientation="Horizontal">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="3">
       <controls:MediumTextBlock Text="{Binding PasswordLabel}" TextAlignment="Left"/>
-      <PasswordBox pwd:PasswordBoxMVVMAttachedProperties.EncryptedPassword="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="100" Height="25" FontSize="20" Padding="0,-3,0,0" Margin="10,0,10,10" PasswordChanged="PasswordBox_PasswordChanged"/>
-    </StackPanel>
-    <StackPanel Grid.Row="4" Orientation="Horizontal">
+      <PasswordBox pwd:PasswordBoxMVVMAttachedProperties.EncryptedPassword="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="100" Height="25" FontSize="20" PasswordChanged="PasswordBox_PasswordChanged"/>
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="4">
       <controls:MediumTextBlock Text="{Binding AccountTypeLabel}" TextAlignment="Left"/>
       <ComboBox IsEditable="False" IsReadOnly="True" ItemsSource="{Binding AccountTypes}" DisplayMemberPath="Name" SelectedValuePath="AccType" SelectedValue="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="5">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="5">
       <controls:SmallButton Content="{Binding SignUpLabel}" Command="{Binding SignUpCommand}"/>
-    </StackPanel>
+    </controls:DefaultStackPanel>
   </Grid>
 </framework:ViewBaseControl>

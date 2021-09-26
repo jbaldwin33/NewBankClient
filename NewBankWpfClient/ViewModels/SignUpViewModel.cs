@@ -2,7 +2,6 @@
 using NewBankServer.Protos;
 using NewBankWpfClient.Models;
 using NewBankWpfClient.Singletons;
-using NewBankWpfClient.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,6 +16,8 @@ namespace NewBankWpfClient.ViewModels
 {
     public class SignUpViewModel : ViewModel
     {
+        #region Props and fields
+
         private string firstName;
         private string lastName;
         private string username;
@@ -27,25 +28,7 @@ namespace NewBankWpfClient.ViewModels
         private readonly ServiceClient serviceClient = ServiceClient.Instance;
         private readonly SessionInstance sessionInstance = SessionInstance.Instance;
         private bool signUpDetailsVisible;
-
-        public SignUpViewModel()
-        {
-            SignUpDetailsVisible = sessionInstance.CurrentUser == null;
-            AccountTypes = new ObservableCollection<AccountTypeViewModel>
-            {
-                new AccountTypeViewModel(AccountEnum.Checking, new CheckingLabelTranslatable()),
-                new AccountTypeViewModel(AccountEnum.Saving, new SavingLabelTranslatable())
-            };
-        }
-
-        public string FirstNameLabel => $"{new FirstNameLabelTranslatable()}:";
-        public string LastNameLabel => $"{new LastNameLabelTranslatable()}:";
-        public string UsernameLabel => $"{new UsernameLabelTranslatable()}:";
-        public string PasswordLabel => $"{new PasswordLabelTranslatable()}:";
-        public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
-        public string SignUpLabel => new SignUpLabelTranslatable();
-
-        #region Properties
+        
         public string FirstName
         {
             get => firstName;
@@ -70,8 +53,6 @@ namespace NewBankWpfClient.ViewModels
             set => SetProperty(ref securePassword, value);
         }
 
-
-
         public ObservableCollection<AccountTypeViewModel> AccountTypes
         {
             get => accountTypes;
@@ -94,7 +75,29 @@ namespace NewBankWpfClient.ViewModels
 
         #endregion
 
+        #region Labels
+
+        public string FirstNameLabel => $"{new FirstNameLabelTranslatable()}:";
+        public string LastNameLabel => $"{new LastNameLabelTranslatable()}:";
+        public string UsernameLabel => $"{new UsernameLabelTranslatable()}:";
+        public string PasswordLabel => $"{new PasswordLabelTranslatable()}:";
+        public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
+        public string SignUpLabel => new SignUpLabelTranslatable();
+
+        #endregion
+
         public RelayCommand SignUpCommand => signUpCommand ??= new RelayCommand(SignUpCommandExecute);
+
+        public SignUpViewModel()
+        {
+            SignUpDetailsVisible = sessionInstance.CurrentUser == null;
+            AccountTypes = new ObservableCollection<AccountTypeViewModel>
+            {
+                new AccountTypeViewModel(AccountEnum.Checking, new CheckingLabelTranslatable()),
+                new AccountTypeViewModel(AccountEnum.Saving, new SavingLabelTranslatable())
+            };
+        }
+
 
         private void SignUpCommandExecute()
         {
@@ -106,16 +109,16 @@ namespace NewBankWpfClient.ViewModels
                 //this should only get usernames, not passwords
                 var users = serviceClient.UserCRUDClient.GetUsers(new Empty());
                 if (users.Items.Any(u => u.Username == username))
-                    MessageBox.Show(new UsernameAlreadyExistsTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                    ShowMessage(new MessageBoxEventArgs(new UsernameAlreadyExistsTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                 else
                 {
                     DoSignUp();
-                    MessageBox.Show(new SignUpSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
+                    ShowMessage(new MessageBoxEventArgs(new SignUpSuccessfulTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Information, MessageBoxButton.OK, MessageBoxImage.Information));
                 }
             }
             catch (RpcException rex)
             {
-                MessageBox.Show(new SignUpFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage(new MessageBoxEventArgs(new SignUpFailedErrorTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
             }
         }
 
@@ -164,7 +167,7 @@ namespace NewBankWpfClient.ViewModels
             if (errorMessage == null)
                 return true;
 
-            MessageBox.Show(errorMessage, new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+            ShowMessage(new MessageBoxEventArgs(errorMessage, MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
             return false;
         }
     }

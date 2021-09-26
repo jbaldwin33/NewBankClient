@@ -13,25 +13,19 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
-      <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Orientation="Horizontal">
+    <controls:DefaultStackPanel Grid.Row="0">
       <controls:DefaultTextBlock Text="{Binding AccountTypeLabel}"/>
       <controls:DefaultTextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="1" Orientation="Horizontal">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="1">
       <controls:DefaultTextBlock Text="{Binding BalanceLabel}"/>
       <controls:DefaultTextBlock Text="{Binding Balance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="2">
-      <Button Content="{Binding DepositLabel}" Command="{Binding DepositCommand}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="3">
-      <Button Content="{Binding WithdrawLabel}" Command="{Binding WithdrawCommand}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="4">
-      <Button Content="{Binding TransferLabel}" Command="{Binding TransferCommand}"/>
-    </StackPanel>
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="2">
+      <controls:SmallButton Content="{Binding DepositLabel}" Command="{Binding DepositCommand}"/>
+      <controls:SmallButton Content="{Binding WithdrawLabel}" Command="{Binding WithdrawCommand}"/>
+      <controls:SmallButton Content="{Binding TransferLabel}" Command="{Binding TransferCommand}"/>
+    </controls:DefaultStackPanel>
   </Grid>
 </framework:ViewBaseControl>

@@ -87,7 +87,7 @@ namespace NewBankWpfClient.ViewModels
             var result = validator.Validate(this);
             if (!result.IsValid)
             {
-                MessageBox.Show(result.Errors[0].ErrorMessage, new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage(new MessageBoxEventArgs(result.Errors[0].ErrorMessage, MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                 return;
             }
             //if (!InputIsValid())
@@ -99,7 +99,7 @@ namespace NewBankWpfClient.ViewModels
             }
             catch (RpcException rex) when (rex.StatusCode == StatusCode.NotFound)
             {
-                MessageBox.Show(new UsernameDoesNotExistTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage(new MessageBoxEventArgs(new UsernameDoesNotExistTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                 return;
             }
 
@@ -123,11 +123,11 @@ namespace NewBankWpfClient.ViewModels
                     sessionInstance.CurrentAccount = AccountModel.ConvertAccount(account);
                     LoggedIn = true;
 
-                    MessageBox.Show(new LoginSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
+                    ShowMessage(new MessageBoxEventArgs(new LoginSuccessfulTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Information, MessageBoxButton.OK, MessageBoxImage.Information));
                 }
                 catch (RpcException rex)
                 {
-                    MessageBox.Show(new LoginFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                    ShowMessage(new MessageBoxEventArgs(new LoginFailedErrorTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                 }
             }
         }
@@ -154,12 +154,13 @@ namespace NewBankWpfClient.ViewModels
                 serviceClient.AuthenticationClient.Logout(new LogoutRequest { SessionId = sessionInstance.SessionID.ToString(), User = UserModel.ConvertUser(sessionInstance.CurrentUser) });
                 sessionInstance.CurrentUser = null;
                 sessionInstance.SessionID = Guid.Empty;
+                Username = string.Empty;
                 LoggedIn = false;
-                MessageBox.Show(new LogoutSuccessfulTranslatable(), new InformationTranslatable(), MessageBoxButton.OK, MessageBoxImage.Information);
+                ShowMessage(new MessageBoxEventArgs(new LogoutSuccessfulTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Information, MessageBoxButton.OK, MessageBoxImage.Information));
             }
             catch (RpcException rex)
             {
-                MessageBox.Show(new LogoutFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage(new MessageBoxEventArgs(new LogoutFailedErrorTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
             }
         }
     }

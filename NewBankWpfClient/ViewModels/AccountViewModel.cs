@@ -21,6 +21,8 @@ namespace NewBankWpfClient.ViewModels
 
     public class AccountViewModel : ViewModel
     {
+        #region Props and fields
+
         private readonly ServiceClient serviceClient = ServiceClient.Instance;
         private readonly SessionInstance sessionInstance = SessionInstance.Instance;
         private double balance;
@@ -31,22 +33,6 @@ namespace NewBankWpfClient.ViewModels
         private RelayCommand transferCommand;
 
         public event EventHandler OnModelDialogFinished;
-
-        public AccountViewModel()
-        {
-        }
-
-        public override void OnLoaded()
-        {
-            SetVisibility();
-            base.OnLoaded();
-        }
-
-        public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
-        public string BalanceLabel => $"{new BalanceLabelTranslatable()}:";
-        public string DepositLabel => new DepositCommandTranslatable();
-        public string WithdrawLabel => new WithdrawCommandTranslatable();
-        public string TransferLabel => new TransferCommandTranslatable();
 
         public double Balance
         {
@@ -66,16 +52,43 @@ namespace NewBankWpfClient.ViewModels
             set => SetProperty(ref detailsVisible, value);
         }
 
+        #endregion
+
+        #region Labels
+        public string AccountTypeLabel => $"{new AccountTypeLabelTranslatable()}:";
+        public string BalanceLabel => $"{new BalanceLabelTranslatable()}:";
+        public string DepositLabel => new DepositCommandTranslatable();
+        public string WithdrawLabel => new WithdrawCommandTranslatable();
+        public string TransferLabel => new TransferCommandTranslatable();
+
+        #endregion
+
+        #region Commands
+
+        public RelayCommand DepositCommand => depositCommand ??= new RelayCommand(() => CommandExecute(CommandEnum.Deposit), () => true);
+        public RelayCommand WithdrawCommand => withdrawCommand ??= new RelayCommand(() => CommandExecute(CommandEnum.Withdraw), () => Balance > 0);
+        public RelayCommand TransferCommand => transferCommand ??= new RelayCommand(() => CommandExecute(CommandEnum.Transfer), () => Balance > 0);
+
+        #endregion
+
+        public AccountViewModel() { }
+
+        public override void OnLoaded()
+        {
+            SetVisibility();
+            base.OnLoaded();
+        }
+
         private void SetVisibility()
         {
             try
             {
-                DetailsVisible = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = this.sessionInstance.SessionID.ToString() }).Valid;
+                DetailsVisible = serviceClient.SessionCRUDClient.IsValidSession(new SessionRequest { SessionId = sessionInstance.SessionID.ToString() }).Valid;
             }
             catch (RpcException rex)
             {
                 DetailsVisible = false;
-                MessageBox.Show(new BankErrorOccurredTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage(new MessageBoxEventArgs(new BankErrorOccurredTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
             }
             if (DetailsVisible)
                 UpdateAccountDetails();
@@ -91,44 +104,15 @@ namespace NewBankWpfClient.ViewModels
             }
             catch (RpcException rex)
             {
-                MessageBox.Show(new FailedToGetAccountDetailsErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessage(new MessageBoxEventArgs(new FailedToGetAccountDetailsErrorTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
             }
         }
 
-        private bool DepositCommandCanExecute() => true;
-        private bool WithdrawCommandCanExecute() => Balance > 0;
-        private bool TransferCommandCanExecute() => Balance > 0;
-
-        private void DepositCommandExecute()
+        private void CommandExecute(object commandType)
         {
-            var vm = new AccountCommandsViewModel(CommandEnum.Deposit, balance);
+            var vm = new AccountCommandsViewModel((CommandEnum)commandType, balance);
             vm.OnFinishEventHandler += ModalDialogClosed;
-            var commandView = new AccountCommandView(vm, this)
-            {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
-            commandView.Show();
-        }
-
-        private void WithdrawCommandExecute()
-        {
-            var vm = new AccountCommandsViewModel(CommandEnum.Withdraw, balance);
-            vm.OnFinishEventHandler += ModalDialogClosed;
-            var commandView = new AccountCommandView(vm, this)
-            {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
-            commandView.Show();
-        }
-
-        private void TransferCommandExecute()
-        {
-            var vm = new AccountCommandsViewModel(CommandEnum.Transfer, balance);
-            vm.OnFinishEventHandler += ModalDialogClosed;
-            var commandView = new AccountCommandView(vm, this)
-            {
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
+            var commandView = new AccountCommandView(vm, this) { WindowStartupLocation = WindowStartupLocation.CenterScreen };
             commandView.Show();
         }
 
@@ -138,7 +122,7 @@ namespace NewBankWpfClient.ViewModels
             if (e.Amount < 1)
             {
                 failed = true;
-                MessageBox.Show(new AmountGreaterThanZeroTranslatable());
+                ShowMessage(new MessageBoxEventArgs(new AmountGreaterThanZeroTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
             }
             else
             {
@@ -158,11 +142,11 @@ namespace NewBankWpfClient.ViewModels
                         catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
                         {
                             GlobalExceptionHandler.ProcessException(rex);
-                            SetPropertiesAndNavigateToLogInPage();
+                            SetPropertiesOnLogout();
                         }
                         catch (RpcException rex)
                         {
-                            MessageBox.Show(new OperationFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                            ShowMessage(new MessageBoxEventArgs(new OperationFailedErrorTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                         }
                         break;
                     case CommandEnum.Withdraw:
@@ -178,12 +162,12 @@ namespace NewBankWpfClient.ViewModels
                         }
                         catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
                         {
-                            MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-                            SetPropertiesAndNavigateToLogInPage();
+                            ShowMessage(new MessageBoxEventArgs(new SessionInvalidLoggingOutTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
+                            SetPropertiesOnLogout();
                         }
                         catch (RpcException rex)
                         {
-                            MessageBox.Show(new OperationFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                            ShowMessage(new MessageBoxEventArgs(new OperationFailedErrorTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                         }
                         break;
                     case CommandEnum.Transfer:
@@ -192,7 +176,7 @@ namespace NewBankWpfClient.ViewModels
                             if (string.IsNullOrEmpty(e.Username))
                             {
                                 failed = true;
-                                MessageBox.Show(new EnterUserForTransferTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                                ShowMessage(new MessageBoxEventArgs(new EnterUserForTransferTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                             }
                             else
                             {
@@ -208,13 +192,13 @@ namespace NewBankWpfClient.ViewModels
                         }
                         catch (RpcException rex) when (rex.Status.StatusCode == StatusCode.PermissionDenied)
                         {
-                            MessageBox.Show(new SessionInvalidLoggingOutTranslatable(), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
-                            SetPropertiesAndNavigateToLogInPage();
+                            ShowMessage(new MessageBoxEventArgs(new SessionInvalidLoggingOutTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
+                            SetPropertiesOnLogout();
                         }
                         catch (RpcException rex)
                         {
                             failed = true;
-                            MessageBox.Show(new TransferFailedErrorTranslatable(rex.Status.Detail), new ErrorTranslatable(), MessageBoxButton.OK, MessageBoxImage.Error);
+                            ShowMessage(new MessageBoxEventArgs(new TransferFailedErrorTranslatable(rex.Status.Detail), MessageBoxEventArgs.MessageTypeEnum.Error, MessageBoxButton.OK, MessageBoxImage.Error));
                         }
                         break;
                     default:
@@ -225,11 +209,5 @@ namespace NewBankWpfClient.ViewModels
             if (!failed)
                 OnModelDialogFinished?.Invoke(this, new EventArgs());
         }
-
-
-        public RelayCommand DepositCommand => depositCommand ??= new RelayCommand(DepositCommandExecute, DepositCommandCanExecute);
-        public RelayCommand WithdrawCommand => withdrawCommand ??= new RelayCommand(WithdrawCommandExecute, WithdrawCommandCanExecute);
-        public RelayCommand TransferCommand => transferCommand ??= new RelayCommand(TransferCommandExecute, TransferCommandCanExecute);
-
     }
 }

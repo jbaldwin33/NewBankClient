@@ -18,13 +18,5 @@ namespace NewBankWpfClient.Utilities
             vm.LoggedIn = false;
             Navigator.Instance.UpdateCurrentViewModelCommand.Execute(vm);
         }
-
-        public static void SetPropertiesAndNavigateToLogInPage()
-        {
-            SessionInstance.Instance.CurrentAccount = null;
-            SessionInstance.Instance.CurrentUser = null;
-            SessionInstance.Instance.SessionID = Guid.Empty;
-            Navigator.Instance.UpdateCurrentViewModelCommand.Execute(Navigator.Instance.CurrentViewModel);
-        }
     }
 }

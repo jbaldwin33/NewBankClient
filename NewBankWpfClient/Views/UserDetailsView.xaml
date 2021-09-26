@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NewBankWpfClient.Views"
-        xmlns:converters="clr-namespace:MVVMFramework.Controls;assembly=MVVMFramework"
         xmlns:framework="clr-namespace:MVVMFramework.Views;assembly=MVVMFramework"
         xmlns:controls="clr-namespace:MVVMFramework.Controls;assembly=MVVMFramework"
         mc:Ignorable="d">
@@ -15,21 +14,21 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Orientation="Horizontal">
+    <controls:DefaultStackPanel Grid.Row="0">
       <controls:DefaultTextBlock Text="{Binding FirstNameLabel}"/>
       <controls:DefaultTextBlock Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="1" Orientation="Horizontal">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="1">
       <controls:DefaultTextBlock Text="{Binding LastNameLabel}"/>
       <controls:DefaultTextBlock Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="2" Orientation="Horizontal">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="2">
       <controls:DefaultTextBlock Text="{Binding UsernameLabel}"/>
       <controls:DefaultTextBlock Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="3" Orientation="Horizontal">
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="3">
       <controls:DefaultTextBlock Text="{Binding AccountTypeLabel}"/>
       <controls:DefaultTextBlock Text="{Binding AccountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
+    </controls:DefaultStackPanel>
   </Grid>
 </framework:ViewBaseControl>

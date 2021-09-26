@@ -13,17 +13,17 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Grid.Row="0" Visibility="{Binding UsernameVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <controls:DefaultStackPanel Grid.Row="0" Visibility="{Binding UsernameVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
       <controls:DefaultTextBlock Text="{Binding RecipientLabel}"/>
-      <TextBox Text="{Binding ToUsername, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="1">
+      <controls:SmallTextBox Text="{Binding ToUsername, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="1">
       <controls:DefaultTextBlock Text="{Binding QuestionText}"/>
-      <TextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-    </StackPanel>
-    <StackPanel Grid.Row="2">
-      <Button Content="{Binding ConfirmLabel}" Command="{Binding OkCommand}"/>
-      <Button Content="{Binding CancelLabel}" Command="{Binding CancelCommand}"/>
-    </StackPanel>
+      <controls:SmallTextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Grid.Row="2" HorizontalAlignment="Center">
+      <controls:SmallButton Content="{Binding ConfirmLabel}" Command="{Binding OkCommand}"/>
+      <controls:SmallButton Content="{Binding CancelLabel}" Command="{Binding CancelCommand}"/>
+    </controls:DefaultStackPanel>
   </Grid>
 </Window>

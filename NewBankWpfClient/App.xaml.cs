@@ -5,7 +5,6 @@ using NewBankWpfClient.ViewModels;
 using NewBankWpfClient.Singletons;
 using Grpc.Core;
 using MVVMFramework.Localization;
-using MVVMFramework.ViewModels;
 using MVVMFramework.Views;
 using MVVMFramework.ViewNavigator;
 

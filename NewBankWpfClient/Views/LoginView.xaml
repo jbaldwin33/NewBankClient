@@ -13,28 +13,28 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <StackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
-      <Button Content="{Binding LogoutLabel}" Command="{Binding LogoutCommand}"/>
-    </StackPanel>
-    <StackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
+    <controls:DefaultStackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
+      <controls:SmallButton Content="{Binding LogoutLabel}" Command="{Binding LogoutCommand}"/>
+    </controls:DefaultStackPanel>
+    <controls:DefaultStackPanel Visibility="{Binding LoggedIn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource InvBoolToVisConverter}}">
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
           <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <controls:DefaultStackPanel Grid.Row="0">
           <controls:SmallTextBlock Text="{Binding UsernameLabel}"/>
           <controls:MediumTextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        </controls:DefaultStackPanel>
+        <controls:DefaultStackPanel Grid.Row="1">
           <controls:SmallTextBlock Text="{Binding PasswordLabel}"/>
-          <PasswordBox pwd:PasswordBoxMVVMAttachedProperties.EncryptedPassword="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="100" Height="25" FontSize="20" Padding="0,-3,0,0" Margin="10,0,10,10" PasswordChanged="PasswordBox_PasswordChanged"/>
-        </StackPanel>
-        <StackPanel Grid.Row="2">
+          <PasswordBox pwd:PasswordBoxMVVMAttachedProperties.EncryptedPassword="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="100" Height="25" FontSize="20" PasswordChanged="PasswordBox_PasswordChanged"/>
+        </controls:DefaultStackPanel>
+        <controls:DefaultStackPanel Grid.Row="2">
           <controls:SmallButton Content="{Binding LoginLabel}" Command="{Binding LoginCommand}"/>
-        </StackPanel>
+        </controls:DefaultStackPanel>
       </Grid>
-    </StackPanel>
+    </controls:DefaultStackPanel>
   </Grid>
 </framework:ViewBaseControl>

@@ -7,38 +7,18 @@ namespace NewBankWpfClient.ViewModels
 {
     public class AccountCommandsViewModel : ViewModel
     {
+        #region Props and fields
+
+        public event EventHandler<WindowPopupEventArgs> OnFinishEventHandler;
+        public event EventHandler OnCancelledEventHandler;
         private readonly double currentBalance;
         private double amount;
         private string toUsername;
         private bool usernameVisible;
         private CommandEnum commandType;
         private Translatable questionText;
-
         private RelayCommand okCommand;
         private RelayCommand cancelCommand;
-
-        public event EventHandler<WindowPopupEventArgs> OnFinishEventHandler;
-        public event EventHandler OnCancelledEventHandler;
-
-        public AccountCommandsViewModel(CommandEnum command, double currentBalance)
-        {
-            this.currentBalance = currentBalance;
-            CommandType = command;
-            UsernameVisible = command == CommandEnum.Transfer;
-            Translatable text;
-            text = command switch
-            {
-                CommandEnum.Deposit => new DepositTranslatable(),
-                CommandEnum.Withdraw => new WithdrawTranslatable(),
-                CommandEnum.Transfer => new TransferTranslatable(),
-                _ => throw new NotSupportedException($"{command} is not supported"),
-            };
-            QuestionText = new OperationQuestionTranslatable(text);
-        }
-
-        public string RecipientLabel => $"{new NameOfRecipientTranslatable()}:";
-        public string ConfirmLabel => new ConfirmTranslatable();
-        public string CancelLabel => new CancelTranslatable();
 
         public double Amount
         {
@@ -70,8 +50,36 @@ namespace NewBankWpfClient.ViewModels
             set => SetProperty(ref questionText, value);
         }
 
+        #endregion
+
+        #region Labels
+        public string RecipientLabel => $"{new NameOfRecipientTranslatable()}:";
+        public string ConfirmLabel => new ConfirmTranslatable();
+        public string CancelLabel => new CancelTranslatable();
+
+        #endregion
+
+        #region Commands
         public RelayCommand OkCommand => okCommand ??= new RelayCommand(OkCommandExecute);
         public RelayCommand CancelCommand => cancelCommand ??= new RelayCommand(CancelCommandExecute);
+
+        #endregion
+
+        public AccountCommandsViewModel(CommandEnum command, double currentBalance)
+        {
+            this.currentBalance = currentBalance;
+            CommandType = command;
+            UsernameVisible = command == CommandEnum.Transfer;
+            Translatable text;
+            text = command switch
+            {
+                CommandEnum.Deposit => new DepositTranslatable(),
+                CommandEnum.Withdraw => new WithdrawTranslatable(),
+                CommandEnum.Transfer => new TransferTranslatable(),
+                _ => throw new NotSupportedException($"{command} is not supported"),
+            };
+            QuestionText = new OperationQuestionTranslatable(text);
+        }
 
         private void OkCommandExecute()
         {
