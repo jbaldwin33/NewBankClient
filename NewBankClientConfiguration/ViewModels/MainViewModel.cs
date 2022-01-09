@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
-using NewBankClientConfiguration.Models;
 using MVVMFramework.ViewModels;
+using MVVMFramework.Localization;
+using System.Xml.Serialization;
+using NewBankShared;
 
 namespace NewBankClientConfiguration.ViewModels
 {
@@ -18,21 +16,11 @@ namespace NewBankClientConfiguration.ViewModels
         private int port;
         private RelayCommand saveCommand;
 
-        public MainViewModel()
-        {
-            if (File.Exists(filename))
-                LoadFromFile();
-
-        }
-
-        //public string SaveLabel => new SaveTranslatable();
-
         public bool LocalConnection
         {
             get => localConnection;
             set => SetProperty(ref localConnection, value);
         }
-
 
         public string Endpoint
         {
@@ -46,7 +34,18 @@ namespace NewBankClientConfiguration.ViewModels
             set => SetProperty(ref port, value);
         }
 
+        public string SaveLabel => new SaveTranslatable();
+
+
         public RelayCommand SaveCommand => saveCommand ??= new RelayCommand(SaveCommandExecute, SaveCommandCanExecute);
+
+        public MainViewModel()
+        {
+            if (File.Exists(filename))
+                LoadFromFile();
+            else
+                CreateConfigFile();
+        }
 
         private bool SaveCommandCanExecute()
         {
@@ -55,34 +54,39 @@ namespace NewBankClientConfiguration.ViewModels
 
         private void SaveCommandExecute()
         {
-            //var serializer = new XmlSerializer(typeof(ConfigurationModel));
-            //var stream = File.Create(filename);
-            //var model = new ConfigurationModel
-            //{
-            //    LocalConnection = LocalConnection,
-            //    Endpoint = Endpoint,
-            //    Port = Port
-            //};
-            //serializer.Serialize(stream, model);
+            var serializer = new XmlSerializer(typeof(ConfigurationModel));
+            var stream = File.Create(filename);
+            var model = new ConfigurationModel
+            {
+                LocalConnection = LocalConnection,
+                Endpoint = Endpoint,
+                Port = Port
+            };
+            serializer.Serialize(stream, model);
         }
 
 
         private void CreateConfigFile()
         {
-            throw new NotImplementedException();
+            var serializer = new XmlSerializer(typeof(ConfigurationModel));
+            var stream = File.Create(filename);
+            var model = new ConfigurationModel
+            {
+                LocalConnection = LocalConnection,
+                Endpoint = Endpoint,
+                Port = Port
+            };
+            serializer.Serialize(stream, model);
         }
 
         private void LoadFromFile()
         {
-            //var serializer = new XmlSerializer(typeof(ConfigurationModel));
-            //using var stream = new StreamReader(filename);
-            //var model = serializer.Deserialize(stream) as ConfigurationModel;
-            //LocalConnection = model.LocalConnection;
-            //Endpoint = model.Endpoint;
-            //Port = model.Port;
+            var serializer = new XmlSerializer(typeof(ConfigurationModel));
+            using var stream = new StreamReader(filename);
+            var model = serializer.Deserialize(stream) as ConfigurationModel;
+            LocalConnection = model.LocalConnection;
+            Endpoint = model.Endpoint;
+            Port = model.Port;
         }
-
-
-
     }
 }

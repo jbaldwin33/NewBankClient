@@ -6,9 +6,11 @@ namespace NewBankWpfClient.ViewModels
     {
         public LoginValidation()
         {
-            RuleFor(x => x.Username).NotNull().WithMessage("Please enter a username");
-            RuleFor(x => x.Username).NotEmpty().WithMessage("Please enter a username");
-            RuleFor(x => x.SecurePassword).NotNull().WithMessage("Please enter a password");
+            RuleFor(x => x.Username).Cascade(CascadeMode.StopOnFirstFailure)
+                .NotNull().WithMessage("Please enter a {PropertyName}")
+                .NotEmpty().WithMessage("Please enter a {PropertyName}")
+                .Length(3, 10).WithMessage("{PropertyName} must be between 3-10 characters long.");
+            RuleFor(x => x.SecurePassword).NotNull().WithMessage("Please enter a {PropertyName}");
         }
     }
 }

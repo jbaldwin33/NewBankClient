@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\Josh\VSProjects\NewBankClient\_debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -46,14 +46,18 @@
   
   <ItemGroup>
     <Reference Include="MVVMFramework">
-      <HintPath>..\_debug\MVVMFramework.dll</HintPath>
+      <HintPath>..\DLLs\MVVMFramework.dll</HintPath>
     </Reference>
     <Reference Include="NewBankClientGrpc">
-      <HintPath>..\_debug\netcoreapp3.1\NewBankClientGrpc.dll</HintPath>
+      <HintPath>..\DLLs\NewBankClientGrpc.dll</HintPath>
     </Reference>
     <Reference Include="NewBankShared">
-      <HintPath>..\..\NewBankShared\_debug\net5.0\NewBankShared.dll</HintPath>
+      <HintPath>..\DLLs\NewBankShared.dll</HintPath>
     </Reference>
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(OutDir)Localization&quot; mkdir &quot;$(OutDir)Localization&quot;&#xD;&#xA;xcopy /Y/E &quot;$(SolutionDir)\DLLs\Localization\*&quot; &quot;$(OutDir)Localization&quot;" />
+  </Target>
 
 </Project>

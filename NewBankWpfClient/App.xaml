@@ -8,13 +8,11 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+        <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />-->
         <ResourceDictionary Source="pack://application:,,,/MVVMFramework;component/Controls/ControlStyles.xaml" />
       </ResourceDictionary.MergedDictionaries>
-      <!--<BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-      <converters:InverseBooleanToVisibilityConverter x:Key="InvBoolToVisConverter"/>-->
+      <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+      <converters:InverseBooleanToVisibilityConverter x:Key="InvBoolToVisConverter"/>
 
       <!--<Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MahApps.Styles.TextBox}">
         <Setter Property="Width" Value="100"/>
@@ -44,12 +42,12 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
       </Style>-->
-      <Style TargetType="{x:Type StackPanel}">
+      <!--<Style TargetType="{x:Type StackPanel}">
         <Setter Property="Orientation" Value="Horizontal"/>
         <Setter Property="Height" Value="auto"/>
         <Setter Property="Width" Value="auto"/>
-      </Style>
-      <Style TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MahApps.Styles.PasswordBox}">
+      </Style>-->
+      <Style TargetType="{x:Type PasswordBox}"><!--BasedOn="{StaticResource MahApps.Styles.PasswordBox}">-->
         <Setter Property="Width" Value="100"/>
         <Setter Property="Height" Value="auto"/>
         <Setter Property="Margin" Value="5,0,5,5"/>

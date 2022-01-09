@@ -63,14 +63,13 @@ namespace NewBankWpfClient.ViewModels
 
         #endregion
 
-        public TransactionLogsViewModel()
+        public TransactionLogsViewModel() { }
+
+        public override void OnLoaded()
         {
             SortDirection = ListSortDirection.Descending;
             SortedProp = nameof(TransactionViewModel.CreatedDateTime);
             Transactions = new ObservableCollection<TransactionViewModel>();
-        }
-        public override void OnLoaded()
-        {
             GetTransactions();
             base.OnLoaded();
         }

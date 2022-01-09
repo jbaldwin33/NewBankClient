@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NewBankClientConfiguration"
         xmlns:converters="clr-namespace:NewBankClientConfiguration.Utilities"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
   <Grid>
     <Grid.Resources>
       <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>

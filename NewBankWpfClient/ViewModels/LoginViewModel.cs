@@ -15,6 +15,7 @@ namespace NewBankWpfClient.ViewModels
     public class LoginViewModel : ViewModelValidation
     {
         public event EventHandler<LoginEventArgs> LoginEventHandler;
+        public event EventHandler LogoutEventHandler;
         private readonly ServiceClient serviceClient = ServiceClient.Instance;
         private readonly SessionInstance sessionInstance = SessionInstance.Instance;
         private string username;
@@ -27,8 +28,8 @@ namespace NewBankWpfClient.ViewModels
         public LoginViewModel()
         {
             LoggedIn = sessionInstance.CurrentUser != null;
-            Username = string.Empty;
-            SecurePassword = null;
+            username = string.Empty;
+            securePassword = null;
         }
         #region Labels
 
@@ -46,13 +47,13 @@ namespace NewBankWpfClient.ViewModels
             get => username;
             set
             {
-                if (string.IsNullOrEmpty(value))
-                    SetProperty(ref username, value, "Username cannot be empty", propertyName: nameof(Username));
-                else
-                {
+                //if (string.IsNullOrEmpty(value))
+                //    SetProperty(ref username, value, "Username cannot be empty", propertyName: nameof(Username));
+                //else
+                //{
                     ClearValidationErrors();
                     SetProperty(ref username, value);
-                }
+                //}
             }
         }
 
@@ -80,6 +81,8 @@ namespace NewBankWpfClient.ViewModels
         {
             LoginEventHandler?.Invoke(this, new LoginEventArgs(user));
         }
+
+        public void OnLogOut() => LogoutEventHandler?.Invoke(this, EventArgs.Empty);
 
         private void LoginCommandExecute()
         {
@@ -155,6 +158,7 @@ namespace NewBankWpfClient.ViewModels
                 sessionInstance.CurrentUser = null;
                 sessionInstance.SessionID = Guid.Empty;
                 Username = string.Empty;
+                OnLogOut();
                 LoggedIn = false;
                 ShowMessage(new MessageBoxEventArgs(new LogoutSuccessfulTranslatable(), MessageBoxEventArgs.MessageTypeEnum.Information, MessageBoxButton.OK, MessageBoxImage.Information));
             }

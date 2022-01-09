@@ -2,6 +2,7 @@
 using MVVMFramework.ViewNavigator;
 using MVVMFramework.Views;
 using NewBankWpfClient.Utilities;
+using NewBankWpfClient.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,15 +23,27 @@ namespace NewBankWpfClient.Views
     /// </summary>
     public partial class LoginView : ViewBaseControl
     {
+        private LoginViewModel vm;
         public LoginView() : base(Navigator.Instance.CurrentViewModel)
         {
             InitializeComponent();
+            vm = Navigator.Instance.CurrentViewModel as LoginViewModel;
+            vm.LogoutEventHandler += Vm_LogoutEventHandler;
+        }
+
+        private void Vm_LogoutEventHandler(object sender, EventArgs e)
+        {
+            pBox.Clear();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            var pBox = sender as PasswordBox;
             PasswordBoxMVVMAttachedProperties.SetEncryptedPassword(pBox, pBox.SecurePassword);
+        }
+
+        private void MediumTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

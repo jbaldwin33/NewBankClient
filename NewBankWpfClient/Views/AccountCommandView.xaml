@@ -13,7 +13,7 @@
       <RowDefinition Height="auto"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
-    <controls:DefaultStackPanel Grid.Row="0" Visibility="{Binding UsernameVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <controls:DefaultStackPanel Grid.Row="0" Visibility="{Binding UsernameVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisConverter}}">
       <controls:DefaultTextBlock Text="{Binding RecipientLabel}"/>
       <controls:SmallTextBox Text="{Binding ToUsername, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
     </controls:DefaultStackPanel>

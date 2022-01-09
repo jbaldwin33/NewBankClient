@@ -25,11 +25,11 @@
         </Grid.RowDefinitions>
         <controls:DefaultStackPanel Grid.Row="0">
           <controls:SmallTextBlock Text="{Binding UsernameLabel}"/>
-          <controls:MediumTextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+          <controls:MediumTextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" LostFocus="MediumTextBox_LostFocus"/>
         </controls:DefaultStackPanel>
         <controls:DefaultStackPanel Grid.Row="1">
           <controls:SmallTextBlock Text="{Binding PasswordLabel}"/>
-          <PasswordBox pwd:PasswordBoxMVVMAttachedProperties.EncryptedPassword="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="100" Height="25" FontSize="20" PasswordChanged="PasswordBox_PasswordChanged"/>
+          <PasswordBox x:Name="pBox" pwd:PasswordBoxMVVMAttachedProperties.EncryptedPassword="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="100" Height="25" FontSize="20" PasswordChanged="PasswordBox_PasswordChanged"/>
         </controls:DefaultStackPanel>
         <controls:DefaultStackPanel Grid.Row="2">
           <controls:SmallButton Content="{Binding LoginLabel}" Command="{Binding LoginCommand}"/>
